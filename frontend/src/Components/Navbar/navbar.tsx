@@ -39,7 +39,6 @@ const pages = [
 ];
 
 
-
 export const Navbar = () => {
     const pathName = usePathname();
 

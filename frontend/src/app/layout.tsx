@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
-import {Navbar} from "@/Components/Navbar";
-import {Footer} from "@/Components/Footer";
+import {Navbar} from "@/Components/Navbar/navbar";
+import {Footer} from "@/Components/Footer/footer";
 import NextTopLoader from "nextjs-toploader";
 
 
