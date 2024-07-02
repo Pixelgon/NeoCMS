@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9kif)r!#ircna=*rmna%nxtj_m8#d#ff9i4#%=mok(8#vifjhu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.pixelgon.cz', '91.134.206.134', 'localhost', '127.0.0.1' ]
 
 
 # Application definition
@@ -38,7 +38,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'pillow',
+    'apps.gallery',
+    'axes',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    'axes.backends.AxesStandaloneBackend',
+
+    # Django ModelBackend is the default authentication backend.
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Axes
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -104,9 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'cs-cz'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = ''
 
 USE_I18N = True
 
