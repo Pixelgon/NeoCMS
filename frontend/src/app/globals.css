@@ -1,14 +1,7 @@
-:root {
-  --m-w: 1100px;
-  --prim: #00ccff;
-  --wh: rgba(255 255 255 / 0.9);
-  --bg-sec: #151c24;
-  --bg: #22262a;
-  --btn-text: #373737;
-  --pxlgn-gra: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
-  --navbar: linear-gradient(180deg, rgba(21, 28, 36, 40%) 0%, rgba(21, 28, 36, 80%) 100%);
-  --trans: ease .3s all;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 body {
   margin: 0;
@@ -20,4 +13,8 @@ body {
 
 main {
   flex: 1;
+}
+
+#nprogress {
+  z-index: 51;
 }

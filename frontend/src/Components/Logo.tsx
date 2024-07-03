@@ -1,32 +1,38 @@
 import * as React from 'react';
-import {FC} from 'react';
-import Image from "next/image";
-import styled from "styled-components";
-
+import { FC } from 'react';
+import Image from 'next/image';
 
 interface LogoProps {
-    full?: number;
+    full?: boolean;
+    width: number;
+    height: number;
 }
 
-const StyledImg = styled(Image)`
-    display: block;
-`;
 
-export const Logo: FC<LogoProps> = ({full = 0}) => {
-  if (full) {
-      return (
-          <>
-            <StyledImg src="/logo/LogoText.svg" alt="Logo Pixelgon" objectFit="contain" height={9} width={61}/>
-          </>
-          );
-  }
-  else {
+export const Logo: FC<LogoProps> = ({ full = false, width, height}) => {
+    if (full) {
         return (
             <>
-                <StyledImg src="/logo/Logo.svg" alt="Logo Pixelgon" height={24} width={24}/>
+                <Image
+                    src="/logo/LogoText.svg"
+                    alt="Logo Pixelgon"
+                    width={width}
+                    height={height}
+                />
+            </>
+        );
+    } else {
+        return (
+            <>
+                <Image
+                    src="/logo/Logo.svg"
+                    alt="Logo Pixelgon"
+                    width={width}
+                    height={height}
+                />
             </>
         );
     }
-}
+};
 
 export default Logo;

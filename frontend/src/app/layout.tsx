@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
+import NextTopLoader from "nextjs-toploader";
 import {Navbar} from "@/Components/Navbar/navbar";
 import {Footer} from "@/Components/Footer/footer";
-import NextTopLoader from "nextjs-toploader";
 
 
 export const metadata: Metadata = {
@@ -12,9 +12,8 @@ export const metadata: Metadata = {
 };
 
 const open_sans = Open_Sans({
-    weight: ["400", "600"],
+    weight: ["400"],
     subsets: ["latin-ext"],
-
 });
 
 export default function RootLayout({
@@ -27,15 +26,15 @@ export default function RootLayout({
         <html lang="cs">
           <body className={open_sans.className}>
             <NextTopLoader
-             color="#2299DD"
+             color="linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)"
              initialPosition={0.08}
              crawlSpeed={200}
              height={3}
              crawl={true}
              showSpinner={false}
              easing="ease"
-             speed={200}
-             shadow="0 0 10px #2299DD,0 0 5px #2299DD"
+             speed={300}
+             shadow={false}
             />
             <Navbar />
             {children}

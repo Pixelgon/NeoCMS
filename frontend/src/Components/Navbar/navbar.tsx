@@ -1,35 +1,9 @@
 'use client';
 import Link from 'next/link';
-import styled from 'styled-components';
 import Logo from "@/Components/Logo";
-import {NavItem} from "@/Components/Navbar/navitem";
-import {usePathname} from "next/navigation";
-
-
-const StyledNav = styled.nav`
-    display: flex;
-    gap: .625rem;
-    justify-content: center;
-    align-items: center;
-    padding: .625rem;
-    background: var(--navbar);
-    backdrop-filter: blur(20px);
-    position: fixed;
-    width: calc(100% - 1.25rem);
-    z-index: 100;
-    top: 0;
-    left: 0;
-`
-
-const StyledMenu = styled.menu`
-    display: flex;
-    gap: .625rem;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-`
+import { NavItem } from "@/Components/Navbar/navitem";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 const pages = [
     { name: "Domů", href: "/" },
@@ -38,20 +12,31 @@ const pages = [
     { name: "Grafika", href: "/graphics" },
 ];
 
-
 export const Navbar = () => {
     const pathName = usePathname();
+    const [menuOpen, setMenuOpen] = useState(false);
 
     return (
-        <StyledNav>
-            <Link href="/">
-                <Logo />
+        <nav className="fixed top-0 left-0 w-full max-h-10 z-50 flex items-center justify-between p-4 bg-navbar backdrop-blur-lg md:justify-center">
+            <Link href="/" className={'pr-1'}>
+                <Logo width={20} height={20} />
             </Link>
-            <StyledMenu>
+            <button
+                className="relative w-10 h-5 p-2.5 bg-transparent border-none md:hidden"
+                onClick={() => setMenuOpen(!menuOpen)}
+            >
+                <span className={`block w-full h-0.5 bg-white rounded ${menuOpen ? 'hidden' : ''}`} />
+                <span className={`block w-full h-0.5 bg-white rounded ${menuOpen ? 'transform -rotate-45' : ''}`} />
+            </button>
+            <menu
+                className={`fixed top-[100%] left-0 w-full transition-transform transform ${menuOpen ? 'translate-y-[-100%]' : ''} bg-bg-sec flex flex-col items-center justify-center list-none p-0 m-0 md:relative md:flex-row md:w-auto md:translate-y-0`}
+            >
                 {pages.map((page, index) => (
-                    <NavItem key={index} href={page.href} text={page.name} active={+(page.href == pathName)}/>
+                    <NavItem key={index} href={page.href} text={page.name} active={+(page.href === pathName)} />
                 ))}
-            </StyledMenu>
-        </StyledNav>
+            </menu>
+        </nav>
     );
 }
+
+export default Navbar;

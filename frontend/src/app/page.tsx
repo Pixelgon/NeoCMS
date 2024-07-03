@@ -4,12 +4,7 @@ import * as THREE from "three";
 // @ts-ignore
 import WAVES from "vanta/src/vanta.waves"
 import {useEffect, useRef, useState} from "react";
-import styled from "styled-components";
 
-
-const StyledHeader = styled.header` 
-    height: 100;
-`;
 
 
 export default function Home() {
@@ -37,10 +32,10 @@ const [vantaEffect, setVantaEffect] = useState(0);
   }, [vantaEffect]);
   return (
       <>
-          <StyledHeader>
+          <header>
                 <div ref={vantaRef}>
                 </div>
-          </StyledHeader>
+          </header>
           <main>
 
           </main>
