@@ -21,6 +21,7 @@ const config: Config = {
         "bg-sec": "#151c24",
         "bg": "#22262a",
         "btn-txt": "#373737",
+        "menu": "#151c24cc"
       },
     },
   },
