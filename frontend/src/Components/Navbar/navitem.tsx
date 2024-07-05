@@ -9,8 +9,8 @@ interface NavlinkProps {
 
 export const NavItem: FC<NavlinkProps> = ({ href, text, active }) => {
     return (
-        <li>
-            <Link href={href} className={`uppercase transition-all inline-block py-2 px-1 ${active ? 'text-prim' : 'text-wh'} hover:text-prim`}>
+        <li className="w-full">
+            <Link href={href} className={`uppercase transition-all inline-block p-2 w-full ${active ? 'text-prim' : 'text-wh'} hover:text-prim`}>
                     {text}
             </Link>
         </li>
