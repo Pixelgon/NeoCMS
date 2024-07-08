@@ -3,11 +3,11 @@ import Link from 'next/link';
 import Logo from "@/Components/Logo";
 import { NavItem } from "@/Components/Navbar/navitem";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 const pages = [
     { name: "Domů", href: "/" },
-    { name: "O nás", href: "/about" },
+    { name: "My", href: "/about" },
     { name: "Projekty", href: "/projects" },
     { name: "Grafika", href: "/graphics" },
 ];
@@ -18,28 +18,35 @@ export const Navbar = () => {
 
     useEffect(() => {
         setMenuOpen(false);
-    } , [pathName]);
+    }, [pathName]);
+
+    const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
+
+    const navItems = useMemo(() => pages.map((page, index) => (
+        <NavItem key={index} href={page.href} text={page.name} active={page.href === pathName} />
+    )), [pathName]);
 
     return (
-        <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between bg-navbar backdrop-blur-lg md:justify-center">
-            <Link href="/" className={'p-3 pr-2'}>
-                <Logo width={24} height={24} />
-            </Link>
-            <button
-                className="relative h-[48px] aspect-square bg-transparent border-none md:hidden"
-                onClick={() => setMenuOpen(!menuOpen)}
-            >
-                <div className={`absolute w-[calc(100%-.75rem)] h-[2px] left-0 bg-pxlgn-gradient top-[40%] rounded transition-transform ${menuOpen ? 'transform rotate-45 translate-y-[4px]' : ''}`} />
-                <div className={`absolute w-[calc(100%-.75rem)] h-[2px] left-0 bg-pxlgn-gradient bottom-[40%] rounded transition-transform ${menuOpen ? 'transform -rotate-45 translate-y-[-4px]' : ''}`} />
-            </button>
+        <nav className="fixed top-0 left-0 w-full z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-lg">
+            <div className='flex items-center justify-between'>
+                <Link href="/" className='p-3 pr-2'>
+                    <Logo width={24} height={24} />
+                </Link>
+                <button
+                    className="relative h-[48px] aspect-square bg-transparent border-none md:hidden"
+                    onClick={toggleMenu}
+                >
+                    <div className={`absolute w-[calc(100%-.75rem)] h-[2px] left-0 bg-pxlgn-gradient top-[40%] transition-transform rounded ${menuOpen ? 'rotate-45 translate-y-[4px]' : ''}`} />
+                    <div className={`absolute w-[calc(100%-.75rem)] h-[2px] left-0 bg-pxlgn-gradient bottom-[40%] transition-transform rounded ${menuOpen ? '-rotate-45 translate-y-[-4px]' : ''}`} />
+                </button>
+            </div>
             <menu
-                className={`fixed top-[100%] z-40 left-0 w-full transition-all overflow-hidden backdrop-blur-lg ${menuOpen ? 'max-h-[160px]' : 'max-h-0'} bg-menu flex flex-col items-center justify-center list-none p-0 m-0 md:relative md:flex-row md:w-auto md:max-h-none md:translate-y-0 md:bg-transparent md:backdrop-blur-none`}
+                className={`w-full transition-all overflow-hidden ${menuOpen ? 'max-h-[160px]' : 'max-h-0'} flex flex-col items-center justify-center list-none p-0 m-0 md:relative md:flex-row md:w-auto md:max-h-none`}
             >
-                {pages.map((page, index) => (
-                    <NavItem key={index} href={page.href} text={page.name} active={+(page.href === pathName)} />
-                ))}
+                {navItems}
             </menu>
         </nav>
     );
 };
 export default Navbar;
+

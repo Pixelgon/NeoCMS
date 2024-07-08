@@ -4,7 +4,7 @@ import Link from "next/link";
 interface NavlinkProps {
     href: string;
     text: string;
-    active: number;
+    active: boolean;
 }
 
 export const NavItem: FC<NavlinkProps> = ({ href, text, active }) => {

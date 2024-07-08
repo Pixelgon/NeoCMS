@@ -10,27 +10,32 @@ interface LogoProps {
 
 
 export const Logo: FC<LogoProps> = ({ full = false, width, height}) => {
+    const imageStyles = {
+        width: width,
+        height: height,
+    };
+
     if (full) {
         return (
-            <>
-                <Image
-                    src="/logo/LogoText.svg"
-                    alt="Logo Pixelgon"
-                    width={width}
-                    height={height}
-                />
-            </>
+            <Image
+                src="/logo/LogoText.svg"
+                alt="Logo Pixelgon"
+                width={width}
+                height={height}
+                style={imageStyles}
+                className={"object-contain"}
+            />
         );
     } else {
         return (
-            <>
-                <Image
-                    src="/logo/Logo.svg"
-                    alt="Logo Pixelgon"
-                    width={width}
-                    height={height}
-                />
-            </>
+            <Image
+                src="/logo/Logo.svg"
+                alt="Logo Pixelgon"
+                width={width}
+                height={height}
+                style={imageStyles}
+                className={"object-contain"}
+            />
         );
     }
 };
