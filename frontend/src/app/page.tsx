@@ -1,45 +1,20 @@
 'use client';
-// @ts-ignore
-import * as THREE from "three";
-// @ts-ignore
-import WAVES from "vanta/src/vanta.waves"
-import {useEffect, useRef, useState} from "react";
-
+import { HeaderFull } from "@/Components/Header/headerFull";
+import Image from 'next/image';
 
 
 export default function Home() {
-const [vantaEffect, setVantaEffect] = useState(0);
-  const vantaRef = useRef(null);
-
-  useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(
-        WAVES({
-            el: vantaRef.current,
-            THREE: THREE,
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: true,
-            minHeight: 200.0,
-            minWidth: 200.0,
-            scale: 1.0,
-            scaleMobile: 1.0,
-                waveHeight: 40.0,
-            zoom: 0.8,
-        })
-      );
-    };
-  }, [vantaEffect]);
-  return (
-      <>
-          <header>
-                <div ref={vantaRef}>
-                </div>
-          </header>
-          <main>
-
-          </main>
-      </>
-
-  );
+return (
+  <>  
+    <HeaderFull>
+      <div className={'flex flex-col justify-center w-[50vw] min-w-[300px] items-end select-none'}>
+        <h1 className={'absolute left-[-10000px]'}>
+          Pixelgon
+        </h1>
+        <Image draggable="false" src="/logo/LogoText.svg" alt="Logo Pixelgon" fill className={'!relative'}/>
+        <p className={'text-wh text-[4vw] -mt-4 font-quicksand font-normal'}>Your <strong className={'inline-block bg-pxlgn-gradient text-transparent bg-clip-text font-normal'}>vision</strong>, our <strong className={'inline-block bg-pxlgn-gradient text-transparent bg-clip-text font-normal'}>code</strong></p>
+      </div>
+    </HeaderFull>
+  </>
+);
 };

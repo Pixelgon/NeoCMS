@@ -23,6 +23,10 @@ const config: Config = {
         "btn-txt": "#373737",
         "menu": "#151c24cc"
       },
+      fontFamily: {
+        "quicksand": ["Quicksand", "sans-serif"],
+        "open-sans": ["Open Sans", "sans-serif"],
+      },
     },
   },
   plugins: [],

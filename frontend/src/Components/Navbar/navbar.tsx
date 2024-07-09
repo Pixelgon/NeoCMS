@@ -1,13 +1,13 @@
 'use client';
 import Link from 'next/link';
-import Logo from "@/Components/Logo";
+import Image from 'next/image';
 import { NavItem } from "@/Components/Navbar/navitem";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useCallback, useMemo } from "react";
 
 const pages = [
     { name: "Domů", href: "/" },
-    { name: "My", href: "/about" },
+    { name: "O nás", href: "/about" },
     { name: "Projekty", href: "/projects" },
     { name: "Grafika", href: "/graphics" },
 ];
@@ -30,7 +30,7 @@ export const Navbar = () => {
         <nav className="fixed top-0 left-0 w-full z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-lg">
             <div className='flex items-center justify-between'>
                 <Link href="/" className='p-3 pr-2'>
-                    <Logo width={24} height={24} />
+                    <Image src="/logo/Logo.svg" width="24" height="24" alt="Logo Pixelgon"/>
                 </Link>
                 <button
                     className="relative h-[48px] aspect-square bg-transparent border-none md:hidden"

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Quicksand } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import {Navbar} from "@/Components/Navbar/navbar";
-import {Footer} from "@/Components/Footer/footer";
+import Footer from "@/Components/footer";
 
 
 export const metadata: Metadata = {
@@ -14,6 +14,12 @@ export const metadata: Metadata = {
 const open_sans = Open_Sans({
     weight: ["400"],
     subsets: ["latin-ext"],
+});
+
+const quicksand = Quicksand({
+    weight: ["400", "500", "600", "700"],
+    subsets: ["latin-ext"],
+    variable: "--font-quicksand"
 });
 
 export default function RootLayout({
