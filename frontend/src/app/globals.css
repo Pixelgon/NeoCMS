@@ -2,21 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
 
-body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100svh;
-}
 
-main {
-  flex: 1;
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    line-height: 1.5;
+  }
 
-#nprogress {
-  z-index: 51;
+  #nprogress {
+    z-index: 51;
+  }
+
+  body {
+    @apply font-open-sans;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-quicksand;
+    @apply bg-pxlgn-gradient text-transparent bg-clip-text;
+  }
+  h1 {
+    @apply text-9xl;
+  }
+  h2 {
+    font-size: min(8.5vw, 6rem)
+  }
+  h3 {
+    @apply text-6xl;
+  }
+  p, ul {
+    @apply text-xl;
+    @apply text-wh;
+    @apply leading-normal;
+  }
+
+  .menu--close > li {
+    @apply max-h-0;
+    @apply md:max-h-none;
+  }
+
+  .menu--open > li {
+    @apply max-h-12;
+    @apply md:max-h-none;
+    @apply delay-0;
+  }
+
+  .menu--open > li:nth-child(2) {
+    @apply delay-100;
+  }
+
+  .menu--open > li:nth-child(3) {
+    @apply delay-200;
+  }
+
+  .menu--open > li:nth-child(4) {
+    @apply delay-300;
+  }
 }
