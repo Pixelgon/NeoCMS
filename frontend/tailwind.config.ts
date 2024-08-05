@@ -17,6 +17,7 @@ const config: Config = {
         "navbar": "linear-gradient(180deg, rgba(21, 28, 36, 40%) 0%, rgba(21, 28, 36, 80%) 100%)",
         "prim-gradient": "linear-gradient(180deg, rgba(34,38,42,1) 80%, rgba(21,28,36,1) 100%)",
         "sec-gradient": "linear-gradient(180deg, rgba(21,28,36,1) 80%, rgba(34,38,42,1) 100%)",
+        "header-gradient": "linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(34,38,42,1) 100%)",
       },
       colors: {
         "prim": "#00ccff",

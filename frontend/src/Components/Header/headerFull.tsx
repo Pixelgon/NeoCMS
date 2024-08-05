@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
-import WAVES from 'vanta/dist/vanta.waves.min';
+import WAVES from 'vanta/dist/vanta.waves.min.js';
 import * as THREE from 'three';
 
 export const HeaderFull: FC<PropsWithChildren> = ({children}) => {
@@ -19,6 +19,7 @@ export const HeaderFull: FC<PropsWithChildren> = ({children}) => {
           minWidth: 200.0,
           scale: 1.0,
           scaleMobile: 1.0,
+          color: 0x151c24,
           waveHeight: 40.0,
           zoom: 0.8,
         })
@@ -32,7 +33,7 @@ export const HeaderFull: FC<PropsWithChildren> = ({children}) => {
 
   return (
     <>
-      <header ref={vantaRef} className={'w-full h-svh flex justify-center items-center'}>
+      <header ref={vantaRef} className={'w-full h-svh flex justify-center items-center before:bg-header-gradient before:absolute before:top-0 before:left-0 before:w-full before:h-full before:z-[1]'}>
             {children}
       </header>
     </>
