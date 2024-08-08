@@ -33,7 +33,7 @@ export const HeaderFull: FC<PropsWithChildren> = ({children}) => {
 
   return (
     <>
-      <header ref={vantaRef} className={'w-full h-svh flex justify-center items-center before:bg-header-gradient before:absolute before:top-0 before:left-0 before:w-full before:h-full before:z-[1]'}>
+      <header ref={vantaRef} className={'h-svh flex justify-center items-center before:bg-header-gradient before:absolute before:top-0 before:left-0 before:w-full before:h-full before:z-[1]'}>
             {children}
       </header>
     </>

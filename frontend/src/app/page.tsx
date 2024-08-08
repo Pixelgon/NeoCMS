@@ -11,7 +11,7 @@ export default function Home() {
 return (
   <>  
     <HeaderFull>
-      <div className={'flex flex-col justify-center w-[75vw] max-w-[1000px] items-end select-none'}>
+      <Link href={'#intro'} className={'flex flex-col justify-center w-[75vw] max-w-[1000px] items-end select-none'}>
         <h1 className={'absolute left-[-10000px]'}>
           Pixelgon
         </h1>
@@ -20,22 +20,11 @@ return (
         <div className="w-[65.25%]">
           <Image draggable="false" src="/logo/Slogan.svg" alt="Logo Pixelgon" fill className={'!relative mt-4'}/>
         </div>
-        <Link href={'#intro'}>
-          a
-        </Link>
-      </div>
+      </Link>
     </HeaderFull>
     <main>
-      <Section className="bg-white" isPrim>
+      <Section isPrim>
         <h2 id="intro">
-          Precizně napsaný web
-        </h2>
-        <p>
-          V dnešní době je nezbytné mít pro úspěch digitální identitu, ale musíte se odlišit. Naší prioritou při tvorbě webových stránek je neotřelý funkční design, technické zpracování, efektivní SEO a samozřejmě individuální přístup ke každému projektu. Nevěříte?
-        </p>   
-      </Section>
-      <Section>
-        <h2>
           Precizně napsaný web
         </h2>
         <p>

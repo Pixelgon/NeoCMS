@@ -5,59 +5,53 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    line-height: 1.5;
+    line-height: 1.15;
   }
-
   #nprogress {
     z-index: 51;
   }
-
   body {
-    @apply font-open-sans;
+    @apply font-open-sans bg-bg min-h-svh;
     margin: 0;
     display: flex;
     flex-direction: column;
-    min-height: 100svh;
+    overflow-x: hidden;
+  }
+  main {
+    flex-grow: 1;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-quicksand;
-    @apply bg-pxlgn-gradient text-transparent bg-clip-text;
+    @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold;
+    line-height: 1.15;
   }
   h1 {
-    @apply text-9xl;
+    font-size: min(12vw, 9rem);
   }
   h2 {
-    font-size: min(8.5vw, 6rem)
+    font-size: min(8vw, 6rem);
   }
   h3 {
     @apply text-6xl;
   }
   p, ul {
-    @apply text-xl;
-    @apply text-wh;
-    @apply leading-normal;
+    @apply text-xl text-wh leading-normal;
   }
-
   .menu--close > li {
-    @apply max-h-0;
-    @apply md:max-h-none;
+    @apply max-h-0 md:max-h-none;
   }
-
   .menu--open > li {
-    @apply max-h-12;
-    @apply md:max-h-none;
-    @apply delay-0;
+    @apply max-h-12 md:max-h-none delay-0;
   }
-
   .menu--open > li:nth-child(2) {
     @apply delay-100;
   }
-
   .menu--open > li:nth-child(3) {
     @apply delay-200;
   }
-
   .menu--open > li:nth-child(4) {
     @apply delay-300;
+  }
+  .text-pxlgn {
+    @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal;
   }
 }
