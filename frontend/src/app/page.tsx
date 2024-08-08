@@ -17,8 +17,8 @@ return (
         </h1>
         <p className={'absolute left-[-10000px]'}>Your vision, our code</p>
         <Image draggable="false" src="/logo/LogoText.svg" alt="Logo Pixelgon" fill className={'!relative'}/>
-        <div className="w-[65.25%]">
-          <Image draggable="false" src="/logo/Slogan.svg" alt="Logo Pixelgon" fill className={'!relative mt-4'}/>
+        <div className="w-[65.25%] relative ">
+          <Image draggable="false" src="/logo/Slogan.svg" alt="Logo Pixelgon" fill className={'!relative mt-[1vw]'}/>
         </div>
       </Link>
     </HeaderFull>
