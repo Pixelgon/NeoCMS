@@ -11,6 +11,14 @@ export const metadata: Metadata = {
   description: "Tvorba webu jinak. Mojí prioritou při tvorbě webových stránek je neotřelí funkční design, technické zpracování a efektivní SEO.",
 };
 
+const OpenSans = Open_Sans({
+  variable: "--open-sans",
+});
+
+const QuicksandFont = Quicksand({
+  variable: "--quicksand",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -18,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
       <>
-        <html lang="cs">
+        <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`}>
           <body>
           <NextTopLoader
                 color="linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)"

@@ -7,7 +7,7 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    
+  
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -28,8 +28,8 @@ const config: Config = {
         "menu": "#151c24cc"
       },
       fontFamily: {
-        "quicksand": ["Quicksand", "sans-serif"],
-        "open-sans": ["Open Sans", "sans-serif"],
+        "quicksand": "var(--quicksand)",
+        "open-sans": "var(--open-sans)",
       },
     },
   },

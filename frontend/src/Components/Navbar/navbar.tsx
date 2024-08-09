@@ -7,12 +7,12 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 
 const pages = [
     { name: "Domů", href: "/" },
-    { name: "O nás", href: "/about" },
-    { name: "Projekty", href: "/projects" },
-    { name: "Grafika", href: "/graphics" },
+    { name: "O nás", href: "/onas" },
+    { name: "Projekty", href: "/projekty" },
+    { name: "Grafika", href: "/grafika" },
 ];
 
-export const Navbar = () => {
+export const Navbar = () => {   
     const pathName = usePathname();
     const [menuOpen, setMenuOpen] = useState(false);
 

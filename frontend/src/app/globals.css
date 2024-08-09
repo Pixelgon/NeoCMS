@@ -21,11 +21,11 @@
     flex-grow: 1;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold;
+    @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold uppercase;
     line-height: 1.15;
   }
   h1 {
-    font-size: min(12vw, 9rem);
+    font-size: min(12vw, 7rem);
   }
   h2 {
     font-size: min(8vw, 6rem);
@@ -55,3 +55,5 @@
     @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal;
   }
 }
+
+/* cookieconsent */

@@ -1,5 +1,6 @@
 'use client';
 import { HeaderFull } from "@/Components/Header/headerFull";
+import { Btn } from "@/Components/Layout/btn";
 import { Section } from "@/Components/Layout/section";
 import Image from 'next/image';
 import Link from "next/link";
@@ -29,7 +30,8 @@ return (
         </h2>
         <p>
           V dnešní době je nezbytné mít pro úspěch digitální identitu, ale musíte se odlišit. Naší prioritou při tvorbě webových stránek je neotřelý funkční design, technické zpracování, efektivní SEO a samozřejmě individuální přístup ke každému projektu. Nevěříte?
-        </p>   
+        </p>
+        <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>
       </Section>
     </main>
   </>
