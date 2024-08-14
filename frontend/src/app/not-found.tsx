@@ -1,6 +1,6 @@
 'use client';
-import { HeaderFull } from "@/Components/Header/headerFull";
-import { Btn } from "@/Components/Layout/btn";
+import { HeaderFull } from "@/components/Header/headerFull";
+import { Btn } from "@/components/Layout/btn";
 import Link from "next/link";
 
 export default function NotFound() {

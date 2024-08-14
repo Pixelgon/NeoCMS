@@ -1,4 +1,4 @@
-import { Header } from "@/Components/Header/header";
+import { Header } from "@/components/Header/index";
 
 export default function Projetky() {
     return (

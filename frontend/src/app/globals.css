@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 204, 255, 1) rgba(21, 28, 36, 0);
+  }
+
   html {
     scroll-behavior: smooth;
     line-height: 1.15;
@@ -22,16 +27,16 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold uppercase;
-    line-height: 1.15;
+    line-height: 1.20;
   }
   h1 {
-    font-size: min(12vw, 7rem);
+    font-size: min(12vw, 7.5rem);
   }
   h2 {
-    font-size: min(8vw, 6rem);
+    font-size: min(10vw, 5rem);
   }
   h3 {
-    @apply text-6xl;
+    font-size: min(8vw, 3rem)
   }
   p, ul {
     @apply text-xl text-wh leading-normal;

@@ -1,20 +1,16 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { NavItem } from "@/Components/Navbar/navitem";
+import { NavItem } from "@/components/Navbar/navitem";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, useContext } from "react";
+import { LayoutContext } from '@/context/LayoutContext';
 
-const pages = [
-    { name: "Domů", href: "/" },
-    { name: "O nás", href: "/onas" },
-    { name: "Projekty", href: "/projekty" },
-    { name: "Grafika", href: "/grafika" },
-];
 
 export const Navbar = () => {   
     const pathName = usePathname();
     const [menuOpen, setMenuOpen] = useState(false);
+    const layoutData = useContext(LayoutContext);
 
     const toggleMenu = useCallback(() => {
         setMenuOpen(prev => !prev);
@@ -27,14 +23,14 @@ export const Navbar = () => {
     }, [pathName]);
 
     useEffect(() => {
-        document.body.style.overflow = menuOpen ? 'hidden' : 'auto';
-    }, [menuOpen]);
+        menuOpen ? layoutData.setScroll(false) : layoutData.setScroll(true);
+    }, [layoutData, menuOpen]);
 
     const navItems = useMemo(() => 
-        pages.map((page, index) => (
+        layoutData.pages.map((page, index) => (
             <NavItem key={index} href={page.href} text={page.name} active={page.href === pathName} />
         )),
-    [pathName]);
+    [layoutData.pages, pathName]);
 
     return (
         <nav className={`fixed top-0 transition-all left-0 w-full h-16 ${menuOpen ? 'h-svh' : ''} md:h-12 z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-lg`}>

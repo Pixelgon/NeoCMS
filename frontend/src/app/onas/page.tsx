@@ -1,5 +1,5 @@
-import { Header } from "@/Components/Header/header"
-import { Section } from "@/Components/Layout/section";
+import { Header } from "@/components/Header/index"
+import { Section } from "@/components/Layout/section";
 
 export default function ONas() {
   return (
