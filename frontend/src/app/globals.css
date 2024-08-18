@@ -27,7 +27,7 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold uppercase;
-    line-height: 1.20;
+    line-height: 1.15;
   }
   h1 {
     font-size: min(12vw, 7.5rem);
@@ -39,7 +39,7 @@
     font-size: min(8vw, 3rem)
   }
   p, ul {
-    @apply text-xl text-wh leading-normal;
+    @apply text-xl text-wh leading-snug;
   }
   .menu--close > li {
     @apply max-h-0 md:max-h-none;
@@ -59,6 +59,53 @@
   .text-pxlgn {
     @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal;
   }
-}
 
-/* cookieconsent */
+  /* cookieconsent */
+  #cc-main {
+      color-scheme: dark;
+      --cc-font-family: var(--open-sans);
+      --cc-bg: #22262a;
+      --cc-primary-color: rgb(239, 244, 246);
+      --cc-secondary-color: #b1bdc3;
+
+      --cc-btn-primary-color: #000;
+      --cc-btn-primary-hover-color: #000;
+
+      --cc-btn-secondary-bg: #242c31;
+      --cc-btn-secondary-color: var(--cc-primary-color);
+      --cc-btn-secondary-hover-bg: #d4dae0;
+      --cc-btn-secondary-hover-color: #000;
+
+      --cc-cookie-category-block-bg: #1e2428;
+      --cc-cookie-category-block-border: #1e2428;
+      --cc-cookie-category-block-hover-bg: #242c31;
+      --cc-cookie-category-block-hover-border: #242c31;
+      --cc-cookie-category-expanded-block-hover-bg: #242c31;
+      --cc-cookie-category-expanded-block-bg: #1e2428;
+      --cc-toggle-readonly-bg: #343e45;
+      --cc-overlay-bg: rgba(4, 6, 8, .85)!important;
+
+      --cc-toggle-on-knob-bg: var(--cc-bg);
+      --cc-toggle-readonly-knob-bg: var( --cc-cookie-category-block-bg);
+
+      --cc-separator-border-color: #222a30;
+
+      --cc-footer-border-color: #212529;
+      --cc-footer-bg: #0f1112;
+  }
+
+  #cc-main .cc__link {
+    @apply text-pxlgn;
+    background: none;
+  }
+
+  #cc-main .pm__btn {
+    background: var(--cc-btn-primary-bg);
+    border: 1px solid var(--cc-btn-primary-border-color);
+    border-radius: 1.5rem;
+  }
+
+  #cc-main .pm__body, #cc-main .pm__footer, #cc-main .pm__header {
+    padding: 1rem 1rem;
+}
+}

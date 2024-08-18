@@ -3,7 +3,7 @@ import { Header } from "@/components/Header/index";
 export default function Grafika() {
     return (
         <>
-            <Header bg="/headers/graphics-header.webp">
+            <Header bg="/images/headers/graphics-header.webp">
                 <h1>Grafika</h1>
             </Header>
             <main>

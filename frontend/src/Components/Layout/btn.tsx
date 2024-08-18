@@ -20,7 +20,7 @@ const styles: btnStyles = {
 };
 
 const stylesPrim: btnStyles = {
-    innerStyles: 'w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative transition-all duration-300 hover:brightness-50 transition-all duration-300 text-bg-sec px-8 py-4',
+    innerStyles: 'w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative transition-all duration-300 hover:brightness-50 text-bg-sec px-8 py-4',
     outerStyles: ''
 };
 export const Btn: FC<btnProps> = ({children, prim, onClick, href, className}) => {

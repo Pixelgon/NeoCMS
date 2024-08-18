@@ -4,7 +4,7 @@ import { Section } from "@/components/Layout/section";
 export default function ONas() {
   return (
       <>
-      <Header bg="/headers/about-header.webp">
+      <Header bg="/images/headers/about-header.webp">
         <h1>O nás</h1>
       </Header>
           <main>

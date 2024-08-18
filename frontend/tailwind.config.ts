@@ -9,6 +9,9 @@ const config: Config = {
   theme: {
   
     extend: {
+      spacing: {
+        reg: "max(1rem, 1svw)",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

@@ -7,7 +7,7 @@ import { createContext, FC, PropsWithChildren, useCallback, useEffect, useRef, u
 const LayoutInit: LayoutContextType = {
     pages: [
         { name: "Domů", href: "/" },
-        { name: "O nás", href: "/onas" },
+        { name: "O nás", href: "/o-nas" },
         { name: "Projekty", href: "/projekty" },
         { name: "Grafika", href: "/grafika" },
     ],
@@ -19,16 +19,18 @@ export const LayoutContext = createContext<LayoutContextType>({...LayoutInit});
 
 export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     const [Scroll, setScroll] = useState(true);
-    const body = useRef(document.body);
+    const body = useRef<HTMLBodyElement>(null);
 
     useEffect(() => {
-        body.current.style.overflow = Scroll ? 'auto' : 'hidden';
+        if (body.current) {
+            body.current.style.overflow = Scroll ? 'auto' : 'hidden';
+        }
     }, [Scroll]);
 
     return (
         <LayoutContext.Provider value={{...LayoutInit, Scroll, setScroll}}>
-            <MotionConfig transition={{duration: .3}}>
-            <body>
+            <MotionConfig transition={{duration: .5}}>
+            <body ref={body}>
                 {children}    
             </body>    
             </MotionConfig>

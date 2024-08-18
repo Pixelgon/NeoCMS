@@ -34,16 +34,18 @@ export const Navbar = () => {
 
     return (
         <nav className={`fixed top-0 transition-all left-0 w-full h-16 ${menuOpen ? 'h-svh' : ''} md:h-12 z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-lg`}>
-            <div className='flex items-center justify-between h-full max-h-16 p-3 pr-2'>
-                <Link href="/" className='h-full'>
-                    <Image src="/logo/Logo.svg" width={0} height={0} sizes="100vh" alt={"Pixelgon logo"} style={{ width: 'auto', height: '100%' }} priority />
+            <div className='flex items-center justify-between h-full max-h-16'>
+                <Link href="/" className='h-full p-4 pl-reg md:p-3 md:pr-2'>
+                    <Image src="/images/logo/Logo.svg" width={0} height={0} sizes="100vh" alt={"Pixelgon logo"} style={{ width: 'auto', height: '100%' }} priority />
                 </Link>
                 <button
-                    className="relative h-[48px] aspect-square bg-transparent border-none md:hidden"
+                    className="relative h-full aspect-square bg-transparent border-none md:hidden"
                     onClick={toggleMenu}
+                    rel='nofollow'
+                    aria-label='Otevřít menu'
                 >
-                    <div className={`absolute w-[calc(100%-.75rem)] h-[2px] left-0 bg-pxlgn-gradient top-[40%] transition-transform rounded ${menuOpen ? 'rotate-45 translate-y-[4px]' : ''}`} />
-                    <div className={`absolute w-[calc(100%-.75rem)] h-[2px] left-0 bg-pxlgn-gradient bottom-[40%] transition-transform rounded ${menuOpen ? '-rotate-45 translate-y-[-4px]' : ''}`} />
+                    <div className={`absolute w-[calc(100%-2*max(1rem,1svw))] h-[4px] left-4 bg-pxlgn-gradient top-[40%] transition-transform rounded ${menuOpen ? 'rotate-45 translate-y-[4px]' : ''}`} />
+                    <div className={`absolute w-[calc(100%-2*max(1rem,1svw))] h-[4px] left-4 bg-pxlgn-gradient bottom-[40%] transition-transform rounded ${menuOpen ? '-rotate-45 translate-y-[-4px]' : ''}`} />
                 </button>
             </div>
             <menu

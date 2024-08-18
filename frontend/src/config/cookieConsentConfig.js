@@ -32,8 +32,6 @@ export const cookieConsentConfig = {
             acceptAllBtn: "Accept all",
             acceptNecessaryBtn: "Reject all",
             showPreferencesBtn: "Manage preferences",
-            footer:
-              '<a href="#link">Privacy Policy</a>\n<a href="#link">Terms and conditions</a>',
           },
           preferencesModal: {
             title: "Consent Preferences Center",
@@ -83,9 +81,7 @@ export const cookieConsentConfig = {
             acceptAllBtn: "Přijmout vše",
             acceptNecessaryBtn: "Odmítnout vše",
             showPreferencesBtn: "Spravovat preference",
-            footer:
-              '<a href="#link">Zásady ochrany osobních údajů</a>\n<a href="#link">Podmínky použití</a>',
-          },
+              },
           preferencesModal: {
             title: "Centrum preferencí souhlasu",
             acceptAllBtn: "Přijmout vše",
@@ -121,7 +117,7 @@ export const cookieConsentConfig = {
               {
                 title: "Více informací",
                 description:
-                  'Pro jakékoliv dotazy týkající se mé politiky cookies a vašich možností prosím <a class="cc__link" href="#yourdomain.com">kontaktujte mě</a>.',
+                  'Pro jakékoliv dotazy týkající se mé politiky cookies a vašich možností prosím <a class="cc__link" href="mailto:pixelgon@pixelgon.cz">kontaktujte mě</a>.',
               },
             ],
           },
