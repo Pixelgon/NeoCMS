@@ -1,7 +1,6 @@
 'use client';
 import Link from "next/link";
 import Image from "next/image";
-import "vanilla-cookieconsent/dist/cookieconsent.css";
 import * as CookieConsent from "vanilla-cookieconsent";
 import { useEffect } from "react";
 import { Btn } from "../Layout/btn";

@@ -38,7 +38,7 @@
   h3 {
     font-size: min(8vw, 3rem)
   }
-  p, ul {
+  p, ul, ol {
     @apply text-xl text-wh leading-snug;
   }
   .menu--close > li {
@@ -60,11 +60,15 @@
     @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal;
   }
 
+  #cc-main .cm__body {
+    @apply backdrop-blur-lg;
+  }
+
   /* cookieconsent */
   #cc-main {
       color-scheme: dark;
       --cc-font-family: var(--open-sans);
-      --cc-bg: #22262a;
+      --cc-bg: linear-gradient(#151c2466 0%, #151c24cc 100%);
       --cc-primary-color: rgb(239, 244, 246);
       --cc-secondary-color: #b1bdc3;
 
@@ -92,20 +96,7 @@
 
       --cc-footer-border-color: #212529;
       --cc-footer-bg: #0f1112;
+      --cc-modal-border-radius: 1.5rem;
+      --cc-btn-border-radius: 1.5rem;
   }
-
-  #cc-main .cc__link {
-    @apply text-pxlgn;
-    background: none;
-  }
-
-  #cc-main .pm__btn {
-    background: var(--cc-btn-primary-bg);
-    border: 1px solid var(--cc-btn-primary-border-color);
-    border-radius: 1.5rem;
-  }
-
-  #cc-main .pm__body, #cc-main .pm__footer, #cc-main .pm__header {
-    padding: 1rem 1rem;
-}
 }

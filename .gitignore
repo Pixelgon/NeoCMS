@@ -162,4 +162,3 @@ cython_debug/
 #.idea/
 /frontend/.next/*
 /frontend/node_modules/*
-.DS_Store

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Open_Sans, Quicksand } from "next/font/google";
+import "vanilla-cookieconsent/dist/cookieconsent.css";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { LayoutProvider } from "@/context/LayoutContext";

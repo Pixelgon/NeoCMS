@@ -6,9 +6,6 @@ import { Section } from "@/components/Layout/section";
 import Image from 'next/image';
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Swiper } from "swiper/react";
-import { SwiperSlide } from "swiper/react";
-import "swiper/css";
 
 
 
@@ -39,7 +36,7 @@ return (
     </HeaderFull>
     <main>
       <Section isPrim>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10 w-full" id="intro">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10 w-full" id="intro">
           <div className={'flex flex-col items-start gap-4'}>
             <motion.h2 
               initial={{opacity: 0, scale: 0}}
@@ -48,7 +45,7 @@ return (
               >
               Digitální všeuměl
             </motion.h2>
-            <p>Tvoříme webové stránky, které nejsou jen vizuálně přitažlivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem na detail, abyste uspěli v digitálním světě.
+            <p>Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem na detail, abyste uspěli v digitálním světě.
             </p>
             <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>  
           </div>
