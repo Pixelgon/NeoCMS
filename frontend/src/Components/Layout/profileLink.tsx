@@ -20,7 +20,7 @@ const ImgaeClass = '!relative';
 
 export const ProfileLink:FC<ProfileLinkProps> = ({type, link}) => {
     return (
-        <Link className={'flex items-center justify-center transition-all duration-300 relative aspect-square p-[25%] hover:p-[20%] bg-[rgba(0,0,0,0)] hover:bg-[rgba(0,0,0,.5)]'} href={link}>
+        <Link className={'flex items-center justify-center transition-all duration-300 relative aspect-square p-[25%] hover:p-[20%]'} href={link}>
             {(() => {
                 switch (type) {
                     case ProfileLinkType.instagram:

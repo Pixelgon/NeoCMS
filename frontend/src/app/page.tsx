@@ -36,7 +36,7 @@ return (
     </HeaderFull>
     <main>
       <Section isPrim>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10 w-full" id="intro">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10 w-full items-center" id="intro">
           <div className={'flex flex-col items-start gap-4'}>
             <motion.h2 
               initial={{opacity: 0, scale: 0}}
@@ -49,9 +49,15 @@ return (
             </p>
             <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>  
           </div>
-          <div className={'relative'}>
-            <Image src={'/images/sections/laptop.webp'} fill alt="" className={'!relative object-contain w-full drop-shadow-2xl'}/>
-          </div>
+          <motion.div initial={{opacity: 0, scale: 0}}
+              whileInView={{opacity: 1, scale: 1,}}
+              viewport={{ once: true }} className={'relative h-fit'}>
+            <Image src={'/images/sections/laptop.webp'} fill alt="" className={'!relative object-contain w-full drop-shadow-2xl z-10'}/>
+            <div className={'absolute top-[2%] left-[10%] w-[80%] h-[86%] z-0 screen'}>
+              <motion.div initial={{animationPlayState: 'paused'}} whileInView={{animationPlayState: 'running'}} viewport={{once: true}} className={'screen__foto'}></motion.div>
+              <motion.div initial={{animationPlayState: 'paused'}} whileInView={{animationPlayState: 'running'}} viewport={{once: true}} className={'screen__chalupa'}></motion.div>
+            </div>
+          </motion.div>
         </div>
         
       </Section>
