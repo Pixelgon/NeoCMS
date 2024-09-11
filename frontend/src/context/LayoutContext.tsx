@@ -9,7 +9,6 @@ const LayoutInit: LayoutContextType = {
         { name: "Domů", href: "/" },
         { name: "O nás", href: "/o-nas" },
         { name: "Projekty", href: "/projekty" },
-        { name: "Grafika", href: "/grafika" },
     ],
     Scroll: true,
     setScroll: (value: boolean) => {},
