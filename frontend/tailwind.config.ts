@@ -10,7 +10,7 @@ const config: Config = {
   
     extend: {
       spacing: {
-        reg: "max(1rem, 1svw)",
+        reg: "max(1.5rem, 2svw)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -25,7 +25,8 @@ const config: Config = {
       colors: {
         "prim": "#00ccff",
         "wh": "rgba(255 255 255 / 0.9)",
-        "bg-sec": "#151c24",
+        "sec": "#151c24",
+        
         "bg": "#22262a",
         "btn-txt": "#373737",
         "menu": "#151c24cc"

@@ -39,7 +39,7 @@
     font-size: min(8vw, 3rem)
   }
   p, ul, ol {
-    @apply text-xl text-wh leading-snug;
+    @apply text-xl text-wh leading-snug opacity-90;
   }
   .menu--close > li {
     @apply max-h-0 md:max-h-none;
@@ -60,108 +60,186 @@
     @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal;
   }
 
-  #cc-main .cm__body {
-    @apply backdrop-blur-lg;
+  .screen__chalupa {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/pages/chalupanahorach.webp');
+    background-size: cover;
+    background-position: top;
+    animation: scrollChalupa 20s ease-in-out infinite;
+    animation-delay: .5s;
+  }
+  
+  .screen__foto {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/pages/fotohruba.webp');
+    background-size: cover;
+    background-position: top;
+    animation: scrollFoto 20s ease-in-out infinite;
+    animation-delay: .5s;
   }
 
-  /* cookieconsent */
-  #cc-main {
-      color-scheme: dark;
-      --cc-font-family: var(--open-sans);
-      --cc-bg: linear-gradient(#151c2466 0%, #151c24cc 100%);
-      --cc-primary-color: rgb(239, 244, 246);
-      --cc-secondary-color: #b1bdc3;
-
-      --cc-btn-primary-color: #000;
-      --cc-btn-primary-hover-color: #000;
-
-      --cc-btn-secondary-bg: #242c31;
-      --cc-btn-secondary-color: var(--cc-primary-color);
-      --cc-btn-secondary-hover-bg: #d4dae0;
-      --cc-btn-secondary-hover-color: #000;
-
-      --cc-cookie-category-block-bg: #1e2428;
-      --cc-cookie-category-block-border: #1e2428;
-      --cc-cookie-category-block-hover-bg: #242c31;
-      --cc-cookie-category-block-hover-border: #242c31;
-      --cc-cookie-category-expanded-block-hover-bg: #242c31;
-      --cc-cookie-category-expanded-block-bg: #1e2428;
-      --cc-toggle-readonly-bg: #343e45;
-      --cc-overlay-bg: rgba(4, 6, 8, .85)!important;
-
-      --cc-toggle-on-knob-bg: var(--cc-bg);
-      --cc-toggle-readonly-knob-bg: var( --cc-cookie-category-block-bg);
-
-      --cc-separator-border-color: #222a30;
-
-      --cc-footer-border-color: #212529;
-      --cc-footer-bg: #0f1112;
-      --cc-modal-border-radius: 1.5rem;
-      --cc-btn-border-radius: 1.5rem;
+  @keyframes scrollChalupa {
+    0% {
+      background-position: top;
+      opacity: 1;
+    }
+    25% {
+      background-position: bottom;
+    }
+    48% {
+      opacity: 1;
+    }
+    50% {
+      background-position: top;
+      opacity: 0;
+    }
+    98% {
+      opacity: 0;
+    }
+    100% {
+      background-position: top;
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scrollFoto {
+    50% {
+      background-position: top;
+    }
+    75% {
+      background-position: bottom;
+    }
+    100% {
+      background-position: top;
+    }
   }
 }
 
-
-.screen__chalupa {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/images/pages/chalupanahorach.webp');
-  background-size: cover;
-  background-position: top;
-  animation: scrollChalupa 20s ease-in-out infinite;
-  animation-delay: .5s;
+/* cookieconsent */
+#cc-main {
+  color-scheme: dark;
+  --cc-font-family: var(--open-sans);
+  --cc-bg: linear-gradient(#151c2466 0%, #151c24cc 100%);
+  --cc-modal-border-radius: 1.5rem;
+  --cc-btn-border-radius: 1.5rem;
+  --cc-secondary-color: white;
+  --cc-cookie-category-block-bg: #151c24;
+  --cc-btn-secondary-bg: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
+  --cc-toggle-readonly-bg: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
+  --cc-btn-secondary-color: #151c24;
+  --cc-btn-primary-color: #151c24;
+  --cc-btn-primary-bg: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
+  --cc-toggle-on-bg: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
 }
 
-.screen__foto {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/images/pages/fotohruba.webp');
-  background-size: cover;
-  background-position: top;
-  animation: scrollFoto 20s ease-in-out infinite;
-  animation-delay: .5s;
+#cc-main .pm__section--toggle.is-expanded {
+  --cc-cookie-category-block-bg: #151c24!important;
+  --cc-cookie-category-block-border: var(--cc-cookie-category-expanded-block-hover-bg);
 }
 
-@keyframes scrollChalupa {
-  0% {
-    background-position: top;
-    opacity: 1;
-  }
-  25% {
-    background-position: bottom;
-  }
-  48% {
-    opacity: 1;
-  }
-  50% {
-    background-position: top;
-    opacity: 0;
-  }
-  98% {
-    opacity: 0;
-  }
-  100% {
-    background-position: top;
-    opacity: 1;
-  }
+#cc-main .pm--box {
+  @apply backdrop-blur-lg;
 }
 
-@keyframes scrollFoto {
-  50% {
-    background-position: top;
-  }
-  75% {
-    background-position: bottom;
-  }
-  100% {
-    background-position: top;
-  }
+#cc-main .cm__body {
+  @apply backdrop-blur-lg;
+}
+
+#cc-main .pm__header {
+  border-bottom: none!important;
+}
+
+#cc-main .pm__footer {
+  border-top: none!important;
+}
+
+#cc-main .pm__section {
+  border: none!important;
+}
+
+#cc-main .pm__section--toggle .pm__section-title {
+  border: none!important;
+} 
+
+.cm {
+  backdrop-filter: blur(20px);
+}
+
+.cm__btn:not(.cm__btn--secondary) {
+  @apply w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative transition-all duration-300 hover:brightness-50 text-sec px-8 py-4 !important;
+}
+
+.cm__btn--secondary, #cc-main .pm__close-btn {
+  @apply w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative before:transition-all before:duration-300 before:bg-sec before:absolute before:h-[calc(100%-2px)] before:w-[calc(100%-2px)] before:top-[1px] before:rounded-3xl before:left-[1px] hover:before:bg-transparent border-none p-0 !important;
+}
+
+.cm__btn--secondary:hover span, #cc-main .pm__close-btn:hover span {
+  @apply  bg-none text-sec bg-clip-border !important;
+}
+
+.cm__btn--secondary span {
+  @apply bg-pxlgn-gradient transition-all duration-300 text-transparent bg-clip-text px-8 py-4 z-10 relative block !important;
+}
+
+.cm__desc {
+  @apply !border-b-0;
+}
+
+.cm__btns {
+  @apply !border-t-0;
+}
+
+.cm__title, .pm__title, .pm__section-title {
+  @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold uppercase !important;
+}
+
+#cc-main .pm__section:not(:first-child):hover {
+  background: none!important;
+}
+
+#cc-main .pm__section--toggle .pm__section-desc-wrapper {
+  border: none!important;
+}
+
+#cc-main .cc__link, #cc-main a {
+  background-repeat: unset!important;
+  background-size: unset!important;
+  @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal hover:opacity-60 !important;
+}
+
+#cc-main .pm__btn--secondary, #cc-main .pm__btn {
+  border: none!important;
+  transition: all .3s ease-in-out;
+}
+
+#cc-main .pm__btn--secondary:hover, #cc-main .pm__btn:hover {
+  background: var(--cc-btn-secondary-bg)!important;
+  opacity: .75;
+  color: var(--cc-btn-secondary-color)!important;
+}
+
+#cc-main .pm__close-btn svg {
+  stroke: #00CCFF!important;
+}
+
+#cc-main .pm__close-btn:hover svg {
+  stroke: var(--cc-cookie-category-block-bg)!important;
+}
+
+#cc-main .pm__badge {
+  color: #151c24!important;
+}
+
+#cc-main .toggle__icon-on svg {
+  stroke: #00ccff!important;
 }

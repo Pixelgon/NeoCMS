@@ -17,9 +17,7 @@ export const Navbar = () => {
     }, []);
 
     useEffect(() => {
-        if (menuOpen) {
-            setMenuOpen(false);
-        }
+        setMenuOpen(false);
     }, [pathName]);
 
     useEffect(() => {

@@ -1,5 +1,4 @@
-
-export const cookieConsentConfig = {
+export const CookieConsentConfig = {
     guiOptions: {
       consentModal: {
         layout: "box",
@@ -77,7 +76,7 @@ export const cookieConsentConfig = {
           consentModal: {
             title: "Vítejte, je čas na cookies!",
             description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+              "Na našich webových stránkách používáme soubory cookies, které jsou nezbytné k funkčnosti webových stránek.",
             acceptAllBtn: "Přijmout vše",
             acceptNecessaryBtn: "Odmítnout vše",
             showPreferencesBtn: "Spravovat preference",
@@ -126,3 +125,5 @@ export const cookieConsentConfig = {
       autoDetect: "browser",
     },
   };
+
+export default CookieConsentConfig;

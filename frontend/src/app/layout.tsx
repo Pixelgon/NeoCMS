@@ -15,10 +15,12 @@ export const metadata: Metadata = {
 
 const OpenSans = Open_Sans({
   variable: "--open-sans",
+  subsets: ["latin-ext"],
 });
 
 const QuicksandFont = Quicksand({
   variable: "--quicksand",
+  subsets: ["latin-ext"],
 });
 
 export default function RootLayout({
