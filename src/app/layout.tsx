@@ -4,8 +4,8 @@ import "vanilla-cookieconsent/dist/cookieconsent.css";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { LayoutProvider } from "@/context/LayoutContext";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 
 export const metadata: Metadata = {
@@ -31,6 +31,7 @@ export default function RootLayout({
   return (
       <>
         <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`}>
+          <body>
               <LayoutProvider>
                 <NextTopLoader
                   color="linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)"
@@ -47,6 +48,7 @@ export default function RootLayout({
                 {children}
                 <Footer />
               </LayoutProvider>
+          </body>
         </html>
       </>
   );

@@ -1,10 +1,10 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { NavItem } from "@/components/Navbar/navitem";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useMemo, useCallback, useContext } from "react";
-import { LayoutContext } from '@/context/LayoutContext';
+import { useEffect, useState, useMemo, useContext } from "react";
+import { NavItem } from './navitem';
+import { LayoutContext } from "@/context/LayoutContext";
 
 
 export const Navbar = () => {   
@@ -12,17 +12,13 @@ export const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const layoutData = useContext(LayoutContext);
 
-    const toggleMenu = useCallback(() => {
-        setMenuOpen(prev => !prev);
-    }, []);
+    useEffect(() => {
+        layoutData.setScroll(!menuOpen);
+    }, [menuOpen, layoutData]);
 
     useEffect(() => {
         setMenuOpen(false);
     }, [pathName]);
-
-    useEffect(() => {
-        menuOpen ? layoutData.setScroll(false) : layoutData.setScroll(true);
-    }, [layoutData, menuOpen]);
 
     const navItems = useMemo(() => 
         layoutData.pages.map((page, index) => (
@@ -33,12 +29,12 @@ export const Navbar = () => {
     return (
         <nav className={`fixed top-0 transition-all left-0 w-full h-16 ${menuOpen ? 'h-svh' : ''} md:h-12 z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-lg`}>
             <div className='flex items-center justify-between h-full max-h-16'>
-                <Link href="/" className='h-full p-4 pl-reg md:p-3 md:pr-2'>
+                <Link href="/" className='h-full p-4 md:p-3 md:pr-2'>
                     <Image src="/images/logo/Logo.svg" width={0} height={0} sizes="100vh" alt={"Pixelgon logo"} style={{ width: 'auto', height: '100%' }} priority />
                 </Link>
                 <button
                     className="relative h-full aspect-square bg-transparent border-none md:hidden"
-                    onClick={toggleMenu}
+                    onClick={() => setMenuOpen(!menuOpen)}
                     rel='nofollow'
                     aria-label='Otevřít menu'
                 >

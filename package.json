@@ -6,15 +6,15 @@
   "author": "Pixelgon",
   "email": "mm@pixelgon.cz",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
-    "framer-motion": "^11.3.24",
-    "next": "^14.2.4",
+    "motion": "^11.11.17",
+    "next": "^15.0.3",
     "nextjs-toploader": "^1.6.12",
     "react": "^18",
     "react-dom": "^18",

@@ -129,7 +129,7 @@
 #cc-main {
   color-scheme: dark;
   --cc-font-family: var(--open-sans);
-  --cc-bg: linear-gradient(#151c2466 0%, #151c24cc 100%);
+  --cc-bg: linear-gradient(180deg, rgba(21, 28, 36, 40%) 0%, rgba(21, 28, 36, 80%) 100%);
   --cc-modal-border-radius: 1.5rem;
   --cc-btn-border-radius: 1.5rem;
   --cc-secondary-color: white;
@@ -161,6 +161,11 @@
 
 #cc-main .pm__footer {
   border-top: none!important;
+  padding: 1.4em;
+}
+
+#cc-main .cm__btns {
+  border-top: none!important;
 }
 
 #cc-main .pm__section {
@@ -171,8 +176,9 @@
   border: none!important;
 } 
 
-.cm {
+#cc-main .cm {
   backdrop-filter: blur(20px);
+  box-shadow: none;
 }
 
 .cm__btn:not(.cm__btn--secondary) {
@@ -242,4 +248,8 @@
 
 #cc-main .toggle__icon-on svg {
   stroke: #00ccff!important;
+}
+
+#cc-main .pm-overlay {
+  backdrop-filter: blur(4px);
 }

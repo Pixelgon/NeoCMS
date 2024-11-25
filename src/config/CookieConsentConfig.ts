@@ -92,7 +92,7 @@ export const CookieConsentConfig = {
               {
                 title: "Použití cookies",
                 description:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                  "Na našich webových stránkách používáme soubory cookies, které jsou nezbytné k funkčnosti webových stránek. S Vaším souhlasem je budeme používat. Tento souhlas můžete jednoduše vyjádřit kliknutím na tlačítko “Povolit vše” a můžete ho kdykoliv odvolat.",
               },
               {
                 title:
@@ -104,7 +104,7 @@ export const CookieConsentConfig = {
               {
                 title: "Funkční cookies",
                 description:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                  "Zprostředkovávají základní funkčnost stránek. Web bez nich nemůže fungovat, proto není možné je vypnout. Při jejich zakázání v prohlížeči nemusí web správně fungovat.",
                 linkedCategory: "functionality",
               },
               {
@@ -116,7 +116,7 @@ export const CookieConsentConfig = {
               {
                 title: "Více informací",
                 description:
-                  'Pro jakékoliv dotazy týkající se mé politiky cookies a vašich možností prosím <a class="cc__link" href="mailto:pixelgon@pixelgon.cz">kontaktujte mě</a>.',
+                  'Pro jakékoliv dotazy týkající se mé politiky cookies a vašich možností prosím <a class="cc__link" href="mailto:pixelgon@pixelgon.cz">kontaktujte mě</a>.',
               },
             ],
           },

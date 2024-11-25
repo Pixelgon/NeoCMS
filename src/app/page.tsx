@@ -1,11 +1,11 @@
 'use client';
-import { HeaderFull } from "@/components/Header/headerFull";
-import { Btn } from "@/components/Layout/btn";
-import { Card } from "@/components/Layout/card";
-import { Section } from "@/components/Layout/section";
 import Image from 'next/image';
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { HeaderFull } from '@/components/header/headerFull';
+import { Section } from '@/components/layout/section';
+import { Btn } from '@/components/layout/btn';
+import { Card } from '@/components/layout/card';
+import { motion } from 'motion/react';
 
 
 
@@ -20,14 +20,14 @@ return (
         </h1>
         <p className={'absolute left-[-10000px]'}>Your vision, our code</p>
         <motion.div className={'relative w-full h-auto'}
-        initial={{opacity: 0, x: -200, filter: 'blur(5px)'}}
+        initial={{opacity: .1, x: -200, filter: 'blur(5px)'}}
         animate={{opacity: 1, x: 0, filter: 'blur(0px)'}}
         >
           <Image draggable="false" src="/images/logo/LogoText.svg" alt="Logo Pixelgon" fill className={'!relative w-auto'} priority/>
         </motion.div>
         <motion.div 
         className="w-[65.25%] relative"
-        initial={{opacity: 0, x: 200, filter: 'blur(5px)'}}
+        initial={{opacity: .1, x: 200, filter: 'blur(5px)'}}
         animate={{opacity: 1, x: 0, filter: 'blur(0px)'}}
         >
           <Image draggable="false" src="/images/logo/Slogan.svg" alt="Logo Pixelgon" fill className={'!relative mt-[1vw]'} priority/>
@@ -39,7 +39,7 @@ return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-14 w-full items-center" id="intro">
           <div className={'flex flex-col items-start gap-4'}>
             <motion.h2 
-              initial={{opacity: 0, scale: 0}}
+              initial={{opacity: .1, scale: 0}}
               whileInView={{opacity: 1, scale: 1}}
               viewport={{ once: true }}
               >
@@ -49,7 +49,7 @@ return (
             </p>
             <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>  
           </div>
-          <motion.div initial={{opacity: 0, scale: 0}}
+          <motion.div initial={{opacity: .1, scale: 0}}
               whileInView={{opacity: 1, scale: 1,}}
               viewport={{ once: true }} className={'relative h-fit'}>
             <Image src={'/images/icons/laptop.webp'} fill sizes="50vw" alt="" className={'!relative object-contain w-full drop-shadow-2xl z-10'}/>
@@ -65,7 +65,7 @@ return (
         <motion.h2 >Naše doména</motion.h2>
         <div className={'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-reg lg:gap-8 w-full'}>
           <motion.div 
-          initial={{opacity: 0, scale: 0}}
+          initial={{opacity: .1, scale: 0}}
           whileInView={{opacity: 1, scale: 1}}
           viewport={{ once: true }}
           >
@@ -79,7 +79,7 @@ return (
             </Card>  
           </motion.div>
           <motion.div
-          initial={{opacity: 0, scale: 0}}
+          initial={{opacity: .1, scale: 0}}
           whileInView={{opacity: 1, scale: 1}}
           transition={{delay: .3}}
           viewport={{ once: true }}
@@ -93,7 +93,7 @@ return (
             </Card>
           </motion.div>
           <motion.div
-          initial={{opacity: 0, scale: 0}}
+          initial={{opacity: .1, scale: 0}}
           whileInView={{opacity: 1, scale: 1}}
           transition={{delay: .6}}
           viewport={{ once: true }}
@@ -111,7 +111,7 @@ return (
       </Section>
       <Section isPrim>
         <motion.h2 
-        initial={{opacity: 0, scale: 0}}
+        initial={{opacity: .1, scale: 0}}
         whileInView={{opacity: 1, scale: 1}}
         viewport={{ once: true }}>Poslední projekty</motion.h2>
       </Section>

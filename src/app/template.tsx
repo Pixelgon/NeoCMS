@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
+
 
 export default function Template({
   children,
@@ -9,9 +10,9 @@ export default function Template({
 }) {
   return (
     <motion.div
-      initial={{ filter: 'blur(5px)', opacity: 0}}
-      animate={{ filter: 'blur(0)', opacity: 1}}
-      transition={{ ease: "easeInOut", duration: 0.75 }}
+      initial={{ opacity: .1}}
+      animate={{ opacity: 1 }}
+      transition={{ ease: "easeInOut", duration: 0.25 }}
     >
       {children}
     </motion.div>

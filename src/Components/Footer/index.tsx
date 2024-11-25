@@ -2,13 +2,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import * as CookieConsent from "vanilla-cookieconsent";
-import { use, useContext, useEffect, useState } from "react";
-import { Btn } from "../Layout/btn";
+import { useContext, useEffect, useState } from "react";
+import { Btn } from "../layout/btn";
 import CookieConsentConfig from "@/config/CookieConsentConfig";
 import { motion } from "framer-motion";
-import { Section } from "../Layout/section";
+import { Section } from "../layout/section";
 import { LayoutContext } from "@/context/LayoutContext";
-import { Modal } from "../Layout/modal";
+import { Modal } from "../layout/modal";
 
 
 export const Footer = () => {
@@ -22,9 +22,8 @@ export const Footer = () => {
         CookieConsent.run(CookieConsentConfig as CookieConsent.CookieConsentConfig);
     },);
 
-
     useEffect(() => {
-        ctaModal ? layoutData.setScroll(false) : layoutData.setScroll(true);
+        layoutData.setScroll(!ctaModal);
     }, [ctaModal, layoutData]);
 
     return (

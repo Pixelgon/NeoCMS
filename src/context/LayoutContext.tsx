@@ -1,6 +1,6 @@
 'use client';
 import { LayoutContextType } from "@/types/LayoutContextType";
-import { MotionConfig } from "framer-motion";
+import { MotionConfig } from "motion/react";
 import { createContext, FC, PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
 
 
@@ -21,17 +21,16 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     const body = useRef<HTMLBodyElement>(null);
 
     useEffect(() => {
-        if (body.current) {
-            body.current.style.overflow = Scroll ? 'auto' : 'hidden';
-        }
+        document.body.style.overflow = Scroll ? 'auto' : 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
     }, [Scroll]);
 
     return (
         <LayoutContext.Provider value={{...LayoutInit, Scroll, setScroll}}>
             <MotionConfig transition={{duration: .5}}>
-            <body ref={body}>
                 {children}    
-            </body>    
             </MotionConfig>
         </LayoutContext.Provider>
     );
