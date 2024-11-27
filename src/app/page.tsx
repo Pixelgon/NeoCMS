@@ -45,7 +45,7 @@ return (
               >
               Digitální všeuměl
             </motion.h2>
-            <p>Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem na detail, abyste uspěli v digitálním světě.
+            <p>Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem pro detail, abyste uspěli v digitálním světě.
             </p>
             <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>  
           </div>

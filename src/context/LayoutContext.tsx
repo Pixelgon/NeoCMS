@@ -18,10 +18,7 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     const [Scroll, setScroll] = useState(true);
 
     useEffect(() => {
-        document.body.style.overflow = Scroll ? 'auto' : 'hidden';
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
+        document.body.classList.toggle("overflow-hidden", !Scroll);
     }, [Scroll]);
 
     const toggleScroll = useCallback(() => {

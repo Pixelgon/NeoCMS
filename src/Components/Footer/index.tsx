@@ -24,7 +24,7 @@ export const Footer = () => {
 
     useEffect(() => {
         layoutData.toggleScroll();
-    }, [ctaModal]);
+    }, [ctaModal, layoutData]);
 
     return (
         <>

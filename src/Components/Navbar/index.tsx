@@ -14,7 +14,7 @@ export const Navbar = () => {
 
     useEffect(() => {
         layoutData.toggleScroll();
-    }, [menuOpen]);
+    }, [menuOpen, layoutData]);
 
     useEffect(() => {
         setMenuOpen(false);

@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
       <>
         <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`}>
-          <body>
+          <body className="md:overflow-auto">
             <MotionConfig transition={{duration: .5}}>
               <LayoutProvider>
                 <NextTopLoader
