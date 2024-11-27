@@ -9,12 +9,12 @@ import { LayoutContext } from "@/context/LayoutContext";
 
 export const Navbar = () => {   
     const pathName = usePathname();
-    const [menuOpen, setMenuOpen] = useState(false);
     const layoutData = useContext(LayoutContext);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
-        layoutData.setScroll(!menuOpen);
-    }, [menuOpen, layoutData]);
+        layoutData.toggleScroll();
+    }, [menuOpen]);
 
     useEffect(() => {
         setMenuOpen(false);
@@ -33,13 +33,13 @@ export const Navbar = () => {
                     <Image src="/images/logo/Logo.svg" width={0} height={0} sizes="100vh" alt={"Pixelgon logo"} style={{ width: 'auto', height: '100%' }} priority />
                 </Link>
                 <button
-                    className="relative h-full aspect-square bg-transparent border-none md:hidden"
+                    className="relative h-full aspect-square bg-transparent border-none md:hidden w-16"
                     onClick={() => setMenuOpen(!menuOpen)}
                     rel='nofollow'
                     aria-label='Otevřít menu'
                 >
-                    <div className={`absolute w-[calc(100%-2*max(1rem,1svw))] h-[4px] left-4 bg-pxlgn-gradient top-[40%] transition-transform rounded ${menuOpen ? 'rotate-45 translate-y-[4px]' : ''}`} />
-                    <div className={`absolute w-[calc(100%-2*max(1rem,1svw))] h-[4px] left-4 bg-pxlgn-gradient bottom-[40%] transition-transform rounded ${menuOpen ? '-rotate-45 translate-y-[-4px]' : ''}`} />
+                    <div className={`absolute w-1/2 h-1 left-4 bg-pxlgn-gradient transition-transform rounded ${menuOpen ? 'rotate-45 top-1/2' : 'top-[40%]'}`}/>
+                    <div className={`absolute w-1/2 h-1 left-4 bg-pxlgn-gradient transition-transform rounded ${menuOpen ? '-rotate-45 top-1/2' : 'bottom-[40%]'}`}/>
                 </button>
             </div>
             <menu

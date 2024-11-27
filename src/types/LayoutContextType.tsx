@@ -7,5 +7,5 @@ export interface PageType {
 export interface LayoutContextType {
     pages: PageType[];
     Scroll: boolean;
-    setScroll: (value: boolean) => void;
+    toggleScroll: () => void;
 }

@@ -23,8 +23,8 @@ export const Footer = () => {
     },);
 
     useEffect(() => {
-        layoutData.setScroll(!ctaModal);
-    }, [ctaModal, layoutData]);
+        layoutData.toggleScroll();
+    }, [ctaModal]);
 
     return (
         <>

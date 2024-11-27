@@ -1,8 +1,6 @@
 'use client';
 import { LayoutContextType } from "@/types/LayoutContextType";
-import { MotionConfig } from "motion/react";
-import { createContext, FC, PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
-
+import { createContext, FC, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
 
 const LayoutInit: LayoutContextType = {
     pages: [
@@ -11,14 +9,13 @@ const LayoutInit: LayoutContextType = {
         { name: "Projekty", href: "/projekty" },
     ],
     Scroll: true,
-    setScroll: (value: boolean) => {},
+    toggleScroll: () => {},
 };
 
 export const LayoutContext = createContext<LayoutContextType>({...LayoutInit});
 
 export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     const [Scroll, setScroll] = useState(true);
-    const body = useRef<HTMLBodyElement>(null);
 
     useEffect(() => {
         document.body.style.overflow = Scroll ? 'auto' : 'hidden';
@@ -27,11 +24,19 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
         };
     }, [Scroll]);
 
+    const toggleScroll = useCallback(() => {
+        setScroll((prevScroll) => !prevScroll);
+    }, []);
+
+    const contextValue = useMemo(() => ({
+        ...LayoutInit,
+        Scroll,
+        toggleScroll,
+    }), [Scroll, toggleScroll]);
+
     return (
-        <LayoutContext.Provider value={{...LayoutInit, Scroll, setScroll}}>
-            <MotionConfig transition={{duration: .5}}>
-                {children}    
-            </MotionConfig>
+        <LayoutContext.Provider value={contextValue}>
+            {children}
         </LayoutContext.Provider>
     );
-}
+};
