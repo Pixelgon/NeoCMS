@@ -4,9 +4,10 @@ import "vanilla-cookieconsent/dist/cookieconsent.css";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { LayoutProvider } from "@/context/LayoutContext";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import { MotionConfig } from "motion/react";
+import Footer from "@/Components/Footer";
+import Navbar from "@/Components/Navbar";
+import { SessionProvider } from "next-auth/react";
 
 
 export const metadata: Metadata = {
@@ -33,24 +34,26 @@ export default function RootLayout({
       <>
         <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`}>
           <body>
-            <MotionConfig transition={{duration: .5}}>
-              <LayoutProvider>
-                <NextTopLoader
-                    color="linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)"
-                    initialPosition={0.08}
-                    crawlSpeed={200}
-                    height={3}
-                    crawl={true}
-                    showSpinner={false}
-                    easing="ease"
-                    speed={300}
-                    shadow={false}
-                />
-                <Navbar />
-                  {children}
-                <Footer />
+            <SessionProvider>
+              <MotionConfig transition={{duration: .5}}>
+                <LayoutProvider>
+                  <NextTopLoader
+                      color="linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)"
+                      initialPosition={0.08}
+                      crawlSpeed={200}
+                      height={3}
+                      crawl={true}
+                      showSpinner={false}
+                      easing="ease"
+                      speed={300}
+                      shadow={false}
+                  />
+                  <Navbar />
+                    {children}
+                  <Footer />
+                </LayoutProvider>
               </MotionConfig>
-            </LayoutProvider>
+            </SessionProvider>
           </body>
         </html>
       </>

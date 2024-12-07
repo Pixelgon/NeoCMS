@@ -3,12 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import * as CookieConsent from "vanilla-cookieconsent";
 import { useContext, useEffect, useState } from "react";
-import { Btn } from "../layout/btn";
 import CookieConsentConfig from "@/config/CookieConsentConfig";
 import { motion } from "framer-motion";
-import { Section } from "../layout/section";
 import { LayoutContext } from "@/context/LayoutContext";
-import { Modal } from "../layout/modal";
+import { Btn } from "../Layout/btn";
+import { Modal } from "../Layout/modal";
+import { Section } from "../Layout/section";
 
 
 export const Footer = () => {

@@ -1,11 +1,11 @@
 'use client';
 import Image from 'next/image';
 import Link from "next/link";
-import { HeaderFull } from '@/components/header/headerFull';
-import { Section } from '@/components/layout/section';
-import { Btn } from '@/components/layout/btn';
-import { Card } from '@/components/layout/card';
 import { motion } from 'motion/react';
+import { HeaderFull } from '@/Components/Header/headerFull';
+import { Btn } from '@/Components/Layout/btn';
+import { Card } from '@/Components/Layout/card';
+import { Section } from '@/Components/Layout/section';
 
 
 
