@@ -1,4 +1,7 @@
 'use client';
+import { Header } from "@/Components/Header";
+import { Btn } from "@/Components/Layout/btn";
+import { Section } from "@/Components/Layout/section";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect } from "react";
 
@@ -17,12 +20,16 @@ const AdminPage = () => {
 
   if (status === "authenticated") {
     return (
-      <div>
-        <h1>Admin Dashboard</h1>
-        <p>Welcome, {session.user?.name}</p>
-        <button onClick={() => signOut()}>Sign out</button>
-        {/* Add your admin components here */}
-      </div>
+      
+      <>
+        <Header bg="/images/headers/projects-header.webp" title="Admin panel"/>
+         <main>
+            <Section isPrim>
+               <p>Welcome, {session.user?.name}</p>
+               <Btn onClick={() => signOut({callbackUrl: "/", redirect: true})}>Sign out</Btn>
+            </Section>
+         </main>
+      </>
     );
   }
 

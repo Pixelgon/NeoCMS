@@ -11,6 +11,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
    callbacks: {
       async signIn(user) {
          return user.user.email === process.env.ADMIN_EMAIL
-      }
+      },
    },
 })

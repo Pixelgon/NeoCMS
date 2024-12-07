@@ -1,8 +1,8 @@
 'use client'
-import { Header } from "@/components/header";
-import { Btn } from "@/components/layout/btn";
-import { ProfileLink, ProfileLinkType } from "@/components/layout/profileLink";
-import { Section } from "@/components/layout/section";
+import { Header } from "@/Components/Header";
+import { Btn } from "@/Components/Layout/btn";
+import { ProfileLink, ProfileLinkType } from "@/Components/Layout/profileLink";
+import { Section } from "@/Components/Layout/section";
 import { motion } from "motion/react";
 import Image from 'next/image';
 import Link from "next/link";
