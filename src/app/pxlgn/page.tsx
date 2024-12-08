@@ -1,6 +1,7 @@
 'use client';
 import { Header } from "@/Components/Header";
 import { Btn } from "@/Components/Layout/btn";
+import { Modal } from "@/Components/Layout/modal";
 import { Section } from "@/Components/Layout/section";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect } from "react";

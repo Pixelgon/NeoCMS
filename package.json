@@ -6,7 +6,7 @@
   "author": "Pixelgon",
   "email": "mm@pixelgon.cz",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
