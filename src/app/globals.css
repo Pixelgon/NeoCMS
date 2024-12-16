@@ -185,15 +185,15 @@
   @apply w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative transition-all duration-300 hover:brightness-50 text-sec px-8 py-4 !important;
 }
 
-.cm__btn--secondary, #cc-main .pm__close-btn {
+.cm__btn--secondary, #cc-main .pm__close-btn, #cc-main .pm__btn--secondary {
   @apply w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative before:transition-all before:duration-300 before:bg-sec before:absolute before:h-[calc(100%-2px)] before:w-[calc(100%-2px)] before:top-[1px] before:rounded-3xl before:left-[1px] hover:before:bg-transparent border-none p-0 !important;
 }
 
-.cm__btn--secondary:hover span, #cc-main .pm__close-btn:hover span {
+.cm__btn--secondary:hover span, #cc-main .pm__close-btn:hover span, #cc-main .pm__btn--secondary:hover span {
   @apply  bg-none text-sec bg-clip-border !important;
 }
 
-.cm__btn--secondary span {
+.cm__btn--secondary span, #cc-main .pm__btn--secondary span {
   @apply bg-pxlgn-gradient transition-all duration-300 text-transparent bg-clip-text px-8 py-4 z-10 relative block !important;
 }
 
@@ -223,12 +223,12 @@
   @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal hover:opacity-60 !important;
 }
 
-#cc-main .pm__btn--secondary, #cc-main .pm__btn {
+#cc-main .pm__btn--secondary, #cc-main .pm__btn, #cc-main .pm__btn--secondary {
   border: none!important;
   transition: all .3s ease-in-out;
 }
 
-#cc-main .pm__btn--secondary:hover, #cc-main .pm__btn:hover {
+#cc-main .pm__btn:hover:not(.pm__btn--secondary) {
   background: var(--cc-btn-secondary-bg)!important;
   opacity: .75;
   color: var(--cc-btn-secondary-color)!important;
@@ -252,4 +252,13 @@
 
 #cc-main .pm-overlay {
   backdrop-filter: blur(4px);
+}
+
+#cc-main .pm__table-head>tr {
+  border: none!important;
+  color: var(--cc-secondary-colo)!important;
+}
+
+#cc-main .pm__table-tr:hover {
+  background: initial;
 }

@@ -16,15 +16,23 @@ export const Footer = () => {
     const ctaText = "Půjdete do toho s námi?".split(" ");
     const layoutData = useContext(LayoutContext);
     const [ctaModal, setCtaModal] = useState(false);
+    const [cookieModal, setCookieModal] = useState(false);
 
 
     useEffect(() => {
-        CookieConsent.run(CookieConsentConfig as CookieConsent.CookieConsentConfig);
+        CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, 
+            onModalShow: () => {
+                setCookieModal(true);
+            },
+            onModalHide: () => {
+                setCookieModal(false);
+            },
+        });
     },);
 
     useEffect(() => {
         layoutData.toggleScroll();
-    }, [ctaModal, layoutData]);
+    }, [ctaModal, layoutData, cookieModal]);
 
     return (
         <>

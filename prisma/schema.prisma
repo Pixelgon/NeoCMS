@@ -16,10 +16,10 @@ datasource db {
 model Project {
   id           String   @id @default(cuid())
   title        String   @db.VarChar(50)
-  body         String?  // CKEditor5Field, může být text nebo JSON, podle potřeby upravte
-  description  String?  @db.VarChar(225)
-  background   String?  // URL nebo cesta k obrázku
-  photo        String?  // URL nebo cesta k obrázku
+  body         String 
+  description  String   @db.VarChar(225)
+  background   String  
+  photo        String  
   slug         String   @unique
   createdOn    DateTime @default(now())
   lastModified DateTime @updatedAt

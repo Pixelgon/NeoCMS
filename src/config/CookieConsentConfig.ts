@@ -17,61 +17,10 @@ export const CookieConsentConfig = {
       necessary: {
         readOnly: true,
       },
-      functionality: {},
-      analytics: {},
     },
     language: {
       default: "cs",
       translations: {
-        en: {
-          consentModal: {
-            title: "Hello traveller, it's cookie time!",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
-            acceptAllBtn: "Accept all",
-            acceptNecessaryBtn: "Reject all",
-            showPreferencesBtn: "Manage preferences",
-          },
-          preferencesModal: {
-            title: "Consent Preferences Center",
-            acceptAllBtn: "Accept all",
-            acceptNecessaryBtn: "Reject all",
-            savePreferencesBtn: "Save preferences",
-            closeIconLabel: "Close modal",
-            serviceCounterLabel: "Service|Services",
-            sections: [
-              {
-                title: "Cookie Usage",
-                description:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-              },
-              {
-                title:
-                  'Strictly Necessary Cookies <span class="pm__badge">Always Enabled</span>',
-                description:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                linkedCategory: "necessary",
-              },
-              {
-                title: "Functionality Cookies",
-                description:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                linkedCategory: "functionality",
-              },
-              {
-                title: "Analytics Cookies",
-                description:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                linkedCategory: "analytics",
-              },
-              {
-                title: "More information",
-                description:
-                  'For any query in relation to my policy on cookies and your choices, please <a class="cc__link" href="#yourdomain.com">contact me</a>.',
-              },
-            ],
-          },
-        },
         cs: {
           consentModal: {
             title: "Vítejte, je čas na cookies!",
@@ -85,7 +34,7 @@ export const CookieConsentConfig = {
             title: "Centrum preferencí souhlasu",
             acceptAllBtn: "Přijmout vše",
             acceptNecessaryBtn: "Odmítnout vše",
-            savePreferencesBtn: "Uložit preference",
+            savePreferencesBtn: "<span>Uložit preference</span>",
             closeIconLabel: "Zavřít",
             serviceCounterLabel: "Služba|Služby",
             sections: [
@@ -98,20 +47,42 @@ export const CookieConsentConfig = {
                 title:
                   'Nezbytně nutné cookies <span class="pm__badge">Vždy povoleno</span>',
                 description:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                linkedCategory: "necessary",
-              },
-              {
-                title: "Funkční cookies",
-                description:
                   "Zprostředkovávají základní funkčnost stránek. Web bez nich nemůže fungovat, proto není možné je vypnout. Při jejich zakázání v prohlížeči nemusí web správně fungovat.",
-                linkedCategory: "functionality",
-              },
-              {
-                title: "Analytické cookies",
-                description:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                linkedCategory: "analytics",
+                linkedCategory: "necessary",
+                cookieTable: {
+                  headers: {
+                      name: "Název",
+                      domain: "Služba",
+                      description: "Popis",
+                      expiration: "Expirace"
+                  },
+                  body: [
+                      {
+                          name: "authjs.callback-url",
+                          domain: "Autentizační služba",
+                          description: "Cookie používaná k uložení zpětné URL adresy během autentizace.",
+                          expiration: "Relace"
+                      },
+                      {
+                          name: "authjs.csrf-token",
+                          domain: "Autentizační služba",
+                          description: "Cookie používaná k ochraně proti útokům Cross-Site Request Forgery (CSRF).",
+                          expiration: "Relace"
+                      },
+                      {
+                          name: "authjs.session-token",
+                          domain: "Autentizační služba",
+                          description: "Cookie ukládající token relace pro ověřené uživatele.",
+                          expiration: "Relace nebo dle konfigurace"
+                      },
+                      {
+                        name: "cc-cookie",
+                        domain: "Cookie Consent",
+                        description: "Cookie používaná k uložení nastavení souhlasu s používáním cookies.",
+                        expiration: "Vyprší za 1 rok"
+                      }
+                  ]
+              }
               },
               {
                 title: "Více informací",
