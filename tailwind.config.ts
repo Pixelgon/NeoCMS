@@ -13,8 +13,6 @@ const config: Config = {
         reg: "max(1.5rem, 2svw)",
       },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "pxlgn-gradient": "linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)",
         "navbar": "linear-gradient(180deg, rgba(21, 28, 36, 40%) 0%, rgba(21, 28, 36, 80%) 100%)",
         "modal": "linear-gradient(180deg, rgba(21,28,36,.9) 0, rgba(34,38,42,.9) 100%)",

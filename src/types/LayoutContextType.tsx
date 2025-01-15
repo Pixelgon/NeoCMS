@@ -1,6 +1,10 @@
 export interface PageType {
     name: string;
     href: string;
+    meta?: {
+        title: string;
+        description: string;
+    };
 }
 
 

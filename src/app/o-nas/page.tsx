@@ -5,8 +5,6 @@ import { ProfileLink, ProfileLinkType } from "@/Components/Layout/profileLink";
 import { Section } from "@/Components/Layout/section";
 import { motion } from "motion/react";
 import Image from 'next/image';
-import Link from "next/link";
-
 
 export default function ONas() {
   return (

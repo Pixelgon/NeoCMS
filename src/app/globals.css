@@ -88,6 +88,14 @@
     animation-delay: .5s;
   }
 
+  ::-webkit-resizer {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 200px 200px;
+    border-color: transparent transparent #00CCFF transparent;
+  }
+
   @keyframes scrollChalupa {
     0% {
       background-position: top;
@@ -261,4 +269,8 @@
 
 #cc-main .pm__table-tr:hover {
   background: initial;
+}
+
+#cc-main .cm__btn--secondary:focus-visible {
+  border: none  !important;
 }

@@ -22,15 +22,15 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState }) =
           transition={{ ease: "easeInOut", duration: 0.5 }}
         >
           <motion.div 
-            className={'max-w-4xl bg-modal p-8 rounded-3xl mx-auto flex w-full flex-col gap-5 items-start relative backdrop-blur-lg'} 
+            className={'max-w-2xl bg-modal p-8 rounded-3xl mx-auto flex w-full flex-col gap-1 items-start relative backdrop-blur-lg'} 
             onClick={(e) => e.stopPropagation()}
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 50, opacity: 0 }}
             transition={{ ease: "easeInOut", duration: 0.5 }}
           >
-            <button onClick={() => setModalState(false)} className={'absolute top-4 right-4 transition-all duration-300 hover:opacity-75'}>
-              <Image src={'/images/icons/close.svg'} alt={'Zavřít'} width={30} height={30}/>
+            <button onClick={() => setModalState(false)} className={'absolute top-[-10px] right-[-10px] transition-all duration-300 hover:opacity-75 bg-pxlgn-gradient rounded-full p-1'}>
+              <Image src={'/images/icons/close.svg'} alt={'Zavřít'} width={20} height={20}/>
             </button>
             {children}
           </motion.div>

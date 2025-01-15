@@ -6,7 +6,7 @@ const LayoutInit: LayoutContextType = {
     pages: [
         { name: "Domů", href: "/" },
         { name: "O nás", href: "/o-nas" },
-        { name: "Projekty", href: "/projekty" },
+        { name: "Projekty", href: "/projekty", meta: { title: "Projekty", description: "Projekty Pixelgona" } },
     ],
     Scroll: true,
     toggleScroll: () => {},

@@ -9,6 +9,8 @@ import { LayoutContext } from "@/context/LayoutContext";
 import { Btn } from "../Layout/btn";
 import { Modal } from "../Layout/modal";
 import { Section } from "../Layout/section";
+import Input from "../Layout/input";
+import Textarea from "../Layout/textarea";
 
 
 export const Footer = () => {
@@ -38,11 +40,11 @@ export const Footer = () => {
         <>
             <Modal modalState={ctaModal} setModalState={setCtaModal}>
                 <h3>Kontaktujte nás</h3>
-                <form className={'flex flex-col gap-4 justify-center'}>
-                    <input type="text" placeholder="Vaše jméno"/>
-                    <input type="email" placeholder="Váš email"/>
-                    <textarea placeholder="Vaše zpráva"/>
-                    <Btn prim type="submit">Odeslat</Btn>
+                <form className={'flex flex-col gap-2 w-full justify-center'}>
+                    <Input type="text" placeholder="Jméno příjmení" name="name" id="name" label="Jméno*" required/>
+                    <Input type="email" placeholder="jmeno@email.cz" name="name" id="name" label="Email*" required/>
+                    <Textarea placeholder="Vaše zpráva" name="message" id="message" label="Zpráva*" required/>
+                    <Btn prim type="submit" className="mt-2">Odeslat</Btn>
                 </form>
             </Modal>
             <footer className="bg-bg text-wh">
