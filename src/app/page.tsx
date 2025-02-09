@@ -8,7 +8,6 @@ import { Card } from '@/Components/Layout/card';
 import { Section } from '@/Components/Layout/section';
 
 
-
 export default function Home() {
 
 return (
@@ -62,13 +61,8 @@ return (
         
       </Section>
       <Section>
-        <motion.h2 >Naše doména</motion.h2>
+        <h2>Naše doména</h2>
         <div className={'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-reg lg:gap-8 w-full'}>
-          <motion.div 
-          initial={{opacity: .1, scale: 0}}
-          whileInView={{opacity: 1, scale: 1}}
-          viewport={{ once: true }}
-          >
             <Card>
               <div className={'flex gap-2 relative items-center'}>
                 <Image alt="" src={'/images/icons/web.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
@@ -77,35 +71,20 @@ return (
               <p>
               Naše tvorba webů je postavena na originálním designu, moderních technologiích a důrazu na uživatelskou přívětivost. Ať už jde o jednoduché stránky, e-shopy nebo složitější aplikace, naším cílem je vytvořit digitální prostředí, které přesně reflektuje potřeby a styl našich klientů. SEO a výkon jsou samozřejmostí.</p>
             </Card>  
-          </motion.div>
-          <motion.div
-          initial={{opacity: .1, scale: 0}}
-          whileInView={{opacity: 1, scale: 1}}
-          transition={{delay: .3}}
-          viewport={{ once: true }}
-          >
-            <Card>
+            <Card delay={.3}>
               <div className={'flex gap-2 relative items-center'}>
                 <Image alt="" src={'/images/icons/design.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
                 <h3>Design</h3>
               </div>
               <p>Náš design se zaměřuje nejen na estetickou stránku, ale také na posílení a zefektivnění vaší značky. Pomáháme vám vytvořit vizuální identitu, která je konzistentní, silná a snadno rozpoznatelná. Kombinujeme kreativitu s funkčností, abychom vám pomohli lépe komunikovat s vaším cílovou skupinou a dosáhnout lepšího výsledku na trhu.</p>
             </Card>
-          </motion.div>
-          <motion.div
-          initial={{opacity: .1, scale: 0}}
-          whileInView={{opacity: 1, scale: 1}}
-          transition={{delay: .6}}
-          viewport={{ once: true }}
-          >
-            <Card>
+            <Card delay={.6}>
               <div className={'flex gap-2 relative items-center'}>
                 <Image alt="" src={'/images/icons/code.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
                 <h3>Code</h3>
               </div>
               <p>Specializujeme se na vývoj softwarových řešení, která jsou přesně přizpůsobena vašim potřebám. Naše aplikace jsou navrženy tak, aby byly spolehlivé, snadno použitelné a škálovatelné. Nezáleží na tom, jestli jde o jednoduchou aplikaci nebo komplexní systém – vždy klademe důraz na kvalitu, efektivitu a hladkou integraci do vašeho podnikání.</p>
             </Card>
-          </motion.div>
         </div>
         <Btn href="/o-nas" className={'text-xl'}>Naše vize</Btn>
       </Section>

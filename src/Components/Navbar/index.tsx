@@ -8,7 +8,7 @@ import { NavItem } from './navitem';
 
 
 export const Navbar = () => {   
-    const pathName = usePathname();
+    const pathName = "/" + usePathname().split('/')[1];
     const layoutData = useContext(LayoutContext);
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -21,9 +21,9 @@ export const Navbar = () => {
     }, [pathName]);
 
     const navItems = useMemo(() => 
-        layoutData.pages.map((page, index) => (
-            <NavItem key={index} href={page.href} text={page.name} active={page.href === pathName} />
-        )),
+        layoutData.pages.map((page, index) => {
+            return <NavItem key={index} href={page.href} text={page.name} active={ pathName === page.href} />;
+        }),
     [layoutData.pages, pathName]);
 
     return (

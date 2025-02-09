@@ -9,12 +9,6 @@ import Footer from "@/Components/Footer";
 import Navbar from "@/Components/Navbar";
 import { SessionProvider } from "next-auth/react";
 
-
-export const metadata: Metadata = {
-  title: "Pixelgon - Your vision, our code",
-  description: "Tvorba webu jinak. Mojí prioritou při tvorbě webových stránek je neotřelí funkční design, technické zpracování a efektivní SEO.",
-};
-
 const OpenSans = Open_Sans({
   variable: "--open-sans",
   subsets: ["latin-ext"],

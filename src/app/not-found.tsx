@@ -1,7 +1,10 @@
-'use client';
-
 import { HeaderFull } from "@/Components/Header/headerFull";
 import { Btn } from "@/Components/Layout/btn";
+
+export const metadata = {
+  title: '404 Vision not found | Pixelgon',
+  description: 'Vision not found',
+};
 
 export default function NotFound() {
   return (
