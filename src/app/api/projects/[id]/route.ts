@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export const GET = async (_: Request, { params }: { params: { slug: string } }) => {
+export const GET = async (_: Request, { params }: { params: { id: string } }) => {
    try {
       const project = await prisma.project.findUnique({
-         where: { slug: params.slug },
+         where: { id: params.id },
          include: {
             tags: {
                include: {
