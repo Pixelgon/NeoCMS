@@ -1,3 +1,4 @@
+
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -23,7 +24,7 @@ async function main() {
   // Vytvoření projektu
   const project = await prisma.project.create({
     data: {
-      title: 'Můj první projekt',
+      name: 'Můj první projekt',
       body: 'Tělo projektu',
       description: 'Popis projektu',
       background: 'Pozadí projektu',

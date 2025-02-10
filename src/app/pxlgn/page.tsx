@@ -62,7 +62,7 @@ const AdminPage = () => {
                <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full items-center mt-5 justify-center'}>
                   {projects.length > 0 ? (
                       projects.map((project, index) => (
-                        <AdminProject key={project.id} title={project.title} image={project.photo} edit={() => openProjectModal(project.id)}/>
+                        <AdminProject key={project.id} name={project.name} image={project.photo} edit={() => openProjectModal(project.id)}/>
                       ))
                     ) : (
                     <p>Neexistuje žádný projekt.</p>

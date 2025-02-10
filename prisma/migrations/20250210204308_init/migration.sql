@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "Project" (
     "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "body" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "background" TEXT NOT NULL,
