@@ -1,16 +1,14 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 
 export const GET = async (req: Request) => {
    const { searchParams } = new URL(req.url);
-   const latest = searchParams.get("latest");
 
    const projects = await prisma.project.findMany({
-      take: latest ? 3 : undefined, // Pokud je `latest` přítomen, vezmi 3 projekty
-      orderBy: { createdOn: "desc" } // Seřazení od nejnovějších
+      orderBy: { createdOn: "desc" }, // Seřazení od nejnovějších
+      include: { tags: { select: { tag: true } } } // Včetně tagů
    });
 
    return NextResponse.json(projects);
@@ -21,12 +19,12 @@ export const POST = auth(async (req) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
    }
 
-   const { title, body, description, background, photo, slug, tags } = await req.json();
+   const { name, body, description, background, photo, slug, tags } = await req.json();
 
    try {
       const project = await prisma.project.create({
          data: {
-            title,
+            name,
             body,
             description,
             background,
@@ -52,7 +50,7 @@ export const PUT = auth(async (req) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
    }
 
-   const { id, title, body, description, background, photo, slug } = await req.json();
+   const { id, name, body, description, background, photo, slug } = await req.json();
 
    if (!id) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
@@ -65,7 +63,7 @@ export const PUT = auth(async (req) => {
 
    const project = await prisma.project.update({
       where: { id },
-      data: { title, body, description, background, photo, slug },
+      data: { name, body, description, background, photo, slug },
    });
 
    return NextResponse.json(project);

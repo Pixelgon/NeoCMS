@@ -3,9 +3,9 @@ import Image from 'next/image';
 import Link from "next/link";
 import { motion } from 'motion/react';
 import { HeaderFull } from '@/Components/Header/headerFull';
-import { Btn } from '@/Components/Layout/btn';
-import { Card } from '@/Components/Layout/card';
+import { Btn } from '@/Components/Layout/Btn';
 import { Section } from '@/Components/Layout/section';
+import { Card } from '@/Components/Layout/card';
 
 
 export default function Home() {

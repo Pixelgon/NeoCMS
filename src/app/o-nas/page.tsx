@@ -1,6 +1,6 @@
 'use client'
 import { Header } from "@/Components/Header";
-import { Btn } from "@/Components/Layout/btn";
+import { Btn } from "@/Components/Layout/Btn";
 import { ProfileLink, ProfileLinkType } from "@/Components/Layout/profileLink";
 import { Section } from "@/Components/Layout/section";
 import { motion } from "motion/react";

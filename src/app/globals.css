@@ -274,3 +274,9 @@
 #cc-main .cm__btn--secondary:focus-visible {
   border: none  !important;
 }
+
+/* tiptap */
+
+.tiptap {
+  @apply focus-visible:outline-none 
+}

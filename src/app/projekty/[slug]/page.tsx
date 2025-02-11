@@ -6,79 +6,78 @@ import { Metadata } from "next";
 import { Section } from "@/Components/Layout/section";
 
 async function getProject(slug: string) {
-  const project = await prisma.project.findUnique({
-    where: { slug },
-    include: {
-      tags: {
+    const project = await prisma.project.findUnique({
+        where: { slug },
         include: {
-          tag: true,
+            tags: {
+                include: {
+                    tag: true,
+                },
+            },
         },
-      },
-    },
-  });
+    });
 
-  if (!project) {
-    notFound();
-  }
-
-  // Převod tagů na požadovaný formát
-  const formattedProject = {
-    ...project,
-    tags: project.tags.map((projectTag) => ({
-      id: projectTag.tag.id,
-      name: projectTag.tag.name,
-    })),
-  };
-
-  return formattedProject;
+    if (project) {
+        // Převod tagů na požadovaný formát
+        const formattedProject = {
+            ...project,
+            tags: project.tags.map((projectTag) => ({
+                id: projectTag.tag.id,
+                name: projectTag.tag.name,
+            })),
+        };
+        return formattedProject;
+    } else {
+        notFound();
+    }
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const project = await getProject(params.slug);
+    const project = await getProject(params.slug);
 
-  if (!project) {
+    if (!project) {
+        return {
+            title: "Projekt nenalezen",
+            description: "Projekt nenalezen",
+        };
+    }
+
     return {
-      title: "Projekt nenalezen",
-      description: "Projekt nenalezen",
+        title: project.name,
+        description: project.description,
     };
-  }
-
-  return {
-    title: project.title,
-    description: project.description,
-  };
 }
 
 export async function generateStaticParams() {
-  const projects = await prisma.project.findMany({
-    select: { slug: true },
-  });
+    const projects = await prisma.project.findMany({
+        select: { slug: true },
+    });
 
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+    return projects.map((project) => ({
+        slug: project.slug,
+    }));
 }
 
 export default async function ProjectDetail({ params }: { params: { slug: string } }) {
-  const project = await getProject(params.slug);
+    const project = await getProject(params.slug);
 
-  if (!project) {
-    return <p>Projekt nenalezen</p>;
-  }
+    if (!project) {
+        return <p>Projekt nenalezen</p>;
+    }
 
-  return (
-    <>
-      <Header bg={project.background} title={project.title} />
-      <main>
-        <Section isPrim>
-         <div dangerouslySetInnerHTML={{ __html: project.body }}></div>
-         <ul>
-            {project.tags.map((tag: { id: string; name: string }) => (
-               <li key={tag.id}>{tag.name}</li>
-            ))}
-         </ul>
-        </Section>
-      </main>
-    </>
-  );
+    return (
+        <>
+            <Header bg={project.background} title={project.name} />
+            <main>
+                <Section isPrim>
+                    <div dangerouslySetInnerHTML={{ __html: project.body }}></div>
+                    <ul>
+                        {project.tags.map((tag: { id: string, name: string }) => (
+                            <li key={tag.id}>{tag.name}</li>
+                        ))}
+                    </ul>
+                </Section>
+            </main>
+        </>
+    );
 }

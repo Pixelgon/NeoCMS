@@ -1,5 +1,5 @@
 import { HeaderFull } from "@/Components/Header/headerFull";
-import { Btn } from "@/Components/Layout/btn";
+import { Btn } from "@/Components/Layout/Btn";
 
 export const metadata = {
   title: '404 Vision not found | Pixelgon',

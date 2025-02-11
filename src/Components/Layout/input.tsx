@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ChangeEvent } from "react";
 
 interface InputProps {
    type: string;
@@ -9,15 +9,16 @@ interface InputProps {
    className?: string;
    placeholder?: string;
    value?: string;
+   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Input: FC<InputProps> = ({className, id, type, name, required, label, placeholder, value}) => {
+export const Input: FC<InputProps> = ({className, id, type, name, required, label, placeholder, value, onChange}) => {
 
 
       return (
          <div className={`flex flex-col ${className ? className : ''}`}>
                <label htmlFor={id} className={'text-wh font-quicksand text-lg pl-3 pb-1'}>{label}</label>
-               <input type={type} name={name} id={id} required={required} placeholder={placeholder} value={value} className={'bg-sec p-3 !outline-none rounded-3xl text-wh font-quicksand text-lg relative z-20 w-full border border-prim transition-transform focus-within:scale-[1.01] focus-within:border-2 focus-within:bg-modal'}/>
+               <input type={type} name={name} id={id} required={required} placeholder={placeholder} value={value} onChange={onChange} className={'bg-sec p-3 !outline-none rounded-3xl text-wh font-quicksand text-lg relative z-20 w-full border border-prim transition-transform focus-within:bg-modal'}/>
          </div>
       );
    };

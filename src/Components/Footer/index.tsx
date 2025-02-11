@@ -6,11 +6,11 @@ import { useContext, useEffect, useState } from "react";
 import CookieConsentConfig from "@/config/CookieConsentConfig";
 import { motion } from "framer-motion";
 import { LayoutContext } from "@/context/LayoutContext";
-import { Btn } from "../Layout/btn";
-import { Modal } from "../Layout/modal";
 import { Section } from "../Layout/section";
-import Input from "../Layout/input";
 import Textarea from "../Layout/textarea";
+import { Btn } from "../Layout/Btn";
+import Input from "../Layout/Input";
+import { Modal } from "../Layout/Modal";
 
 
 export const Footer = () => {
