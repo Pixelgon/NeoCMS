@@ -4,8 +4,8 @@ import Link from "next/link";
 import { motion } from 'motion/react';
 import { HeaderFull } from '@/Components/Header/headerFull';
 import { Btn } from '@/Components/Layout/Btn';
-import { Section } from '@/Components/Layout/section';
-import { Card } from '@/Components/Layout/card';
+import { Card } from '@/Components/Layout/Card';
+import { Section } from '@/Components/Layout/Section';
 
 
 export default function Home() {

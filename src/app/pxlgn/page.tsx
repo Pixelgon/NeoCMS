@@ -3,31 +3,41 @@ import { Header } from "@/Components/Header";
 import { AdminProjectList } from "@/Components/Layout/AdminProjectList";
 import { Btn } from "@/Components/Layout/Btn";
 import { ProjectModal } from "@/Components/Layout/ProjectModal";
-import { Section } from "@/Components/Layout/section";
+import { Section } from "@/Components/Layout/Section";
 import { LayoutContext } from "@/context/LayoutContext";
 import ProjectType from "@/types/ProjectType";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 
+const emptyProject: ProjectType = {
+  id: "",
+  name: "",
+  slug: "",
+  background: "",
+  photo: "",
+  body: "",
+  tags: [],
+  description: "",
+  createdAt: "",
+  updatedAt: "",
+};
+
 const AdminPage = () => {
   const { data: session, status } = useSession();
   const [projects, setProjects] = useState<ProjectType[]>([]);
-  const [project, setProject] = useState<ProjectType | null>(null);
+  const [project, setProject] = useState<ProjectType>(emptyProject);
   const [modal, setModal] = useState(false);
   const layoutData = useContext(LayoutContext);
-
-  useEffect(() => { 
-    //layoutData.toggleScroll();
-  }, [modal]);
 
   const openProjectModal = (id?: string) => {
     if (id) {
       fetch(`/api/projects/${id}`)
         .then((res) => res.json())
         .then((data) => setProject(data))
-        .then(() => setModal(true));
+        .then(() => setModal(true))
+        .then(() => console.log(project));
     } else {
-      setProject(null);
+      setProject(emptyProject);
       setModal(true);
     }
   };

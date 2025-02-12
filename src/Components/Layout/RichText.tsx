@@ -3,8 +3,6 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Bold from "@tiptap/extension-bold";
 import Italic from "@tiptap/extension-italic";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
 import Heading from "@tiptap/extension-heading";
 
 interface RichTextProps {
@@ -19,6 +17,7 @@ export const RichText: FC<RichTextProps> = ({ content }) => {
          Italic,
          Heading.configure({ levels: [2, 3] }),
       ],
+      immediatelyRender: false,
       content: content,
    });
 

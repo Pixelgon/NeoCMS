@@ -1,10 +1,18 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-export const GET = async (_: Request, { params }: { params: { id: string } }) => {
+export const GET = async (req: NextRequest) => {
+   const { searchParams } = new URL(req.url);
+   const id = searchParams.get("id");
+
+   if (!id) {
+      return NextResponse.json({ error: "Project ID is required" }, { status: 400 });
+   }
+
    try {
       const project = await prisma.project.findUnique({
-         where: { id: params.id },
+         where: { id },
          include: {
             tags: {
                include: {

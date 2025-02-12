@@ -1,4 +1,4 @@
-import { TagType } from "./TagType.ts";
+import { Tag } from "@prisma/client";
 
 export type ProjectType = {
       id: string;
@@ -10,6 +10,6 @@ export type ProjectType = {
       slug: string;
       createdAt: string;
       updatedAt: string;
-      tags: TagType[];
+      tags: Tag[];
 }
 export default ProjectType;

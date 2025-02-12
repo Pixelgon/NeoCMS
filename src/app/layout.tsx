@@ -8,6 +8,8 @@ import { MotionConfig } from "motion/react";
 import Footer from "@/Components/Footer";
 import Navbar from "@/Components/Navbar";
 import { SessionProvider } from "next-auth/react";
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 
 const OpenSans = Open_Sans({
   variable: "--open-sans",
@@ -42,7 +44,8 @@ export default function RootLayout({
                       speed={300}
                       shadow={false}
                   />
-                  <Navbar />
+                  <GoogleAnalytics gaId="G-7TZ0N5M85L" />
+                  <Navbar />  
                     {children}
                   <Footer />
                 </LayoutProvider>

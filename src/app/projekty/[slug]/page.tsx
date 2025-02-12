@@ -1,9 +1,9 @@
 import { Header } from "@/Components/Header";
 import { prisma } from "@/lib/prisma";
-import { Project } from "@prisma/client";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { Section } from "@/Components/Layout/section";
+import { Section } from "@/Components/Layout/Section";
+import Image from "next/image";
 
 async function getProject(slug: string) {
     const project = await prisma.project.findUnique({
@@ -18,48 +18,17 @@ async function getProject(slug: string) {
     });
 
     if (project) {
-        // Převod tagů na požadovaný formát
-        const formattedProject = {
-            ...project,
-            tags: project.tags.map((projectTag) => ({
-                id: projectTag.tag.id,
-                name: projectTag.tag.name,
-            })),
-        };
-        return formattedProject;
+        return project;
     } else {
         notFound();
     }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-    const project = await getProject(params.slug);
+type tParams = Promise<{ slug: string }>;
 
-    if (!project) {
-        return {
-            title: "Projekt nenalezen",
-            description: "Projekt nenalezen",
-        };
-    }
-
-    return {
-        title: project.name,
-        description: project.description,
-    };
-}
-
-export async function generateStaticParams() {
-    const projects = await prisma.project.findMany({
-        select: { slug: true },
-    });
-
-    return projects.map((project) => ({
-        slug: project.slug,
-    }));
-}
-
-export default async function ProjectDetail({ params }: { params: { slug: string } }) {
-    const project = await getProject(params.slug);
+export default async function ProjectDetail(props: { params: tParams }) {
+    const { slug } = await props.params;
+    const project = await getProject(slug);
 
     if (!project) {
         return <p>Projekt nenalezen</p>;
@@ -70,10 +39,11 @@ export default async function ProjectDetail({ params }: { params: { slug: string
             <Header bg={project.background} title={project.name} />
             <main>
                 <Section isPrim>
+                    <Image src={project.photo} alt={project.name} fill className={'!relative aspect-[4/3] rounded-3xl object-cover'}/>
                     <div dangerouslySetInnerHTML={{ __html: project.body }}></div>
                     <ul>
-                        {project.tags.map((tag: { id: string, name: string }) => (
-                            <li key={tag.id}>{tag.name}</li>
+                        {project.tags.map((tag) => (
+                            <li key={tag.tag.id}>{tag.tag.name}</li>
                         ))}
                     </ul>
                 </Section>

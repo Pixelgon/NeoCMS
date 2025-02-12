@@ -1,8 +1,8 @@
 'use client'
 import { Header } from "@/Components/Header";
 import { Btn } from "@/Components/Layout/Btn";
-import { ProfileLink, ProfileLinkType } from "@/Components/Layout/profileLink";
-import { Section } from "@/Components/Layout/section";
+import { ProfileLink, ProfileLinkType } from "@/Components/Layout/ProfileLink";
+import { Section } from "@/Components/Layout/Section";
 import { motion } from "motion/react";
 import Image from 'next/image';
 

@@ -1,16 +1,17 @@
 'use client';
-import Link from "next/link";
-import Image from "next/image";
+
+import CookieConsentConfig from "@/config/CookieConsentConfig"
 import * as CookieConsent from "vanilla-cookieconsent";
-import { useContext, useEffect, useState } from "react";
-import CookieConsentConfig from "@/config/CookieConsentConfig";
-import { motion } from "framer-motion";
 import { LayoutContext } from "@/context/LayoutContext";
-import { Section } from "../Layout/section";
-import Textarea from "../Layout/textarea";
+import { motion } from "motion/react";
+import Link from "next/link";
+import { useContext, useState, useEffect } from "react";
 import { Btn } from "../Layout/Btn";
 import Input from "../Layout/Input";
 import { Modal } from "../Layout/Modal";
+import { Section } from "../Layout/Section";
+import Textarea from "../Layout/Textarea";
+import Image from "next/image";
 
 
 export const Footer = () => {

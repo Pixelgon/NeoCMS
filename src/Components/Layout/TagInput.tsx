@@ -18,7 +18,7 @@ export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy", pla
    const addTag = (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && tagInput.trim() !== "") {
          e.preventDefault();
-         const newTag: TagType = { name: tagInput.trim() }; // Adjust this line according to the structure of TagType
+         const newTag: TagType = { name: tagInput.trim() };
          if (!tags.some(tag => tag.name === newTag.name)) {
             setTags([...tags, newTag]);
          }
@@ -37,7 +37,7 @@ export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy", pla
             {tags.map((tag, index) => (
                <span key={index} className="bg-gray-600 text-white px-2 py-1 rounded-lg flex items-center">
                   {tag.name}
-                  <button type="button" onClick={() => removeTag(tag)} className="ml-2 text-red-400 hover:text-red-600">×</button>
+                  <button type="button" onClick={() => removeTag(tag.name)} className={'ml-2 text-red-400 hover:text-red-600'}>×</button>
                </span>
             ))}
          </div>
@@ -49,7 +49,7 @@ export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy", pla
             value={tagInput}
             onChange={handleTagInput}
             onKeyDown={addTag}
-            className="mt-2 p-2 border border-prim rounded-lg w-full bg-sec text-white"
+            className={'bg-sec p-3 !outline-none rounded-3xl text-wh font-quicksand text-lg relative z-20 w-full border border-prim transition-transform focus-within:bg-modal mt-2'}
          />
       </div>
    );

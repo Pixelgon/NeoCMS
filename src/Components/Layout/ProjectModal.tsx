@@ -1,13 +1,12 @@
 import { FC, ChangeEvent, useState } from "react";
 import Input from "./Input";
 import { Modal } from "./Modal";
-import { Project } from "@prisma/client";
 import { Btn } from "./Btn";
 import ImageUpload from "./ImageUpload";
-import RichText from "./richText";
 import TagInput from "./TagInput";
 import ProjectType from "@/types/ProjectType";
 import { TagType } from "@/types/TagType";
+import RichText from "./RichText";
 
 
 
