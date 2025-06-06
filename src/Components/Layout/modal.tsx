@@ -14,26 +14,23 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState }) =
     <AnimatePresence>
       {modalState && (
         <motion.div 
-          className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,.65)] z-[100] flex justify-center items-center backdrop-blur-sm p-8`} 
+          className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,.65)] z-[100] flex justify-center items-center backdrop-blur-sm px-reg 2xl:px`} 
           onClick={() => setModalState(false)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ ease: "easeInOut", duration: 0.5 }}
         >
-        <motion.div 
-          className={'max-w-7xl max-h-full bg-modal p-8 rounded-3xl mx-auto flex w-full flex-col gap-1 items-start relative backdrop-blur-lg overflow-y-auto overflow-x-hidden'} 
-          onClick={(e) => e.stopPropagation()}
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 50, opacity: 0 }}
-          transition={{ ease: "easeInOut", duration: 0.5 }}
-        >
-          <button onClick={() => setModalState(false)} className={'absolute top-0 right-0 transition-all duration-300 hover:opacity-75 bg-pxlgn-gradient rounded-full p-1 z-10'}>
-            <Image src={'/images/icons/close.svg'} alt={'Zavřít'} width={32} height={32}/>
-          </button>
-          {children}
-        </motion.div>  
+          <motion.div 
+          className={'max-w-4xl max-h-full bg-modal p-8 rounded-3xl mx-auto flex w-full flex-col gap-1 items-start relative backdrop-blur-lg overflow-y-auto overflow-x-hidden'} 
+            onClick={(e) => e.stopPropagation()}
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 50, opacity: 0 }}
+            transition={{ ease: "easeInOut", duration: 0.5 }}
+          >
+            {children}
+          </motion.div>  
         </motion.div>
       )}
     </AnimatePresence>

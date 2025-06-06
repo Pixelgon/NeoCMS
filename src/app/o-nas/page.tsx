@@ -1,10 +1,15 @@
-'use client'
-import { Header } from "@/Components/Header";
+import { Header } from "@/Components/Header/Index";
 import { Btn } from "@/Components/Layout/Btn";
 import { ProfileLink, ProfileLinkType } from "@/Components/Layout/ProfileLink";
 import { Section } from "@/Components/Layout/Section";
-import { motion } from "motion/react";
+import { Metadata } from "next";
 import Image from 'next/image';
+import * as motion from "motion/react-client";
+
+export const metadata: Metadata = {
+  title: 'O nás | Pixelgon',
+  description: 'Zjistěte více o našem týmu, naší vizi a hodnotách, které nás vedou k vytváření unikátních digitálních řešení.',
+};
 
 export default function ONas() {
   return (
@@ -15,10 +20,12 @@ export default function ONas() {
                 <motion.h2 
                 initial={{opacity: 0, scale: 0}}
                 whileInView={{opacity: 1, scale: 1}}
-                viewport={{ once: true }}>Naše vize</motion.h2>
+                viewport={{ once: true }}>
+                  Naše vize
+                </motion.h2>
                 <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias necessitatibus alias consequuntur saepe dignissimos eaque ipsum sapiente inventore? Commodi, non quos. Ea ut eum voluptate, pariatur error cumque fuga in. </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-10 w-full items-center mt-5 justify-center">
-                  <motion.div 
+                  <motion.div
                   initial={{opacity: 0, x: -200, filter: 'blur(5px)'}}
                   animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'rounded-3xl overflow-hidden relative'}>
                     <Image src={'/images/sections/profilovka.webp'} alt={'Matěj Matějka'} fill sizes="40vw" className={'col-span-5 !relative'}/>
@@ -29,8 +36,8 @@ export default function ONas() {
                       <ProfileLink type={ProfileLinkType.discord} link={'https://discordapp.com/users/397172105411559446'}/>
                       <ProfileLink type={ProfileLinkType.instagram} link={'https://www.instagram.com/pxlgn/'}/>
                     </div>
-                    </motion.div>
-                  <motion.div 
+                  </motion.div>
+                  <motion.div
                   initial={{opacity: 0, x: 200, filter: 'blur(5px)'}}
                   animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'flex flex-col gap-4 lg:col-span-2 items-start'}>
                     <h3>Matěj Matějka</h3>

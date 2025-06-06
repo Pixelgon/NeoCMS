@@ -30,7 +30,6 @@ async function main() {
       background: 'Pozadí projektu',
       photo: 'URL fotografie',
       slug: 'muj-prvni-projekt',
-      userId: 'user-id-123',
       tags: {
         create: [
           { tag: { connect: { id: tag1.id } } },

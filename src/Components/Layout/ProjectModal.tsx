@@ -36,7 +36,7 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
 
    return (
       <Modal modalState={modalState} setModalState={setModalState}>
-         <h3>{project ? `Upravuješ ${project.name}` : "Vytvořit nový projekt"}</h3>
+         <h3 className={'break-all'}>{project ? `Upravuješ ${project.name}` : "Vytvořit nový projekt"}</h3>
          <form className="flex flex-col gap-2 w-full justify-center" onSubmit={(e) => { e.preventDefault(); }}>
             <Input type="text" placeholder="Název projekt" name="name" id="name" label="Jméno*" value={project?.name || ""} onChange={handleChange} required />
             <Input type="text" placeholder="Slug" name="slug" id="slug" label="Slug*" value={project?.slug || ""} onChange={handleChange} required />

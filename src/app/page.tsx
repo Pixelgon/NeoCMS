@@ -1,50 +1,41 @@
-'use client';
 import Image from 'next/image';
-import Link from "next/link";
-import { motion } from 'motion/react';
-import { HeaderFull } from '@/Components/Header/headerFull';
 import { Btn } from '@/Components/Layout/Btn';
 import { Card } from '@/Components/Layout/Card';
 import { Section } from '@/Components/Layout/Section';
+import { Metadata } from 'next';
+import HeaderLogo from '@/Components/Header/HeaderLogo';
+import * as motion from "motion/react-client";
+ 
+
+export const metadata: Metadata = {
+  title: 'Pixelgon - Your vision, our code',
+  description: 'Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem pro detail, abyste uspěli v digitálním světě.',
+}
 
 
 export default function Home() {
 
 return (
   <>
-    <HeaderFull>
-      <Link href={'#intro'} className={'flex flex-col justify-center w-[75vw] max-w-[1000px] items-end select-none'}>
-        <h1 className={'absolute left-[-10000px]'}>
-          Pixelgon
-        </h1>
-        <p className={'absolute left-[-10000px]'}>Your vision, our code</p>
-        <motion.div className={'relative w-full h-auto'}
-        initial={{opacity: .1, x: -200, filter: 'blur(5px)'}}
-        animate={{opacity: 1, x: 0, filter: 'blur(0px)'}}
-        >
-          <Image draggable="false" src="/images/logo/LogoText.svg" alt="Logo Pixelgon" fill className={'!relative w-auto'} priority/>
-        </motion.div>
-        <motion.div 
-        className="w-[65.25%] relative"
-        initial={{opacity: .1, x: 200, filter: 'blur(5px)'}}
-        animate={{opacity: 1, x: 0, filter: 'blur(0px)'}}
-        >
-          <Image draggable="false" src="/images/logo/Slogan.svg" alt="Logo Pixelgon" fill className={'!relative mt-[1vw]'} priority/>
-        </motion.div>
-      </Link>
-    </HeaderFull>
     <main>
+      <HeaderLogo href={'#intro'}>
+        <h1 className={'absolute left-[-10000px]'}>
+            Pixelgon
+         </h1>
+         <p className={'absolute left-[-10000px]'}>Your vision, our code</p>
+      </HeaderLogo>
       <Section isPrim>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-14 w-full items-center" id="intro">
           <div className={'flex flex-col items-start gap-4'}>
-            <motion.h2 
+            <motion.h2
               initial={{opacity: .1, scale: 0}}
               whileInView={{opacity: 1, scale: 1}}
               viewport={{ once: true }}
-              >
+            >
               Digitální všeuměl
             </motion.h2>
-            <p>Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem pro detail, abyste uspěli v digitálním světě.
+            <p>
+              Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem pro detail, abyste uspěli v digitálním světě.
             </p>
             <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>  
           </div>
@@ -58,7 +49,6 @@ return (
             </div>
           </motion.div>
         </div>
-        
       </Section>
       <Section>
         <h2>Naše doména</h2>
@@ -92,7 +82,9 @@ return (
         <motion.h2 
         initial={{opacity: .1, scale: 0}}
         whileInView={{opacity: 1, scale: 1}}
-        viewport={{ once: true }}>Poslední projekty</motion.h2>
+        viewport={{ once: true }}>
+          Poslední projekty
+        </motion.h2>
       </Section>
     </main>
   </>

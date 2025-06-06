@@ -1,5 +1,5 @@
 'use client';
-import { Header } from "@/Components/Header";
+import { Header } from "@/Components/Header/Index";
 import { AdminProjectList } from "@/Components/Layout/AdminProjectList";
 import { Btn } from "@/Components/Layout/Btn";
 import { ProjectModal } from "@/Components/Layout/ProjectModal";
@@ -30,15 +30,16 @@ const AdminPage = () => {
   const layoutData = useContext(LayoutContext);
 
   const openProjectModal = (id?: string) => {
+    setModal(true);
+    layoutData.toggleScroll();
     if (id) {
       fetch(`/api/projects/${id}`)
         .then((res) => res.json())
         .then((data) => setProject(data))
         .then(() => setModal(true))
         .then(() => console.log(project));
-    } else {
+    } else {  
       setProject(emptyProject);
-      setModal(true);
     }
   };
 
@@ -54,7 +55,7 @@ const AdminPage = () => {
     if (status === "unauthenticated") {
       signIn();
     }
-  }, []);
+  }, [status]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -73,7 +74,7 @@ const AdminPage = () => {
             <AdminProjectList projects={projects} openProjectModal={openProjectModal} />
           </Section>
         </main>
-        {project && <ProjectModal project={project} setProject={setProject} modalState={modal} setModalState={setModal} />}
+        <ProjectModal project={project} setProject={setProject} modalState={modal} setModalState={setModal} />
       </>
     );
   }

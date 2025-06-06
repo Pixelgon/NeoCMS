@@ -1,4 +1,4 @@
-import { Header } from "@/Components/Header";
+import { Header } from "@/Components/Header/Index";
 import { Section } from "@/Components/Layout/Section";
 
 export default function GDPR() {

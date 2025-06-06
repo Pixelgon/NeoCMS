@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Open_Sans, Quicksand } from "next/font/google";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import "./globals.css";
@@ -6,9 +5,12 @@ import NextTopLoader from "nextjs-toploader";
 import { LayoutProvider } from "@/context/LayoutContext";
 import { MotionConfig } from "motion/react";
 import Footer from "@/Components/Footer";
-import Navbar from "@/Components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import { GoogleAnalytics } from '@next/third-parties/google'
+import Link from "next/link";
+import { NavItem } from "@/Components/Navbar/NavbarItem";
+import Navbar from "@/Components/Navbar/Index";
+import { Metadata } from "next";
 
 
 const OpenSans = Open_Sans({
@@ -21,11 +23,22 @@ const QuicksandFont = Quicksand({
   subsets: ["latin-ext"],
 });
 
+export const metadata: Metadata = {
+  title: 'Pixelgon - Your vision, our code',
+  description: '...',
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pages = [
+        { name: "Domů", href: "/" },
+        { name: "O nás", href: "/o-nas" },
+        { name: "Projekty", href: "/projekty"},
+  ]
+
   return (
       <>
         <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`}>
@@ -44,10 +57,21 @@ export default function RootLayout({
                       speed={300}
                       shadow={false}
                   />
-                  <GoogleAnalytics gaId="G-7TZ0N5M85L" />
-                  <Navbar />  
+                  <GoogleAnalytics gaId={process.env.GA_ID || ""} />
+                  <Navbar>
+                    {pages.map((page, index) => (
+                        <NavItem key={index} href={page.href} text={page.name} />
+                    ))}
+                  </Navbar>
                     {children}
-                  <Footer />
+                  <Footer>
+                    <button data-cc="show-preferencesModal" className="text-wh transition-colors hover:text-prim">
+                      Nastavení cookies
+                    </button>
+                    <Link href="/gdpr" className="text-wh transition-colors hover:text-prim">
+                      Ochrana osobních údajů
+                    </Link>
+                  </Footer>
                 </LayoutProvider>
               </MotionConfig>
             </SessionProvider>

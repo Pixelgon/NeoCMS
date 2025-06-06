@@ -23,7 +23,6 @@ model Project {
   slug         String   @unique
   createdOn    DateTime @default(now())
   lastModified DateTime @updatedAt
-  userId       String
   tags         ProjectTag[]
 }
 
@@ -38,5 +37,5 @@ model ProjectTag {
   tagId     String
   project   Project @relation(fields: [projectId], references: [id])
   tag       Tag     @relation(fields: [tagId], references: [id])
-  @@id([projectId, tagId]) // Kompozitní klíč
+  @@id([projectId, tagId])
 }

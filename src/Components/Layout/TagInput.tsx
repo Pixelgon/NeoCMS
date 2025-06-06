@@ -33,23 +33,24 @@ export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy", pla
    return (
       <div className="flex flex-col">
          <label className="text-wh font-quicksand text-lg pl-3 pb-1">{label}</label>
-         <div className="flex flex-wrap gap-2 p-2 border border-prim rounded-lg bg-gray-800">
+         <div className="flex flex-wrap gap-2 p-3 min-h-12 border border-prim rounded-t-3xl bg-gray-800">
             {tags.map((tag, index) => (
-               <span key={index} className="bg-gray-600 text-white px-2 py-1 rounded-lg flex items-center">
+               <span key={index} className="bg-gray-600 text-white px-2 py-1 rounded-lg flex items-center break-all">
                   {tag.name}
                   <button type="button" onClick={() => removeTag(tag.name)} className={'ml-2 text-red-400 hover:text-red-600'}>×</button>
                </span>
             ))}
+            {
+               tags.length === 0 && <span className="text-gray-400">Přidej svůj první tag!</span>
+            }
          </div>
-
-         {/* Input pro přidání tagu */}
          <input 
             type="text" 
             placeholder={placeholder}
             value={tagInput}
             onChange={handleTagInput}
             onKeyDown={addTag}
-            className={'bg-sec p-3 !outline-none rounded-3xl text-wh font-quicksand text-lg relative z-20 w-full border border-prim transition-transform focus-within:bg-modal mt-2'}
+            className={'bg-sec p-3 !outline-none rounded-b-3xl text-wh font-quicksand text-lg relative z-20 w-full border border-prim transition-transform focus-within:bg-modal'}
          />
       </div>
    );

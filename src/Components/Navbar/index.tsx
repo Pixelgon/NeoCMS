@@ -2,12 +2,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useMemo, useContext } from "react";
+import { useEffect, useState, useMemo, useContext, FC, PropsWithChildren } from "react";
 import { LayoutContext } from '@/context/LayoutContext';
-import { NavItem } from './navitem';
 
 
-export const Navbar = () => {   
+export const Navbar: FC<PropsWithChildren> = (props) => {   
     const pathName = "/" + usePathname().split('/')[1];
     const layoutData = useContext(LayoutContext);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -20,11 +19,6 @@ export const Navbar = () => {
         setMenuOpen(false);
     }, [pathName]);
 
-    const navItems = useMemo(() => 
-        layoutData.pages.map((page, index) => {
-            return <NavItem key={index} href={page.href} text={page.name} active={ pathName === page.href} />;
-        }),
-    [layoutData.pages, pathName]);
 
     return (
         <nav className={`fixed top-0 transition-all left-0 w-full h-16 ${menuOpen ? 'h-svh' : ''} md:h-12 z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-lg`}>
@@ -45,7 +39,7 @@ export const Navbar = () => {
             <menu
                 className={`w-full transition-all overflow-hidden h-[calc(100svh-48px)] ${menuOpen ? 'max-h-[calc(100svh-48px)] menu--open' : 'max-h-0 menu--close'} flex flex-col items-center list-none p-0 m-0 md:relative md:flex-row md:w-auto md:max-h-none md:h-auto`}
             >
-                {navItems}
+                {props.children}
             </menu>
         </nav>
     );

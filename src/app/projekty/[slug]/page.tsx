@@ -1,4 +1,4 @@
-import { Header } from "@/Components/Header";
+import { Header } from "@/Components/Header/Index";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";

@@ -1,4 +1,4 @@
-import { HeaderFull } from "@/Components/Header/headerFull";
+import { HeaderFull } from "@/Components/Header/HeaderFull";
 import { Btn } from "@/Components/Layout/Btn";
 
 export const metadata = {

@@ -3,11 +3,6 @@ import { LayoutContextType } from "@/types/LayoutContextType";
 import { createContext, FC, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
 
 const LayoutInit: LayoutContextType = {
-    pages: [
-        { name: "Domů", href: "/" },
-        { name: "O nás", href: "/o-nas" },
-        { name: "Projekty", href: "/projekty"},
-    ],
     Scroll: true,
     toggleScroll: () => {},
 };

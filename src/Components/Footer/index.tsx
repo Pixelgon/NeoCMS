@@ -5,16 +5,16 @@ import * as CookieConsent from "vanilla-cookieconsent";
 import { LayoutContext } from "@/context/LayoutContext";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, PropsWithChildren, FC } from "react";
 import { Btn } from "../Layout/Btn";
 import Input from "../Layout/Input";
 import { Modal } from "../Layout/Modal";
 import { Section } from "../Layout/Section";
-import Textarea from "../Layout/Textarea";
+import Textarea from "../Layout/TextArea";
 import Image from "next/image";
 
 
-export const Footer = () => {
+export const Footer: FC<PropsWithChildren> = ({children}) => {
     const date = new Date();
     const ctaText = "Půjdete do toho s námi?".split(" ");
     const layoutData = useContext(LayoutContext);
@@ -81,12 +81,7 @@ export const Footer = () => {
                     </div>
                     
                     <menu className="flex justify-center items-center list-none gap-4 m-0 mt-4 bg-bg font-light text-xs">
-                        <button data-cc="show-preferencesModal" className="text-wh transition-colors hover:text-prim">
-                                Nastavení cookies
-                        </button>
-                        <Link href="/gdpr" className="text-wh transition-colors hover:text-prim">
-                            Ochrana osobních údajů
-                        </Link>
+                        {children}
                     </menu>    
                 </div>
             </footer>

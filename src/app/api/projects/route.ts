@@ -35,7 +35,6 @@ export const POST = async (req: NextRequest) => {
                background,
                photo,
                slug,
-               userId: session.user.id, // Použití Auth.js session
                tags: {
                   connect: tags.map((tagId: string) => ({ id: tagId }))
                }
