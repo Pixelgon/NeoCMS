@@ -12,6 +12,10 @@ import { Modal } from "../layout/Modal";
 import { Section } from "../layout/Section";
 import Textarea from "../layout/TextArea";
 import Image from "next/image";
+import { FormType } from "@/types/FormType";
+import ContactForm from "../layout/ContactForm";
+
+
 
 
 export const Footer: FC<PropsWithChildren> = ({children}) => {
@@ -20,6 +24,11 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
     const layoutData = useContext(LayoutContext);
     const [ctaModal, setCtaModal] = useState(false);
     const [cookieModal, setCookieModal] = useState(false);
+    const [formData, setFormData] = useState<FormType>({
+        name: "",
+        email: "",
+        message: "",
+    });
 
 
     useEffect(() => {
@@ -39,14 +48,7 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
 
     return (
         <>
-            <Modal modalState={ctaModal} setModalState={setCtaModal} title="Kontaktujte nás">
-                <form className={'flex flex-col gap-2 w-full justify-center'}>
-                    <Input type="text" placeholder="Jméno příjmení" name="name" id="name" label="Jméno*" required/>
-                    <Input type="email" placeholder="jmeno@email.cz" name="name" id="name" label="Email*" required/>
-                    <Textarea placeholder="Vaše zpráva" name="message" id="message" label="Zpráva*" required/>
-                    <Btn prim type="submit" className="mt-5">Odeslat</Btn>
-                </form>
-            </Modal>
+            <ContactForm setModalState={setCtaModal} modalState={ctaModal}/>
             <footer className="bg-bg text-wh">
                 <div className={'bg-sec-gradient'}>
                     <Section className="">

@@ -35,8 +35,7 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
    };
 
    return (
-      <Modal modalState={modalState} setModalState={setModalState}>
-         <h3 className={'break-all'}>{project ? `Upravuješ ${project.name}` : "Vytvořit nový projekt"}</h3>
+      <Modal modalState={modalState} setModalState={setModalState} title={project ? `Upravuješ ${project.name}` : "Vytvořit nový projekt"}>
          <form className="flex flex-col gap-2 w-full justify-center" onSubmit={(e) => { e.preventDefault(); }}>
             <Input type="text" placeholder="Název projekt" name="name" id="name" label="Jméno*" value={project?.name || ""} onChange={handleChange} required />
             <Input type="text" placeholder="Slug" name="slug" id="slug" label="Slug*" value={project?.slug || ""} onChange={handleChange} required />
@@ -44,7 +43,7 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
             <ImageUpload name="photo" id="photo" label="Fotka*" value={project?.photo || ""} onChange={handleChangeImage} required />
             <RichText content={project?.body || ""}/>
             <TagInput tags={tags} setTags={setTags} />
-            <Btn prim type="submit" className="btn btn-primary mt-2">Uložit</Btn>
+            <Btn prim type="submit" className="btn btn-primary mt-5">Uložit</Btn>
          </form>
       </Modal>
    );

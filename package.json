@@ -29,6 +29,7 @@
     "next": "^15.3.3",
     "next-auth": "5.0.0-beta.25",
     "nextjs-toploader": "^1.6.12",
+    "nodemailer": "^7.0.3",
     "postgresql": "^0.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.30",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "@types/three": "^0.167.2",
