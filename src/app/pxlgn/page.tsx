@@ -1,9 +1,9 @@
 'use client';
-import { Header } from "@/Components/Header/Index";
-import { AdminProjectList } from "@/Components/Layout/AdminProjectList";
-import { Btn } from "@/Components/Layout/Btn";
-import { ProjectModal } from "@/Components/Layout/ProjectModal";
-import { Section } from "@/Components/Layout/Section";
+import { Header } from "@/components/header/Index";
+import { AdminProjectList } from "@/components/layout/AdminProjectList";
+import { Btn } from "@/components/layout/Btn";
+import { ProjectModal } from "@/components/layout/ProjectModal";
+import { Section } from "@/components/layout/Section";
 import { LayoutContext } from "@/context/LayoutContext";
 import ProjectType from "@/types/ProjectType";
 import { useSession, signIn, signOut } from "next-auth/react";

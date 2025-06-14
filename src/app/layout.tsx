@@ -4,12 +4,12 @@ import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { LayoutProvider } from "@/context/LayoutContext";
 import { MotionConfig } from "motion/react";
-import Footer from "@/Components/Footer";
+import Footer from "@/components/footer";
 import { SessionProvider } from "next-auth/react";
 import { GoogleAnalytics } from '@next/third-parties/google'
 import Link from "next/link";
-import { NavItem } from "@/Components/Navbar/NavbarItem";
-import Navbar from "@/Components/Navbar/Index";
+import { NavItem } from "@/components/navbar/NavbarItem";
+import Navbar from "@/components/navbar/Index";
 import { Metadata } from "next";
 
 

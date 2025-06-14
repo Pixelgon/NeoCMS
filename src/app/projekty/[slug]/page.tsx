@@ -1,8 +1,8 @@
-import { Header } from "@/Components/Header/Index";
+import { Header } from "@/components/header/Index";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { Section } from "@/Components/Layout/Section";
+import { Section } from "@/components/layout/Section";
 import Image from "next/image";
 
 async function getProject(slug: string) {

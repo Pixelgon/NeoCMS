@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import { Btn } from '@/Components/Layout/Btn';
-import { Card } from '@/Components/Layout/Card';
-import { Section } from '@/Components/Layout/Section';
+import { Btn } from '@/components/layout/Btn';
+import { Card } from '@/components/layout/Card';
+import { Section } from '@/components/layout/Section';
 import { Metadata } from 'next';
-import HeaderLogo from '@/Components/Header/HeaderLogo';
+import HeaderLogo from '@/components/header/HeaderLogo';
 import * as motion from "motion/react-client";
  
 
@@ -32,10 +32,10 @@ return (
               whileInView={{opacity: 1, scale: 1}}
               viewport={{ once: true }}
             >
-              Digitální všeuměl
+              Váš digitální parťák
             </motion.h2>
             <p>
-              Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem pro detail, abyste uspěli v digitálním světě.
+              Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která vás odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem pro detail, tak abyste uspěli v digitálu.
             </p>
             <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>  
           </div>
@@ -59,7 +59,7 @@ return (
                 <h3>Web</h3>
               </div>
               <p>
-              Naše tvorba webů je postavena na originálním designu, moderních technologiích a důrazu na uživatelskou přívětivost. Ať už jde o jednoduché stránky, e-shopy nebo složitější aplikace, naším cílem je vytvořit digitální prostředí, které přesně reflektuje potřeby a styl našich klientů. SEO a výkon jsou samozřejmostí.</p>
+              Naše tvorba webů je postavena na originálním designu, moderních technologiích a důrazu na uživatelskou přívětivost. Ať už jde o jednoduché stránky, e-shopy nebo složitější aplikace, naším cílem je vytvořit digitální prostředí, které přesně reflektuje potřeby a styl našich klientů. SEO a responzivita jsou samozřejmostí.</p>
             </Card>  
             <Card delay={.3}>
               <div className={'flex gap-2 relative items-center'}>

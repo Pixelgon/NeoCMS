@@ -1,7 +1,7 @@
-import { Header } from "@/Components/Header/Index";
-import { Btn } from "@/Components/Layout/Btn";
-import { ProfileLink, ProfileLinkType } from "@/Components/Layout/ProfileLink";
-import { Section } from "@/Components/Layout/Section";
+import { Header } from "@/components/header/Index";
+import { Btn } from "@/components/layout/Btn";
+import { ProfileLink, ProfileLinkType } from "@/components/layout/ProfileLink";
+import { Section } from "@/components/layout/Section";
 import { Metadata } from "next";
 import Image from 'next/image';
 import * as motion from "motion/react-client";
@@ -54,7 +54,6 @@ export default function ONas() {
                         samozřejmě hraji počítačové
                         hry.
                       </p>
-                    <Btn href={'/MMatejkaCV.pdf'} target="_blank">Stáhnout CV</Btn>
                   </motion.div>
                 </div>
               </Section>

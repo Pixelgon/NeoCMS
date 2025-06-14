@@ -1,5 +1,5 @@
-import { Header } from "@/Components/Header/Index";
-import { Section } from "@/Components/Layout/Section";
+import { Header } from "@/components/header/Index";
+import { Section } from "@/components/layout/Section";
 
 export default function GDPR() {
 return (

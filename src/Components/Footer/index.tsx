@@ -6,11 +6,11 @@ import { LayoutContext } from "@/context/LayoutContext";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useContext, useState, useEffect, PropsWithChildren, FC } from "react";
-import { Btn } from "../Layout/Btn";
-import Input from "../Layout/Input";
-import { Modal } from "../Layout/Modal";
-import { Section } from "../Layout/Section";
-import Textarea from "../Layout/TextArea";
+import { Btn } from "../layout/Btn";
+import Input from "../layout/Input";
+import { Modal } from "../layout/Modal";
+import { Section } from "../layout/Section";
+import Textarea from "../layout/TextArea";
 import Image from "next/image";
 
 
@@ -39,13 +39,12 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
 
     return (
         <>
-            <Modal modalState={ctaModal} setModalState={setCtaModal}>
-                <h3>Kontaktujte nás</h3>
+            <Modal modalState={ctaModal} setModalState={setCtaModal} title="Kontaktujte nás">
                 <form className={'flex flex-col gap-2 w-full justify-center'}>
                     <Input type="text" placeholder="Jméno příjmení" name="name" id="name" label="Jméno*" required/>
                     <Input type="email" placeholder="jmeno@email.cz" name="name" id="name" label="Email*" required/>
                     <Textarea placeholder="Vaše zpráva" name="message" id="message" label="Zpráva*" required/>
-                    <Btn prim type="submit" className="mt-2">Odeslat</Btn>
+                    <Btn prim type="submit" className="mt-5">Odeslat</Btn>
                 </form>
             </Modal>
             <footer className="bg-bg text-wh">

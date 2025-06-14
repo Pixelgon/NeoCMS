@@ -87,7 +87,7 @@ export const CookieConsentConfig = {
               {
                 title: "Více informací",
                 description:
-                  'Pro jakékoliv dotazy týkající se mé politiky cookies a vašich možností prosím <a class="cc__link" href="mailto:pixelgon@pixelgon.cz">kontaktujte mě</a>.',
+                  'Pro jakékoliv dotazy týkající se mé politiky cookies a vašich možností mě prosím <a class="cc__link" href="mailto:pixelgon@pixelgon.cz">kontaktujte</a>.',
               },
             ],
           },

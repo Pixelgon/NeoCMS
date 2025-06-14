@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Project } from "@prisma/client";
-import { AdminProject } from "@/Components/Layout/AdminProject";
+import { AdminProject } from "@/components/layout/AdminProject";
 import ProjectType from "@/types/ProjectType";
 
 interface AdminProjectListProps {
