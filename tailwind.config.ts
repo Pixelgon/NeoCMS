@@ -4,6 +4,7 @@ const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/context/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
@@ -14,6 +15,7 @@ const config: Config = {
       },
       backgroundImage: {
         "pxlgn-gradient": "linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)",
+        "err-gradient": "linear-gradient(90deg, #FF4D4D 0%, #FF5E5E 57%, #FFBE78 80%, #FFC3A0 100%)",
         "navbar": "linear-gradient(180deg, rgba(21, 28, 36, 40%) 0%, rgba(21, 28, 36, 80%) 100%)",
         "modal": "linear-gradient(180deg, rgba(21,28,36,.75) 0, rgba(34,38,42,.75) 100%)",
         "prim-gradient": "linear-gradient(180deg, rgba(34,38,42,1) 80%, rgba(21,28,36,1) 100%)",

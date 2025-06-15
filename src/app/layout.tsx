@@ -42,21 +42,10 @@ export default function RootLayout({
   return (
       <>
         <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`}>
-          <body>
+          <body className={'relative'}>
             <SessionProvider>
               <MotionConfig transition={{duration: .5}}>
                 <LayoutProvider>
-                  <NextTopLoader
-                      color="linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)"
-                      initialPosition={0.08}
-                      crawlSpeed={200}
-                      height={3}
-                      crawl={true}
-                      showSpinner={false}
-                      easing="ease"
-                      speed={300}
-                      shadow={false}
-                  />
                   <GoogleAnalytics gaId={process.env.GA_ID || ""} />
                   <Navbar>
                     {pages.map((page, index) => (

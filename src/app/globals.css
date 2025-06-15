@@ -13,7 +13,7 @@
     line-height: 1.15;
   }
   #nprogress {
-    z-index: 51;
+    z-index: 1000;
   }
   body {
     @apply font-open-sans bg-bg min-h-svh;

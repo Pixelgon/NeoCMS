@@ -1,9 +1,14 @@
-import { FC, FormEvent, useState, ChangeEvent } from "react";
+'use client'
+import { FC, FormEvent, useState, ChangeEvent, use } from "react";
 import { Btn } from "./Btn";
 import Input from "./Input";
 import { Modal } from "./Modal";
 import Textarea from "./TextArea";
 import { FormType } from "@/types/FormType";
+import { LayoutContext } from "@/context/LayoutContext";
+import { useTopLoader } from 'nextjs-toploader';
+
+
 
 interface ModalProps {
   setModalState: (state: boolean) => void;
@@ -11,11 +16,16 @@ interface ModalProps {
 }
 
 export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
+
+  const loader = useTopLoader(); 
+
   const [formData, setFormData] = useState<FormType>({
     name: "",
     email: "",
     message: "",
   });
+
+  const layoutData = use(LayoutContext);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -27,21 +37,22 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    loader.start();
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     });
 
     if (response.ok) {
+      loader.done();
       setModalState(false);
       setFormData({ name: "", email: "", message: "" });
-      alert("Zpráva byla úspěšně odeslána.");
+      layoutData.showToast({ message: 'Zpráva byla úspěšně odeslána.', type: 'success' });
     } else {
+      loader.done();
       const errorData = await response.json();
-      alert(`Chyba při odesílání zprávy: ${errorData.error || "Neznámá chyba"}`);
+      layoutData.showToast({ message: `Něco se pokazilo.`, type: 'error' });
     }
   };
 
