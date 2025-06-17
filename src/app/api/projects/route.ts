@@ -21,9 +21,9 @@ export const POST = async (req: NextRequest) => {
 
    try {
       const { name, body, description, background, photo, slug, tags } = await req.json();
-
-      if (!name || !slug) {
-         return NextResponse.json({ error: "Name and slug are required" }, { status: 400 });
+      
+      if (!name || !body || !description || !background || !photo || !slug) {
+         return NextResponse.json({ error: "Všechna pole jsou povinná." }, { status: 400 });
       }
 
       if(session.user.id) {
@@ -58,12 +58,12 @@ export const PUT = async (req: NextRequest) => {
       const { id, name, body, description, background, photo, slug, tags } = await req.json();
 
       if (!id) {
-         return NextResponse.json({ error: "ID is required" }, { status: 400 });
+         return NextResponse.json({ error: "ID je povinné." }, { status: 400 });
       }
 
       const projectExists = await prisma.project.findUnique({ where: { id } });
       if (!projectExists) {
-         return NextResponse.json({ error: "Project not found" }, { status: 404 });
+         return NextResponse.json({ error: "Projekt nenalezen." }, { status: 404 });
       }
 
       const project = await prisma.project.update({
@@ -98,19 +98,19 @@ export const DELETE = async (req: NextRequest) => {
       const { id } = await req.json();
 
       if (!id) {
-         return NextResponse.json({ error: "ID is required" }, { status: 400 });
+         return NextResponse.json({ error: "ID je povinné" }, { status: 400 });
       }
 
       const projectExists = await prisma.project.findUnique({ where: { id } });
       if (!projectExists) {
-         return NextResponse.json({ error: "Project not found" }, { status: 404 });
+         return NextResponse.json({ error: "Projekt nenalezen." }, { status: 404 });
       }
 
       const project = await prisma.project.delete({
          where: { id },
       });
 
-      return NextResponse.json({ message: "Project deleted successfully", project });
+      return NextResponse.json({ message: "Projekt byl úspěšně odebrán.", project });
    } catch (error: any) {
       return NextResponse.json({ error: error.message }, { status: 500 });
    }

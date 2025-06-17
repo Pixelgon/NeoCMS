@@ -21,7 +21,6 @@ import ContactForm from "../layout/ContactForm";
 export const Footer: FC<PropsWithChildren> = ({children}) => {
     const date = new Date();
     const ctaText = "Půjdete do toho s námi?".split(" ");
-    const layoutData = useContext(LayoutContext);
     const [ctaModal, setCtaModal] = useState(false);
     const [cookieModal, setCookieModal] = useState(false);
     const [formData, setFormData] = useState<FormType>({
@@ -41,10 +40,6 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
             },
         });
     },);
-
-    useEffect(() => {
-        layoutData.toggleScroll();
-    }, [ctaModal, layoutData, cookieModal]);
 
     return (
         <>

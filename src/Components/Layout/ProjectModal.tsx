@@ -9,7 +9,6 @@ import { TagType } from "@/types/TagType";
 import RichText from "./RichText";
 
 
-
 interface ProjectModalProps {
    project: ProjectType
    setProject: (project: ProjectType | ((prev: ProjectType) => ProjectType)) => void;
@@ -34,14 +33,59 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
       }));
    };
 
+   const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      if(project.id) {
+         const response = await fetch(`/api/projects/${project.id}`, {
+            method: 'PUT',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+               ...project,
+               tags: tags.map(tag => tag.name),
+            }),
+         });
+         if (response.ok) {
+            const updatedProject = await response.json();
+            setProject(updatedProject);
+            setModalState(false);
+         } else {
+            const error = await response.json();
+            console.error("Error updating project:", error);
+         }
+      } else {
+         const response = await fetch('/api/projects', { 
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+               ...project,
+               tags: tags.map(tag => tag.name),
+            }),
+         });
+         if (response.ok) {
+            const newProject = await response.json();
+            setProject(newProject);
+            setModalState(false);
+         } else {
+            const error = await response.json();
+            console.error("Error creating project:", error);
+         }
+      }
+   };
+
    return (
-      <Modal modalState={modalState} setModalState={setModalState} title={project ? `Upravuješ ${project.name}` : "Vytvořit nový projekt"}>
-         <form className="flex flex-col gap-2 w-full justify-center" onSubmit={(e) => { e.preventDefault(); }}>
+      <Modal modalState={modalState} setModalState={setModalState} title={project.id != "" ? `Upravuješ ${project.name}` : "Vytvořit nový projekt"} asking>
+         <form className="flex flex-col gap-2 w-full justify-center" onSubmit={(e) => handleSubmit(e)}>
             <Input type="text" placeholder="Název projekt" name="name" id="name" label="Jméno*" value={project?.name || ""} onChange={handleChange} required />
             <Input type="text" placeholder="Slug" name="slug" id="slug" label="Slug*" value={project?.slug || ""} onChange={handleChange} required />
             <ImageUpload name="bg" id="bg" label="Pozadí*" value={project?.background || ""} onChange={handleChangeImage} required />
             <ImageUpload name="photo" id="photo" label="Fotka*" value={project?.photo || ""} onChange={handleChangeImage} required />
-            <RichText content={project?.body || ""}/>
+            <RichText content={project?.body || ""} onChange={(body) => {
+               setProject(prev => ({ ...prev, body }));
+            }} />
             <TagInput tags={tags} setTags={setTags} />
             <Btn prim type="submit" className="btn btn-primary mt-5">Uložit</Btn>
          </form>

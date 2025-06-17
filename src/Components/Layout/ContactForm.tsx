@@ -57,7 +57,7 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
   };
 
   return (
-    <Modal modalState={modalState} setModalState={setModalState} title="Kontaktujte nás">
+    <Modal modalState={modalState} setModalState={setModalState} title="Kontaktujte nás" asking>
       <form className="flex flex-col gap-2 w-full justify-center" onSubmit={handleSubmit}>
         <Input
           type="text"

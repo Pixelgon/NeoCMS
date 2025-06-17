@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { Project } from "@prisma/client";
 import { AdminProject } from "@/components/layout/AdminProject";
 import ProjectType from "@/types/ProjectType";
 

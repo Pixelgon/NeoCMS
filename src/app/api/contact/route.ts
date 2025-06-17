@@ -22,8 +22,8 @@ export async function POST(req: Request) {
 
   try {
     await transporter.sendMail({
-      from: '"Pixelgon" <noreply@pixelgon.cz>',
-      to: 'pixelgon@pixelgon.cz',
+      from: `"Pixelgon" <${process.env.SMTP_USER}>`,
+      to: process.env.ADMIN_EMAIL,
       subject: `Nová zpráva z kontaktního formuláře od ${name}`,
       text: message,
       html: `<p><strong>Jméno:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Zpráva:</strong><br/>${message}</p>`,

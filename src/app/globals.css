@@ -81,11 +81,18 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/images/pages/fotohruba.webp');
     background-size: cover;
     background-position: top;
-    animation: scrollFoto 20s ease-in-out infinite;
     animation-delay: .5s;
+  }
+
+  .screen__foto--hruba {
+    animation: scrollFoto 20s ease-in-out infinite;
+    background-image: url('/images/pages/fotohruba.webp');
+  }
+  .screen__foto--chalupa {
+    animation: scrollChalupa 20s ease-in-out infinite;
+    background-image: url('/images/pages/chalupanahorach.webp');
   }
 
   ::-webkit-resizer {
