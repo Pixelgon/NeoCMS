@@ -9,6 +9,8 @@ import Image from "@tiptap/extension-image";
 import { Dialog } from "./Dialog";
 import Input from "./Input";
 import { Btn } from "./Btn";
+import { useTopLoader } from "nextjs-toploader";
+import RichTextTab from "./RichTextTab";
 
 interface RichTextProps {
   content: string;
@@ -19,6 +21,9 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
   const [showLinkDialog, setShowLinkDialog] = useState(false);
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const loader = useTopLoader();
 
   const editor = useEditor({
     extensions: [
@@ -29,18 +34,28 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
       Link.configure({
         openOnClick: false,
         autolink: true,
-        HTMLAttributes: { class: "font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text hover:brigthness-50 transition-all duration-300" },
+        HTMLAttributes: {
+          class: "font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text hover:brightness-75 transition-all duration-300",
+          rel: "external nofollow noopener",
+          target: "_blank",
+        },
       }),
-      Image,
+      Image.configure({
+        HTMLAttributes: {
+          class: "rounded-3xl w-full h-auto object-contain mt-4",
+        },
+      }),
     ],
-    content: content,
+    content,
   });
 
   useEffect(() => {
-    if (!editor || !onChange) return undefined;
-    const update = () => onChange(editor.getHTML());
+    if (!editor) return;
+    const update = () => onChange && onChange(editor.getHTML());
     editor.on("update", update);
-    return () => editor.off("update", update);
+    return () => {
+      editor.off("update", update);
+    };
   }, [editor, onChange]);
 
   const applyLink = () => {
@@ -49,62 +64,111 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
     setInputValue("");
   };
 
-  const applyImage = () => {
-    editor?.chain().focus().setImage({ src: inputValue }).run();
-    setShowImageDialog(false);
-    setInputValue("");
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImagePreview(URL.createObjectURL(file));
+    setSelectedFile(file);
+  };
+
+  const insertUploadedImage = async () => {
+    if (!selectedFile || !editor) return;
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      loader.start();
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.url) {
+        editor.chain().focus().setImage({ src: data.url }).run();
+        setShowImageDialog(false);
+      }
+    } catch (err) {
+      console.error("Chyba při nahrávání:", err);
+    } finally {
+      loader.done();
+      setImagePreview(null);
+      setSelectedFile(null);
+    }
   };
 
   return (
     <div className="flex flex-col">
       <label className="text-wh font-quicksand text-lg pl-3 pb-1">Obsah projektu*</label>
 
-      <div className="flex px-6 rounded-t-3xl bg-prim">
-        <button onClick={() => editor?.chain().focus().toggleBold().run()} className={`p-2 ${editor?.isActive("bold") ? "bg-sec text-white" : ""}`}>B</button>
-        <button onClick={() => editor?.chain().focus().toggleItalic().run()} className={`p-2 ${editor?.isActive("italic") ? "bg-sec text-white" : ""}`}>I</button>
-        <button onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()} className={`p-2 ${editor?.isActive("heading", { level: 2 }) ? "bg-sec text-white" : ""}`}>H2</button>
-        <button onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()} className={`p-2 ${editor?.isActive("heading", { level: 3 }) ? "bg-sec text-white" : ""}`}>H3</button>
-        <button onClick={() => setShowLinkDialog(true)} className="p-2">🔗 Link</button>
-        <button onClick={() => setShowImageDialog(true)} className="p-2">🖼 Obrázek</button>
-        <button onClick={() => editor?.chain().focus().undo().run()} className="p-2">↩ Undo</button>
-        <button onClick={() => editor?.chain().focus().redo().run()} className="p-2">↪ Redo</button>
+      <div className="flex px-6 rounded-t-3xl bg-pxlgn-gradient text-sec font-quicksand">
+        <RichTextTab onClick={() => editor?.chain().focus().toggleBold().run()} isActive={editor?.isActive("bold")}>B</RichTextTab>
+        <RichTextTab onClick={() => editor?.chain().focus().toggleItalic().run()} isActive={editor?.isActive("italic")}>I</RichTextTab>
+        <RichTextTab onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor?.isActive("heading", { level: 2 })}>H2</RichTextTab>
+        <RichTextTab onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()} isActive={editor?.isActive("heading", { level: 3 })}>H3</RichTextTab>
+        <RichTextTab onClick={() => setShowLinkDialog(true)}>Link</RichTextTab>
+        <RichTextTab onClick={() => setShowImageDialog(true)}>Obrázek</RichTextTab>
+        <RichTextTab onClick={() => editor?.chain().focus().undo().run()} isActive={false}>↩ Undo</RichTextTab>
+        <RichTextTab onClick={() => editor?.chain().focus().redo().run()} isActive={false}>↪ Redo</RichTextTab>
       </div>
 
       <EditorContent editor={editor} className="g-sec p-3 !outline-none rounded-b-3xl text-wh font-quicksand text-lg relative z-20 w-full border border-t-0 border-prim transition-transform focus-within:bg-modal" />
 
+      {/* Odkaz dialog */}
       <Dialog DialogState={showLinkDialog}>
-         <Input
-            type="url"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="https://..."
-            name="link-url"
-            id="link-url"
-            required={false}
-            label="Odkaz"
-         />
-         <div className="flex gap-2 justify-end">
-            <Btn onClick={applyLink} prim>Vložit</Btn>
-            <Btn onClick={() => setShowLinkDialog(false)}>Zrušit</Btn>
-         </div>
+        <Input
+          type="url"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="https://..."
+          name="link-url"
+          id="link-url"
+          required={false}
+          label="Odkaz"
+          className="w-full"
+        />
+        <div className="flex flex-wrap gap-4 w-full">
+          <Btn className={'flex-grow'} onClick={applyLink} prim>Vložit</Btn>
+          <Btn className={'flex-grow'} onClick={() => setShowLinkDialog(false)}>Zrušit</Btn>
+        </div>
       </Dialog>
 
-        <Dialog DialogState={showImageDialog}>
-            <Input
-              type="url"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="https://..."
-              label="URL obrázku"
-              name="image-url"
-              id="image-url"
-              required={false}
-            />
-            <div className="flex gap-2 justify-end">
-              <Btn onClick={applyImage} prim>Vložit</Btn>
-              <Btn onClick={() => setShowImageDialog(false)}>Zrušit</Btn>
-            </div>
-        </Dialog>
+      {/* Obrázek dialog */}
+      <Dialog DialogState={showImageDialog}>
+        <Input
+          type="file"
+          accept="image/*"
+          onChange={handleImageSelect}
+          label="Vybrat obrázek"
+          name="image-upload"
+          id="image-upload"
+          className={'w-full'}
+          required={false}
+        />
+        {imagePreview && (
+          <img
+            src={imagePreview}
+            alt="Náhled obrázku"
+            className="w-full rounded-3xl"
+          />
+        )}
+        <div className="flex flex-wrap gap-4 w-full">
+          {selectedFile && (
+            <Btn className={'flex-grow'} onClick={insertUploadedImage} prim>
+              Vložit obrázek
+            </Btn>
+          )}
+          <Btn className={'flex-grow'} onClick={() => {
+              setShowImageDialog(false);
+              setSelectedFile(null);
+              setImagePreview(null);
+            }}
+          >
+            Zrušit
+          </Btn>
+        </div>
+      </Dialog>
     </div>
   );
 };

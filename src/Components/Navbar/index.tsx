@@ -21,7 +21,7 @@ export const Navbar: FC<PropsWithChildren> = (props) => {
 
 
     return (
-        <nav className={`fixed top-0 transition-all left-0 w-full h-16 ${menuOpen ? 'h-svh' : ''} md:h-12 z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-lg`}>
+        <nav className={`fixed top-0 transition-all left-0 w-full h-16 ${menuOpen ? 'h-svh' : ''} md:h-12 z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-md`}>
             <div className='flex items-center justify-between h-full max-h-16'>
                 <Link href="/" className='h-full p-4 md:p-3 md:pr-2'>
                     <Image src="/images/logo/Logo.svg" width={0} height={0} sizes="100vh" alt={"Pixelgon logo"} style={{ width: 'auto', height: '100%' }} priority />

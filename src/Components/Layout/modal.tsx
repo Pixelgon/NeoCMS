@@ -56,7 +56,7 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, tit
             </Dialog>
           }
           <motion.div 
-            className={'max-w-5xl max-h-full bg-modal p-6 rounded-[3rem] flex w-full flex-col gap-1 items-start relative backdrop-blur-lg'} 
+            className={'max-w-5xl max-h-full bg-modal p-6 rounded-[3rem] flex w-full flex-col gap-1 items-start relative backdrop-blur-sm'} 
             onClick={(e) => e.stopPropagation()}
             initial={{ y: -50, opacity: 0, scale: 0 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
