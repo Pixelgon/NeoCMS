@@ -24,7 +24,7 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, tit
   const handleClose = (confirmation: boolean) => {
     setConfirm(false);
     if (confirmation) {
-      setTimeout(() => setModalState(false), 500);
+     setTimeout(() => setModalState(false), 500);
     } 
   };
 
@@ -53,17 +53,17 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, tit
             exit={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
             transition={{ ease: "easeInOut", duration: 0.5 }}
             key='modal-confirmation'
-            className={'absolute top-1/2 left-1/2 flex flex-1 p-6 flex-col items-center justify-center gap-4 text-center text-wh bg-modal backdrop-blur-lg rounded-[3rem] z-50'}>
+            className={'absolute top-1/2 left-1/2 flex flex-1 p-6 flex-col items-center justify-center gap-4 text-center text-wh bg-modal backdrop-blur-lg rounded-[3rem] w-fit z-50 drop-shadow-xl'}>
             <h4>Opravdu chcete zavřít okno?</h4>
-            <div className={'grid grid-cols-2 gap-4 items-center w-full drop-shadow-xl'}>
-              <Btn onClick={() => handleClose(true)}>Ano</Btn>
-              <Btn prim onClick={() => handleClose(false)}>Ne</Btn>
+            <div className={'flex flex-wrap gap-4 w-full'}>
+              <Btn className={'flex-grow'} onClick={() => handleClose(true)}>Ano</Btn>
+              <Btn prim className={'flex-grow'} onClick={() => handleClose(false)}>Ne</Btn>
             </div>
           </motion.div>
           }
           </AnimatePresence>
           <motion.div 
-            className={'max-w-5xl max-h-full bg-modal p-6 rounded-[3rem] flex w-full flex-col gap-1 items-start relative backdrop-blur-lg overflow-auto'} 
+            className={'max-w-5xl max-h-full bg-modal p-6 rounded-[3rem] flex w-full flex-col gap-1 items-start relative backdrop-blur-lg'} 
             onClick={(e) => e.stopPropagation()}
             initial={{ y: -50, opacity: 0, scale: 0 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
@@ -84,7 +84,9 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, tit
                 </div>
               </motion.button>
             </div>
-            {children}
+            <div className={'overflow-auto w-full'}>
+              {children}
+            </div>
           </motion.div>
         </motion.div>
       )}
