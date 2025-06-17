@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { LayoutContext } from "@/context/LayoutContext";
 import { Btn } from "./Btn";
+import { Dialog } from "./Dialog";
 
 interface ModalProps { 
   modalState: boolean;
@@ -14,23 +15,23 @@ interface ModalProps {
 
 export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, title, asking }) => {
   const layoutData = useContext(LayoutContext);
-  const [confirmation, setConfirm ] = useState(false);
+  const [dialog, setDialog ] = useState(false);
 
   useEffect(() => { 
     layoutData.toggleScroll();
   }
   , [modalState]);
 
-  const handleClose = (confirmation: boolean) => {
-    setConfirm(false);
-    if (confirmation) {
+  const handleClose = (dialog: boolean) => {
+    setDialog(false);
+    if (dialog) {
      setTimeout(() => setModalState(false), 500);
     } 
   };
 
   const handleBackdropClick = () => {
-    if (confirmation) return;
-      asking ? setConfirm(true) : setModalState(false);
+    if (dialog) return;
+      asking ? setDialog(true) : setModalState(false);
   };
 
   return (
@@ -45,23 +46,15 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, tit
           transition={{ ease: "easeInOut", duration: 0.5 }}
           key='modal-backdrop'
         >
-          <AnimatePresence>
-          {(confirmation && asking) &&
-          <motion.div 
-            initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
-            animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
-            exit={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
-            transition={{ ease: "easeInOut", duration: 0.5 }}
-            key='modal-confirmation'
-            className={'absolute top-1/2 left-1/2 flex flex-1 p-6 flex-col items-center justify-center gap-4 text-center text-wh bg-modal backdrop-blur-lg rounded-[3rem] w-fit z-50 drop-shadow-xl'}>
-            <h4>Opravdu chcete zavřít okno?</h4>
-            <div className={'flex flex-wrap gap-4 w-full'}>
-              <Btn className={'flex-grow'} onClick={() => handleClose(true)}>Ano</Btn>
-              <Btn prim className={'flex-grow'} onClick={() => handleClose(false)}>Ne</Btn>
-            </div>
-          </motion.div>
+          {(asking) &&
+            <Dialog DialogState={dialog}>
+              <h4>Opravdu chcete zavřít okno?</h4>
+              <div className={'flex flex-wrap gap-4 w-full'}>
+                <Btn className={'flex-grow'} onClick={() => handleClose(true)}>Ano</Btn>
+                <Btn prim className={'flex-grow'} onClick={() => handleClose(false)}>Ne</Btn>
+              </div>
+            </Dialog>
           }
-          </AnimatePresence>
           <motion.div 
             className={'max-w-5xl max-h-full bg-modal p-6 rounded-[3rem] flex w-full flex-col gap-1 items-start relative backdrop-blur-lg'} 
             onClick={(e) => e.stopPropagation()}
@@ -77,11 +70,8 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, tit
                   {title}
                 </h3>
               )}
-              <motion.button initial={{scale: .1}} animate={{scale: 1}} exit={{scale: 0}} transition={{ease: "easeInOut", duration: .25}} onClick={handleBackdropClick} key='modal-close-button'
-                className={'text-center bg-pxlgn-gradient rounded-full before:transition-all before:duration-300 before:bg-sec before:absolute before:h-[calc(100%-2px)] before:w-[calc(100%-2px)] before:top-[1px] before:rounded-full before:left-[1px] hover:before:bg-transparent relative justify-self-end'}>
-                <div className={'bg-pxlgn-gradient transition-all duration-300 text-transparent bg-clip-text p-4 z-10 relative hover:bg-none hover:text-sec hover:bg-clip-border stroke-prim hover:stroke-sec'}>
-                  <svg viewBox="0 0 24 24" strokeWidth="1.5" width={24} height={24}><path d="M 19.5 4.5 L 4.5 19.5 M 4.5 4.501 L 19.5 19.5" className={'stroke-inherit transition-all duration-300'}></path></svg>
-                </div>
+              <motion.button initial={{scale: .1}} animate={{scale: 1}} exit={{scale: 0}} transition={{ease: "easeInOut", duration: .25}} onClick={handleBackdropClick} key='modal-close-button'>
+                <Image src={'/images/icons/close.svg'} alt={'Zavřít okno'} width={24} height={24} className={'transition-all hover:brightness-50'} />
               </motion.button>
             </div>
             <div className={'overflow-auto w-full'}>

@@ -10,7 +10,14 @@ interface NavlinkProps {
 
 export const NavItem: FC<NavlinkProps> = ({ href, text }) => {
     const pathName = usePathname();
-    const active = pathName === href || (href === '/' && pathName === '/');
+    const isRoot = href === '/';
+    const isExact = pathName === href;
+    const isFirstLevel =
+    !isRoot &&
+    pathName.startsWith(href.endsWith('/') ? href : href + '/') &&
+    href !== '/';
+
+    const active = isExact || isFirstLevel || (isRoot && pathName === '/');
 
     return (
         <li className="w-full h-full transition-all overflow-hidden md:overflow-visible">

@@ -11,7 +11,7 @@ export default function NotFound() {
     <HeaderFull>
       <div className={'flex flex-col justify-center w-[75vw] max-w-[1000px] items-center select-none text-center'}>
         <h1 className={'leading-none text-[min(31vw,12rem)]'}>404</h1>
-        <p className={'text-2xl text-[min(7vw,2.6rem)]'}><strong className={'text-pxlgn'}>Vision</strong> not found</p>
+        <p className={'text-2xl text-[min(7vw,2.6rem)] uppercase font-quicksand font-semibold'}><span className={'text-pxlgn font-semibold'}>Vision</span> not found</p>
         <Btn href="/" className={'mt-8 text-xl'}>
           Zpět domů
         </Btn>

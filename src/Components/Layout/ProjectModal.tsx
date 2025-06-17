@@ -18,11 +18,18 @@ interface ProjectModalProps {
 
 export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modalState, setModalState }) => {
    const [tags, setTags] = useState<TagType[]>(project?.tags || []);
-   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setProject((prev) => ({
          ...prev,
          [name]: value,
+      }));
+   };
+
+   const handleRichTextChange = (content: string) => {
+      setProject((prev) => ({
+         ...prev,
+         body: content,
       }));
    };
 
@@ -79,13 +86,11 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
    return (
       <Modal modalState={modalState} setModalState={setModalState} title={project.id != "" ? `Upravuješ ${project.name}` : "Vytvořit nový projekt"} asking>
          <form className="flex flex-col gap-2 w-full justify-center" onSubmit={(e) => handleSubmit(e)}>
-            <Input type="text" placeholder="Název projekt" name="name" id="name" label="Jméno*" value={project?.name || ""} onChange={handleChange} required />
-            <Input type="text" placeholder="Slug" name="slug" id="slug" label="Slug*" value={project?.slug || ""} onChange={handleChange} required />
+            <Input type="text" placeholder="Název projekt" name="name" id="name" label="Jméno*" value={project?.name || ""} onChange={handleInputChange} required />
+            <Input type="text" placeholder="Slug" name="slug" id="slug" label="Slug*" value={project?.slug || ""} onChange={handleInputChange} required />
             <ImageUpload name="bg" id="bg" label="Pozadí*" value={project?.background || ""} onChange={handleChangeImage} required />
             <ImageUpload name="photo" id="photo" label="Fotka*" value={project?.photo || ""} onChange={handleChangeImage} required />
-            <RichText content={project?.body || ""} onChange={(body) => {
-               setProject(prev => ({ ...prev, body }));
-            }} />
+            <RichText content={project?.body || ""} onChange={handleRichTextChange} />
             <TagInput tags={tags} setTags={setTags} />
             <Btn prim type="submit" className="btn btn-primary mt-5">Uložit</Btn>
          </form>
