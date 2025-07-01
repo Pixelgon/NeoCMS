@@ -35,7 +35,7 @@ return (
               Váš digitální parťák
             </motion.h2>
             <p>
-              Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která vás odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem pro detail, tak abyste uspěli v digitálu.
+              Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale hlavně efektivní a jedinečná. Vytváříme plně funkční digitální identitu, která vás odliší od konkurence. Postaráme se o vše – od designu přes vývoj až po nasazení a optimalizaci.
             </p>
             <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>  
           </div>
@@ -59,21 +59,29 @@ return (
                 <h3>Web</h3>
               </div>
               <p>
-              Naše tvorba webů je postavena na originálním designu, moderních technologiích a důrazu na uživatelskou přívětivost. Ať už jde o jednoduché stránky, e-shopy nebo složitější aplikace, naším cílem je vytvořit digitální prostředí, které přesně reflektuje potřeby a styl našich klientů. SEO a responzivita jsou samozřejmostí.</p>
+                Tvoříme weby, které odpovídají vaší značce, cílové skupině i konkrétním cílům.
+                Navrhujeme firemní prezentace, e‑shopy i komplexní webové aplikace s důrazem na přehlednost, rychlost a technickou kvalitu. Každý web ladíme tak, aby dobře fungoval na všech zařízeních, byl snadno dohledatelný ve vyhledávačích a dal se dál rozvíjet podle vašich potřeb.             
+              </p>
             </Card>  
             <Card delay={.3}>
               <div className={'flex gap-2 relative items-center'}>
                 <Image alt="" src={'/images/icons/design.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
                 <h3>Design</h3>
               </div>
-              <p>Náš design se zaměřuje nejen na estetickou stránku, ale také na posílení a zefektivnění vaší značky. Pomáháme vám vytvořit vizuální identitu, která je konzistentní, silná a snadno rozpoznatelná. Kombinujeme kreativitu s funkčností, abychom vám pomohli lépe komunikovat s vaším cílovou skupinou a dosáhnout lepšího výsledku na trhu.</p>
+              <p>
+                Vytváříme vizuální identitu, která vaší značce dodá jasný směr, konzistenci a rozpoznatelnost.
+                Design chápeme jako víc než jen estetiku – je to nástroj, který vám pomůže lépe komunikovat, budovat důvěru a posílit vztah se zákazníky. Každý návrh ladíme tak, aby dobře fungoval v praxi – na webu, v aplikaci i kdekoli na netu.
+              </p>
             </Card>
             <Card delay={.6}>
               <div className={'flex gap-2 relative items-center'}>
                 <Image alt="" src={'/images/icons/code.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
                 <h3>Code</h3>
               </div>
-              <p>Specializujeme se na vývoj softwarových řešení, která jsou přesně přizpůsobena vašim potřebám. Naše aplikace jsou navrženy tak, aby byly spolehlivé, snadno použitelné a škálovatelné. Nezáleží na tom, jestli jde o jednoduchou aplikaci nebo komplexní systém – vždy klademe důraz na kvalitu, efektivitu a hladkou integraci do vašeho podnikání.</p>
+              <p>
+                Vyvíjíme aplikace a digitální nástroje na míru.
+                Pracujeme s nejmodernějšími technologiemi a osvědčenými postupy, které zajišťují spolehlivost, bezpečnost i dlouhodobou udržitelnost. Realizujeme například rezervační systémy, interní portály, administrační rozhraní nebo aplikace pro sběr a správu dat – vždy přizpůsobené tomu, co skutečně potřebujete.
+              </p>
             </Card>
         </div>
         <Btn href="/o-nas" className={'text-xl'}>Naše vize</Btn>
