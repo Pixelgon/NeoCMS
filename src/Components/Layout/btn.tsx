@@ -38,7 +38,7 @@ export const Btn: FC<btnProps> = ({children, prim, onClick, href, className, tar
     else if(onClick || type)
     {
         return (
-            <button onClick={onClick} type={type} className={`${prim ? stylesPrim.innerStyles : styles.innerStyles} ${className} ${disabled ? 'brightness-50' : ''}`} disabled={disabled}>
+            <button onClick={onClick} type={type || "button"} className={`${prim ? stylesPrim.innerStyles : styles.innerStyles} ${className} ${disabled ? 'brightness-50' : ''}`} disabled={disabled}>
                 {prim ? <>{children}</> : <div className={styles.outerStyles}>{children}</div>}
             </button>
         );

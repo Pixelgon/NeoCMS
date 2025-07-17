@@ -36,8 +36,25 @@ export const POST = async (req: NextRequest) => {
    try {
       const { name, body, description, background, photo, slug, tags } = await req.json();
       
+      console.log('POST /api/projects - Data received:', { name, body, description, background, photo, slug, tags });
+      
       if (!name || !body || !description || !background || !photo || !slug) {
          return NextResponse.json({ error: "Všechna pole jsou povinná." }, { status: 400 });
+      }
+
+      // Validace tags
+      if (!Array.isArray(tags)) {
+         console.error('Tags is not an array:', tags);
+         return NextResponse.json({ error: "Tags musí být pole." }, { status: 400 });
+      }
+
+      // Ověř unikátnost slug
+      const existingProject = await prisma.project.findUnique({
+         where: { slug }
+      });
+      
+      if (existingProject) {
+         return NextResponse.json({ error: "Projekt s tímto slug již existuje." }, { status: 400 });
       }
 
       const project = await prisma.project.create({
@@ -49,11 +66,31 @@ export const POST = async (req: NextRequest) => {
             photo,
             slug,
             tags: {
-               connect: tags.map((tagId: string) => ({ id: tagId }))
+               create: tags.map((tagId: string) => ({
+                  tag: {
+                     connect: { id: tagId }
+                  }
+               }))
             }
-         }
+         },
+         include: {
+            tags: {
+               select: {
+                  tag: {
+                     select: {
+                        id: true,
+                        name: true,
+                     },
+                  },
+               },
+            },
+         },
       });
-      return NextResponse.json(project, { status: 201 });
+      
+      return NextResponse.json({
+         ...project,
+         tags: project.tags.map((t) => t.tag),
+      }, { status: 201 });
    } catch (error: any) {
       return NextResponse.json({ error: error.message }, { status: 500 });
    }

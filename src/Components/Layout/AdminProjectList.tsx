@@ -7,10 +7,11 @@ import { AnimatePresence, motion } from "framer-motion";
 interface AdminProjectListProps {
   projects: ProjectType[];
   openProjectModal: (id?: string) => void;
+  onDeleteProject: (id: string) => void;
   loading: boolean;
 }
 
-export const AdminProjectList: FC<AdminProjectListProps> = ({ projects, openProjectModal, loading }) => {
+export const AdminProjectList: FC<AdminProjectListProps> = ({ projects, openProjectModal, loading, onDeleteProject }) => {
   return (
     <AnimatePresence mode="wait">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-reg lg:gap-8 mt-5 w-full h-auto relative">
@@ -38,6 +39,8 @@ export const AdminProjectList: FC<AdminProjectListProps> = ({ projects, openProj
                 <AdminProject
                   name={project.name}
                   image={project.photo}
+                  slug={project.slug}
+                  onDelete={() => onDeleteProject(project.id)}
                   edit={() => openProjectModal(project.id)}
                 />
               </motion.div>

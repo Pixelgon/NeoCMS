@@ -8,7 +8,13 @@ interface RichTextTabProps {
 
 const RichTextTab: FC<RichTextTabProps> = ({ onClick, isActive, children }) => {
    return (
-      <button onClick={onClick} className={`p-2 ${isActive ? "bg-sec text-white" : ""}`}>{children}</button>
+      <button 
+         type="button" 
+         onClick={onClick} 
+         className={`p-2 ${isActive ? "bg-sec text-wh" : ""}`}
+      >
+         {children}
+      </button>
    );
 }
 

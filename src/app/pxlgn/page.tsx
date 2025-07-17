@@ -51,6 +51,87 @@ const AdminPage = () => {
     setModal(true);
   }
 
+  const handleProjectSubmit = async (projectData: ProjectType, tags: any[]) => {
+    loader.start();
+    
+    try {
+      if (projectData.id) {
+        // Aktualizace existujícího projektu
+        const response = await fetch(`/api/projects/${projectData.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...projectData,
+            tags: tags.map(tag => tag.id),
+          }),
+        });
+        
+        if (response.ok) {
+          const updatedProject = await response.json();
+          setProjects(prev => prev.map(p => p.id === updatedProject.id ? updatedProject : p));
+          setProject(updatedProject);
+          setModal(false);
+          layoutData.showToast({ message: 'Projekt byl aktualizován', type: 'success' });
+        } else {
+          layoutData.showToast({ message: 'Chyba při aktualizaci', type: 'error' });
+        }
+      } else {
+        // Vytvoření nového projektu
+        const response = await fetch('/api/projects', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: projectData.name,
+            body: projectData.body,
+            description: projectData.description,
+            background: projectData.background,
+            photo: projectData.photo,
+            slug: projectData.slug,
+            tags: tags.map((tag) => tag.id)
+          }),
+        });
+        
+        if (response.ok) {
+          const newProject = await response.json();
+          setProjects(prev => [newProject, ...prev]);
+          setProject(newProject);
+          setModal(false);
+          layoutData.showToast({ message: 'Projekt byl vytvořen', type: 'success' });
+        } else {
+          layoutData.showToast({ message: 'Chyba při vytváření projektu', type: 'error' });
+        }
+      }
+    } catch (error) {
+      layoutData.showToast({ message: 'Chyba při ukládání projektu', type: 'error' });
+    } finally {
+      loader.done();
+    }
+  };
+
+  const deleteProject = async (projectId: string) => {
+    try {
+      loader.start();
+      const response = await fetch(`/api/projects/${projectId}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        setProjects(prev => prev.filter(p => p.id !== projectId));
+        layoutData.showToast({ message: 'Projekt byl smazán', type: 'success' });
+      } else {
+        layoutData.showToast({ message: 'Chyba při mazání projektu', type: 'error' });
+      }
+    } catch (error) {
+      layoutData.showToast({ message: 'Chyba při mazání projektu', type: 'error' });
+    } finally {
+      loader.done();
+    }
+  };
+
   useEffect(() => {
     if (status === "authenticated") {
       const load = async () => {
@@ -86,10 +167,17 @@ const AdminPage = () => {
               projects={projects} 
               openProjectModal={openProjectModal}
               loading={loading}
+              onDeleteProject={deleteProject}
             />
           </Section>
         </main>
-        <ProjectModal project={project} setProject={setProject} modalState={modal} setModalState={setModal} />
+        <ProjectModal 
+          project={project} 
+          setProject={setProject} 
+          modalState={modal} 
+          setModalState={setModal}
+          onSubmit={handleProjectSubmit}
+        />
       </>
     );
   }

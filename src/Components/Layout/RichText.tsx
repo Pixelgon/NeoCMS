@@ -102,8 +102,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
 
   return (
     <div className="flex flex-col">
-      <label className="text-wh font-quicksand text-lg pl-3 pb-1">Obsah projektu*</label>
-
+      <span className="text-wh font-quicksand text-lg pl-3 pb-1">Obsah projektu*</span>
       <div className="flex px-6 rounded-t-3xl bg-pxlgn-gradient text-sec font-quicksand">
         <RichTextTab onClick={() => editor?.chain().focus().toggleBold().run()} isActive={editor?.isActive("bold")}>B</RichTextTab>
         <RichTextTab onClick={() => editor?.chain().focus().toggleItalic().run()} isActive={editor?.isActive("italic")}>I</RichTextTab>
@@ -131,8 +130,8 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
           className="w-full"
         />
         <div className="flex flex-wrap gap-4 w-full">
-          <Btn className={'flex-grow'} onClick={applyLink} prim>Vložit</Btn>
-          <Btn className={'flex-grow'} onClick={() => setShowLinkDialog(false)}>Zrušit</Btn>
+          <Btn className={'flex-grow'} onClick={applyLink} type="button" prim>Vložit</Btn>
+          <Btn className={'flex-grow'} onClick={() => setShowLinkDialog(false)} type="button">Zrušit</Btn>
         </div>
       </Dialog>
 
@@ -157,7 +156,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
         )}
         <div className="flex flex-wrap gap-4 w-full">
           {selectedFile && (
-            <Btn className={'flex-grow'} onClick={insertUploadedImage} prim>
+            <Btn className={'flex-grow'} onClick={insertUploadedImage} type="button" prim>
               Vložit obrázek
             </Btn>
           )}
@@ -166,6 +165,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
               setSelectedFile(null);
               setImagePreview(null);
             }}
+            type="button"
           >
             Zrušit
           </Btn>
