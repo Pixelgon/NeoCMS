@@ -1,7 +1,6 @@
 import { Open_Sans, Quicksand } from "next/font/google";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import "./globals.css";
-import NextTopLoader from "nextjs-toploader";
 import { LayoutProvider } from "@/context/LayoutContext";
 import { MotionConfig } from "motion/react";
 import Footer from "@/components/footer";

@@ -71,7 +71,7 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, tit
                 </h3>
               )}
               <motion.button initial={{scale: .1}} animate={{scale: 1}} exit={{scale: 0}} transition={{ease: "easeInOut", duration: .25}} onClick={handleBackdropClick} key='modal-close-button'>
-                <Image src={'/images/icons/close.svg'} alt={'Zavřít okno'} width={24} height={24} className={'transition-all hover:brightness-50'} />
+                <Image src={'/images/icons/close.svg'} alt={'Zavřít okno'} width={24} height={24} className={'transition-all hover:brightness-50 select-none drag-none'} />
               </motion.button>
             </div>
             <div className={'overflow-auto w-full'}>

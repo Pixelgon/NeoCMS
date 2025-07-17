@@ -1,57 +1,64 @@
 import { TagType } from "@/types/TagType";
-import { FC, ChangeEvent, KeyboardEvent, useState } from "react";
+import { FC, useState, useEffect } from "react";
 
 interface TagInputProps {
    tags: TagType[];
    setTags: (tags: TagType[]) => void;
    label?: string;
-   placeholder?: string;
 }
 
-export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy", placeholder = "Přidat tag a stisknout Enter" }) => {
-   const [tagInput, setTagInput] = useState("");
+export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy" }) => {
+   const [allTags, setAllTags] = useState<TagType[]>([]);
 
-   const handleTagInput = (e: ChangeEvent<HTMLInputElement>) => {
-      setTagInput(e.target.value);
-   };
-
-   const addTag = (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter" && tagInput.trim() !== "") {
-         e.preventDefault();
-         const newTag: TagType = { name: tagInput.trim() };
-         if (!tags.some(tag => tag.name === newTag.name)) {
-            setTags([...tags, newTag]);
+   // Načtení všech dostupných tagů
+   useEffect(() => {
+      const fetchTags = async () => {
+         try {
+            const res = await fetch("/api/tags");
+            const data = await res.json();
+            setAllTags(data);
+         } catch (err) {
+            console.error("Chyba při načítání tagů:", err);
          }
-         setTagInput("");
-      }
-   };
+      };
 
-   const removeTag = (tagToRemove: string) => {
-      setTags(tags.filter(tag => tag.name !== tagToRemove));
+      fetchTags();
+   }, []);
+
+   const toggleTag = (tag: TagType) => {
+      const exists = tags.find((t) => t.id === tag.id);
+      if (exists) {
+         setTags(tags.filter((t) => t.id !== tag.id));
+      } else {
+         setTags([...tags, tag]);
+      }
    };
 
    return (
       <div className="flex flex-col">
-         <label className="text-wh font-quicksand text-lg pl-3 pb-1">{label}</label>
-         <div className="flex flex-wrap gap-2 p-3 min-h-12 border border-prim rounded-t-3xl bg-gray-800">
-            {tags.map((tag, index) => (
-               <span key={index} className="bg-gray-600 text-white px-2 py-1 rounded-lg flex items-center break-all">
-                  {tag.name}
-                  <button type="button" onClick={() => removeTag(tag.name)} className={'ml-2 text-red-400 hover:text-red-600'}>×</button>
-               </span>
-            ))}
-            {
-               tags.length === 0 && <span className="text-gray-400">Přidej svůj první tag!</span>
-            }
+         <span className="text-wh font-quicksand text-lg pl-3 pb-1">{label}</span>
+         <div className="flex flex-wrap gap-2 p-2 min-h-12 border border-prim rounded-3xl bg-sec">
+            {allTags.map((tag) => {
+               const isSelected = tags.some((t) => t.id === tag.id);
+               return (
+                  <button
+                     key={tag.id}
+                     type="button"
+                     onClick={() => toggleTag(tag)}
+                     className={`px-3 py-1 rounded-full text-sm transition-all hover:opacity-75 ${
+                        isSelected
+                           ? "bg-pxlgn-gradient text-sec"
+                           : "bg-bg text-wh"
+                     }`}
+                  >
+                     {tag.name}
+                  </button>
+               );
+            })}
          </div>
-         <input 
-            type="text" 
-            placeholder={placeholder}
-            value={tagInput}
-            onChange={handleTagInput}
-            onKeyDown={addTag}
-            className={'bg-sec p-3 !outline-none rounded-b-3xl text-wh font-quicksand text-lg relative z-20 w-full border border-prim transition-transform focus-within:bg-modal'}
-         />
+         {tags.length === 0 && (
+            <span className="text-gray-400 mt-2">Vyber aspoň jeden tag.</span>
+         )}
       </div>
    );
 };

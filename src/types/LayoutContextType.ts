@@ -1,6 +1,5 @@
-export interface LayoutContextType {
-    Scroll: boolean;
-    toggleScroll: () => void;
-
-    showToast?: (message: string, type?: 'success' | 'error') => void;
-}
+type LayoutContextType = {
+  Scroll: boolean;
+  toggleScroll: () => void;
+  showToast: (toast: ToastType) => void;
+};

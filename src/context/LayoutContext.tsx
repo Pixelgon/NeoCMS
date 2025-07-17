@@ -1,16 +1,10 @@
 'use client';
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FC, PropsWithChildren, useState, useEffect, useCallback, useMemo, createContext } from "react";
 import Image from "next/image";
 import NextTopLoader from "nextjs-toploader";
+import { Toast } from "@/components/layout/Toast";
 
-type ToastType = { message: string; type?: "success" | "error" };
-
-type LayoutContextType = {
-  Scroll: boolean;
-  toggleScroll: () => void;
-  showToast: (toast: ToastType) => void;
-};
 
 export const LayoutContext = createContext<LayoutContextType>({
   Scroll: true,
@@ -57,20 +51,10 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
       {children}
       <AnimatePresence>
         {toast && (
-          <motion.div
-            key="toast"
-            initial={{ opacity: 0, y: 40, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: 20, x: "-50%" }}
-            onClick={() => setToast(null)}
-            transition={{ ease: "easeInOut", duration: .5, delay: .5 }}
-            className={`fixed bottom-12 left-1/2 p-4 rounded-3xl backdrop-blur-md shadow-md z-50 text-wh flex items-center cursor-pointer bg-modal`}
-          >
-            <Image src={`/images/icons/${toast.type === 'success' ? 'check' : 'error'}.svg`} alt="" width={28} height={28} className="mr-2" />
-            <div className={`${ toast.type == 'success' ? "bg-pxlgn-gradient" : "bg-err-gradient"}  text-transparent bg-clip-text text-xl font-quicksand uppercase select-none break-all`}>
-              {toast.message}
-            </div>
-          </motion.div>
+          <Toast
+            setToast={setToast}
+            toast={toast}
+          />
         )}
       </AnimatePresence>
     </LayoutContext.Provider>

@@ -14,38 +14,56 @@ const emptyProject: ProjectType = {
   id: "",
   name: "",
   slug: "",
+  body: "",
+  description: "",
   background: "",
   photo: "",
-  body: "",
   tags: [],
-  description: "",
-  createdAt: "",
-  updatedAt: "",
+  updatedAt: new Date(),
+  createdAt: new Date(),
 };
-
-const openProjectModal = (project: ProjectType, setProject: (project: ProjectType) => void, setModal: (state: boolean) => void) => {
-  setProject(project);
-  setModal(true);
-  
-}
-
-const loader = useTopLoader();
-
 
 const AdminPage = () => {
   const { data: session, status } = useSession();
   const [projects, setProjects] = useState<ProjectType[]>([]);
   const [project, setProject] = useState<ProjectType>(emptyProject);
   const [modal, setModal] = useState(false);
+  const layoutData = useContext(LayoutContext);
+  const [loading, setLoading] = useState(true);
+  const loader = useTopLoader();
+
+  const openProjectModal = async(projectID?: string) => {
+    loader.start();
+    if(projectID) {
+      await fetch(`/api/projects/${projectID}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setProject(data);
+        })
+        .catch((error) => {
+          layoutData.showToast({ message: error, type: "error" });
+        });
+    }
+    else {
+      setProject(emptyProject);
+    }
+    loader.done();
+    setModal(true);
+  }
 
   useEffect(() => {
     if (status === "authenticated") {
-      loader.start();
-      fetch("/api/projects")
-        .then((res) => res.json())
-        .then((data) => setProjects(data));
+      const load = async () => {
+        loader.start();
+        setLoading(true);
+        const res = await fetch("/api/projects");
+        const data = await res.json();
+        setProjects(data);
+        loader.done();
+        setLoading(false);
+      };
+      load();
     }
-    loader.done();
   }, [status]);
 
   useEffect(() => {
@@ -61,15 +79,13 @@ const AdminPage = () => {
         <main>
           <Section isPrim>
             <div className="flex gap-3">
-              <Btn onClick={() => openProjectModal(project, setProject, setModal) } prim>Vytvořit nový projekt</Btn>
+              <Btn onClick={() => openProjectModal() } prim>Vytvořit nový projekt</Btn>
               <Btn onClick={() => signOut({callbackUrl: "/", redirect: true})}>Odhlásit se</Btn>
             </div>
             <AdminProjectList 
               projects={projects} 
-              openProjectModal={(id?: string) => {
-                const selected = projects.find(p => p.id === id) || emptyProject;
-                openProjectModal(selected, setProject, setModal);
-              }} 
+              openProjectModal={openProjectModal}
+              loading={loading}
             />
           </Section>
         </main>

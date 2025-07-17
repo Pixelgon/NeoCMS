@@ -37,7 +37,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({ id, name, label, required, c
             </div>
          )}
 
-         <input type="file" id={id} name={name} accept="image/*" onChange={handleFileChange} className={`text-wh file:text-sec file:bg-pxlgn-gradient file:p-2 file:mr-2 file:rounded-3xl ${photoPreview ? 'my-2' : ''}`} />
+         <input type="file" id={id} name={name} accept="image/*" onChange={handleFileChange} className={`text-wh file:border-none file:text-sec file:bg-pxlgn-gradient file:p-2 file:mr-2 file:rounded-3xl ${photoPreview ? 'my-2' : ''}`} />
 
          {error && <span className="text-red-500 text-sm">{error}</span>}
       </div>

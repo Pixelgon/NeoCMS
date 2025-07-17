@@ -8,8 +8,8 @@ export type ProjectType = {
       background: string;
       photo: string;
       slug: string;
-      createdAt: string;
-      updatedAt: string;
+      createdAt: Date;
+      updatedAt: Date;
       tags: Tag[];
 }
 export default ProjectType;

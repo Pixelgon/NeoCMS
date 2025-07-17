@@ -26,11 +26,13 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
   const loader = useTopLoader();
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
-      StarterKit,
-      Bold,
-      Italic,
-      Heading.configure({ levels: [2, 3] }),
+      StarterKit.configure({
+        heading: {
+          levels: [2, 3],
+        },
+      }),
       Link.configure({
         openOnClick: false,
         autolink: true,

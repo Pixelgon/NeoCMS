@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from "react";
+import { FC, ChangeEvent, useState, useEffect, useContext, use } from "react";
 import Input from "./Input";
 import { Modal } from "./Modal";
 import { Btn } from "./Btn";
@@ -7,6 +7,8 @@ import TagInput from "./TagInput";
 import ProjectType from "@/types/ProjectType";
 import { TagType } from "@/types/TagType";
 import RichText from "./RichText";
+import { useTopLoader } from "nextjs-toploader";
+import { LayoutContext } from "@/context/LayoutContext";
 
 
 interface ProjectModalProps {
@@ -16,8 +18,10 @@ interface ProjectModalProps {
    setModalState: (state: boolean) => void;
 }
 
+
 export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modalState, setModalState }) => {
-   const [tags, setTags] = useState<TagType[]>(project?.tags || []);
+   const [tags, setTags] = useState<TagType[]>(project.tags || []);
+   const [initialProject, setInitialProject] = useState<ProjectType>(project);
    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setProject((prev) => ({
@@ -25,6 +29,43 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
          [name]: value,
       }));
    };
+   const loader = useTopLoader();
+   const layoutData = useContext(LayoutContext);
+
+   useEffect(() => {
+      if (project.tags) {
+         setTags(project.tags);
+      }
+      setInitialProject(project);
+   }, [project.tags]);
+
+   // Kontrola, zda je projekt kompletní
+   const isProjectComplete = () => {
+      return project.name && 
+             project.slug && 
+             project.background && 
+             project.photo && 
+             project.body &&
+             project.description;
+   };
+
+   // Kontrola, zda byl projekt upraven
+   const isProjectModified = () => {
+      const tagsChanged = JSON.stringify(tags.map(t => t.id).sort()) !== 
+                          JSON.stringify((initialProject.tags || []).map(t => t.id).sort());
+      
+      return project.name !== initialProject.name ||
+             project.slug !== initialProject.slug ||
+             project.background !== initialProject.background ||
+             project.photo !== initialProject.photo ||
+             project.body !== initialProject.body ||
+             project.description !== initialProject.description ||
+             tagsChanged;
+   };
+
+   // Tlačítko je disabled pokud projekt není kompletní nebo (pokud existuje) nebyl upraven
+   const isSubmitDisabled = !isProjectComplete() || (project.id && !isProjectModified());
+
 
    const handleRichTextChange = (content: string) => {
       setProject((prev) => ({
@@ -42,43 +83,64 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
 
    const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+      
+      if (isSubmitDisabled) return;
+      
+      loader.start();
       if(project.id) {
-         const response = await fetch(`/api/projects/${project.id}`, {
-            method: 'PUT',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-               ...project,
-               tags: tags.map(tag => tag.name),
-            }),
-         });
-         if (response.ok) {
-            const updatedProject = await response.json();
-            setProject(updatedProject);
-            setModalState(false);
-         } else {
-            const error = await response.json();
-            console.error("Error updating project:", error);
+         try {
+            const response = await fetch(`/api/projects/${project.id}`, {
+               method: 'PUT',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                  ...project,
+                  tags: tags.map(tag => tag.id),
+               }),
+            });
+            if (response.ok) {
+               const updatedProject = await response.json();
+               setProject(updatedProject);
+               setModalState(false);
+               layoutData.showToast({ message: 'Projekt byl aktualizován', type: 'success' });
+            } else {
+               const error = await response.json();
+               layoutData.showToast({ message: `Chyba při aktualizaci`, type: 'error' });
+            }
+         } catch (error) {
+            layoutData.showToast({ message: 'Chyba při aktualizaci projektu', type: 'error' });
+         }
+         finally {
+            loader.done();
          }
       } else {
-         const response = await fetch('/api/projects', { 
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-               ...project,
-               tags: tags.map(tag => tag.name),
-            }),
-         });
-         if (response.ok) {
-            const newProject = await response.json();
-            setProject(newProject);
-            setModalState(false);
-         } else {
-            const error = await response.json();
-            console.error("Error creating project:", error);
+         try {
+            const response = await fetch('/api/projects', { 
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                  ...project,
+                  tags: tags.map(tag => tag.id),
+               }),
+            });
+            if (response.ok) {
+               const newProject = await response.json();
+               setProject(newProject);
+               setModalState(false);
+               layoutData.showToast({ message: 'Projekt byl vytvořen', type: 'success' });
+            } else {
+               const error = await response.json();
+               layoutData.showToast({ message: `Chyba při vytváření projektu`, type: 'error' });
+            }
+         }
+         catch (error) {
+            layoutData.showToast({ message: 'Chyba při vytváření projektu', type: 'error' });
+         }
+         finally {
+            loader.done();
          }
       }
    };
@@ -92,7 +154,14 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
             <ImageUpload name="photo" id="photo" label="Fotka*" value={project?.photo || ""} onChange={handleChangeImage} required />
             <RichText content={project?.body || ""} onChange={handleRichTextChange} />
             <TagInput tags={tags} setTags={setTags} />
-            <Btn prim type="submit" className="btn btn-primary mt-5">Uložit</Btn>
+            <Btn 
+               prim 
+               type="submit" 
+               disabled={!!isSubmitDisabled}
+               className="mt-5"
+            >
+               {project.id ? "Uložit změny" : "Vytvořit projekt"}
+            </Btn>
          </form>
       </Modal>
    );

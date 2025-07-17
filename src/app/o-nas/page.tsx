@@ -60,11 +60,11 @@ export default function ONas() {
                   animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'rounded-3xl overflow-hidden relative'}>
                     <Image src={'/images/sections/profilovka.webp'} alt={'Matěj Matějka'} fill sizes="40vw" className={'col-span-5 !relative'}/>
                     <div className={'grid grid-cols-5 bg-pxlgn-gradient'}>
-                      <ProfileLink type={ProfileLinkType.email} link={'mailto:pixelgon@pixelgon.cz'}/>
-                      <ProfileLink type={ProfileLinkType.linkedin} link={'https://www.linkedin.com/in/pixelgon/'}/> 
-                      <ProfileLink type={ProfileLinkType.github} link={'https://github.com/Pixelgon'}/>
-                      <ProfileLink type={ProfileLinkType.discord} link={'https://discordapp.com/users/397172105411559446'}/>
-                      <ProfileLink type={ProfileLinkType.instagram} link={'https://www.instagram.com/pxlgn/'}/>
+                      <ProfileLink type={ProfileLinkType.Email} link={'mailto:pixelgon@pixelgon.cz'}/>
+                      <ProfileLink type={ProfileLinkType.Linkedin} link={'https://www.linkedin.com/in/pixelgon/'}/> 
+                      <ProfileLink type={ProfileLinkType.Github} link={'https://github.com/Pixelgon'}/>
+                      <ProfileLink type={ProfileLinkType.Discord} link={'https://discordapp.com/users/397172105411559446'}/>
+                      <ProfileLink type={ProfileLinkType.Instagram} link={'https://www.instagram.com/pxlgn/'}/>
                     </div>
                   </motion.div>
                   <motion.div

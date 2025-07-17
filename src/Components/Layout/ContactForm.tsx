@@ -1,5 +1,5 @@
 'use client'
-import { FC, FormEvent, useState, ChangeEvent, use } from "react";
+import { FC, FormEvent, useState, ChangeEvent, useContext } from "react";
 import { Btn } from "./Btn";
 import Input from "./Input";
 import { Modal } from "./Modal";
@@ -25,7 +25,7 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
     message: "",
   });
 
-  const layoutData = use(LayoutContext);
+  const layoutData = useContext(LayoutContext);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -38,21 +38,26 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     loader.start();
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-    if (response.ok) {
+      if (response.ok) {
+        loader.done();
+        setModalState(false);
+        setFormData({ name: "", email: "", message: "" });
+        layoutData.showToast({ message: 'Zpráva byla úspěšně odeslána.', type: 'success' });
+      } else {
+        const errorData = await response.json();
+        loader.done();
+        layoutData.showToast({ message: `Něco se pokazilo: ${errorData?.error || 'Chyba serveru.'}`, type: 'error' });
+      }
+    } catch (error) {
       loader.done();
-      setModalState(false);
-      setFormData({ name: "", email: "", message: "" });
-      layoutData.showToast({ message: 'Zpráva byla úspěšně odeslána.', type: 'success' });
-    } else {
-      loader.done();
-      const errorData = await response.json();
-      layoutData.showToast({ message: `Něco se pokazilo.`, type: 'error' });
+      layoutData.showToast({ message: 'Nepodařilo se odeslat zprávu. Zkontrolujte připojení k internetu.', type: 'error' });
     }
   };
 
