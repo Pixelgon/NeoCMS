@@ -223,7 +223,7 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
             <Btn 
                prim 
                type="submit" 
-               disabled={isSubmitDisabled as boolean}
+               disabled={isSubmitDisabled}
                className="mt-5"
             >
                {isSubmitting ? "Ukládám..." : (project.id ? "Uložit změny" : "Vytvořit projekt")}

@@ -4,6 +4,8 @@ import { AdminProjectList } from "@/components/layout/AdminProjectList";
 import { Btn } from "@/components/layout/Btn";
 import { ProjectModal } from "@/components/layout/ProjectModal";
 import { Section } from "@/components/layout/Section";
+import { Dialog } from "@/components/layout/Dialog";
+import TagEditor from "@/components/layout/TagEditor";
 import { LayoutContext } from "@/context/LayoutContext";
 import ProjectType from "@/types/ProjectType";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -28,6 +30,9 @@ const AdminPage = () => {
   const [projects, setProjects] = useState<ProjectType[]>([]);
   const [project, setProject] = useState<ProjectType>(emptyProject);
   const [modal, setModal] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
+  const [tagEditorModal, setTagEditorModal] = useState(false);
   const layoutData = useContext(LayoutContext);
   const [loading, setLoading] = useState(true);
   const loader = useTopLoader();
@@ -112,6 +117,19 @@ const AdminPage = () => {
     }
   };
 
+  const openDeleteDialog = (projectId: string) => {
+    setProjectToDelete(projectId);
+    setDeleteDialog(true);
+  };
+
+  const handleDeleteConfirm = (confirm: boolean) => {
+    if (confirm && projectToDelete) {
+      deleteProject(projectToDelete);
+    }
+    setDeleteDialog(false);
+    setProjectToDelete(null);
+  };
+
   const deleteProject = async (projectId: string) => {
     try {
       loader.start();
@@ -161,13 +179,14 @@ const AdminPage = () => {
           <Section isPrim>
             <div className="flex gap-3">
               <Btn onClick={() => openProjectModal() } prim>Vytvořit nový projekt</Btn>
+              <Btn onClick={() => setTagEditorModal(true)}>Upravit tagy</Btn>
               <Btn onClick={() => signOut({callbackUrl: "/", redirect: true})}>Odhlásit se</Btn>
             </div>
             <AdminProjectList 
               projects={projects} 
               openProjectModal={openProjectModal}
               loading={loading}
-              onDeleteProject={deleteProject}
+              onDeleteProject={openDeleteDialog}
             />
           </Section>
         </main>
@@ -177,6 +196,19 @@ const AdminPage = () => {
           modalState={modal} 
           setModalState={setModal}
           onSubmit={handleProjectSubmit}
+        />
+        
+        <Dialog DialogState={deleteDialog}>
+          <h4>Opravdu chcete smazat tento projekt?</h4>
+          <div className={'flex flex-wrap gap-4 w-full'}>
+            <Btn className={'flex-grow'} onClick={() => handleDeleteConfirm(true)} type="button" prim>Ano</Btn>
+            <Btn className={'flex-grow'} onClick={() => handleDeleteConfirm(false)} type="button">Ne</Btn>
+          </div>
+        </Dialog>
+
+        <TagEditor 
+          modalState={tagEditorModal} 
+          setModalState={setTagEditorModal} 
         />
       </>
     );
