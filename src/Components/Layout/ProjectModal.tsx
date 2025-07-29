@@ -5,10 +5,10 @@ import { Btn } from "./Btn";
 import ImageUpload from "./ImageUpload";
 import TagInput from "./TagInput";
 import ProjectType from "@/types/ProjectType";
-import { TagType } from "@/types/TagType";
 import RichText from "./RichText";
 import { useTopLoader } from "nextjs-toploader";
 import { LayoutContext } from "@/context/LayoutContext";
+import { Tag } from "@prisma/client";
 
 
 interface ProjectModalProps {
@@ -21,7 +21,7 @@ interface ProjectModalProps {
 
 
 export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modalState, setModalState, onSubmit }) => {
-   const [tags, setTags] = useState<TagType[]>(project.tags || []);
+   const [tags, setTags] = useState<Tag[]>(project.tags || []);
    const [initialProject, setInitialProject] = useState<ProjectType>(project);
    const [isSubmitting, setIsSubmitting] = useState(false);
    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,14 +1,14 @@
-import { TagType } from "@/types/TagType";
+import { Tag } from "@prisma/client";
 import { FC, useState, useEffect } from "react";
 
 interface TagInputProps {
-   tags: TagType[];
-   setTags: (tags: TagType[]) => void;
+   tags: Tag[];
+   setTags: (tags: Tag[]) => void;
    label?: string;
 }
 
 export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy" }) => {
-   const [allTags, setAllTags] = useState<TagType[]>([]);
+   const [allTags, setAllTags] = useState<Tag[]>([]);
 
    // Načtení všech dostupných tagů
    useEffect(() => {
@@ -25,7 +25,7 @@ export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy" }) =
       fetchTags();
    }, []);
 
-   const toggleTag = (tag: TagType) => {
+   const toggleTag = (tag: Tag) => {
       const exists = tags.find((t) => t.id === tag.id);
       if (exists) {
          setTags(tags.filter((t) => t.id !== tag.id));

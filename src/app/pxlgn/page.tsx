@@ -5,7 +5,7 @@ import { Btn } from "@/components/layout/Btn";
 import { ProjectModal } from "@/components/layout/ProjectModal";
 import { Section } from "@/components/layout/Section";
 import { Dialog } from "@/components/layout/Dialog";
-import TagEditor from "@/components/layout/TagEditor";
+import TagModal from "@/components/layout/TagModal";
 import { LayoutContext } from "@/context/LayoutContext";
 import ProjectType from "@/types/ProjectType";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -32,7 +32,7 @@ const AdminPage = () => {
   const [modal, setModal] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
-  const [tagEditorModal, setTagEditorModal] = useState(false);
+  const [tagModalModal, setTagModalModal] = useState(false);
   const layoutData = useContext(LayoutContext);
   const [loading, setLoading] = useState(true);
   const loader = useTopLoader();
@@ -155,9 +155,9 @@ const AdminPage = () => {
       const load = async () => {
         loader.start();
         setLoading(true);
-        const res = await fetch("/api/projects");
+        const res = await fetch("/api/projects?limit=100"); // Načteme všechny pro admin
         const data = await res.json();
-        setProjects(data);
+        setProjects(data.projects || data); // Kompatibilita s novým/starým API
         loader.done();
         setLoading(false);
       };
@@ -179,7 +179,7 @@ const AdminPage = () => {
           <Section isPrim>
             <div className="flex gap-3">
               <Btn onClick={() => openProjectModal() } prim>Vytvořit nový projekt</Btn>
-              <Btn onClick={() => setTagEditorModal(true)}>Upravit tagy</Btn>
+              <Btn onClick={() => setTagModalModal(true)}>Upravit tagy</Btn>
               <Btn onClick={() => signOut({callbackUrl: "/", redirect: true})}>Odhlásit se</Btn>
             </div>
             <AdminProjectList 
@@ -206,9 +206,9 @@ const AdminPage = () => {
           </div>
         </Dialog>
 
-        <TagEditor 
-          modalState={tagEditorModal} 
-          setModalState={setTagEditorModal} 
+        <TagModal 
+          modalState={tagModalModal} 
+          setModalState={setTagModalModal} 
         />
       </>
     );

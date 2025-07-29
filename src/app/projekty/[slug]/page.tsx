@@ -1,9 +1,9 @@
 import { Header } from "@/components/header/Index";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
 import { Section } from "@/components/layout/Section";
 import Image from "next/image";
+import { Btn } from "@/components/layout/Btn";
 
 async function getProject(slug: string) {
     const project = await prisma.project.findUnique({
@@ -41,11 +41,12 @@ export default async function ProjectDetail(props: { params: tParams }) {
                 <Section isPrim>
                     <Image src={project.photo} alt={project.name} fill className={'!relative aspect-[4/3] rounded-3xl object-cover'}/>
                     <div dangerouslySetInnerHTML={{ __html: project.body }}></div>
-                    <ul>
+                    <div className={'mt-4 flex flex-wrap gap-4'}>
+                        <Btn href={`/projekty`} prim>Zpět</Btn>
                         {project.tags.map((tag) => (
-                            <li key={tag.tag.id}>{tag.tag.name}</li>
+                            <Btn href={`/projekty?tag=${tag.tag.id}`} key={tag.tag.id}>{tag.tag.name}</Btn>
                         ))}
-                    </ul>
+                    </div>
                 </Section>
             </main>
         </>

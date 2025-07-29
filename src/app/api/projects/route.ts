@@ -3,27 +3,53 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
-export const GET = async () => {
-   const projects = await prisma.project.findMany({
-      orderBy: { createdOn: "desc" },
-      select: {
-         id: true,
-         name: true,
-         slug: true,
-         photo: true,
-         tags: {
+export const GET = async (req: NextRequest) => {
+   const { searchParams } = new URL(req.url);
+   const page = parseInt(searchParams.get('page') || '1');
+   const limit = parseInt(searchParams.get('limit') || '4');
+   const skip = (page - 1) * limit;
+
+   try {
+      const [projects, totalCount] = await Promise.all([
+         prisma.project.findMany({
+            orderBy: { createdOn: "desc" },
+            skip,
+            take: limit,
             select: {
-               tag: {
+               id: true,
+               name: true,
+               slug: true,
+               photo: true,
+               description: true,
+               tags: {
                   select: {
-                     id: true
+                     tag: {
+                        select: {
+                           id: true,
+                           name: true
+                        }
+                     }
                   }
                }
             }
-         }
-      }
-   });
+         }),
+         prisma.project.count()
+      ]);
 
-   return NextResponse.json(projects);
+      const hasMore = skip + limit < totalCount;
+
+      return NextResponse.json({
+         projects: projects.map(project => ({
+            ...project,
+            tags: project.tags.map((t) => t.tag)
+         })),
+         hasMore,
+         totalCount,
+         currentPage: page
+      });
+   } catch (error) {
+      return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
+   }
 };
 
 export const POST = async (req: NextRequest) => {

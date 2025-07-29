@@ -1,5 +1,4 @@
 import { FC, useState, useEffect, useContext } from "react";
-import { TagType } from "@/types/TagType";
 import { Btn } from "./Btn";
 import Input from "./Input";
 import { Dialog } from "./Dialog";
@@ -7,18 +6,19 @@ import { LayoutContext } from "@/context/LayoutContext";
 import { useTopLoader } from "nextjs-toploader";
 import { Modal } from "./Modal";
 import Image from "next/image";
+import { Tag } from "@prisma/client";
 
-interface TagEditorProps {
+interface TagModalProps {
    modalState: boolean;
    setModalState: (state: boolean) => void;
 }
 
-export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => {
-   const [tags, setTags] = useState<TagType[]>([]);
+export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
+   const [tags, setTags] = useState<Tag[]>([]);
    const [newTagName, setNewTagName] = useState("");
    const [editedTags, setEditedTags] = useState<Record<string, string>>({});
    const [deleteDialog, setDeleteDialog] = useState(false);
-   const [tagToDelete, setTagToDelete] = useState<TagType | null>(null);
+   const [tagToDelete, setTagToDelete] = useState<Tag | null>(null);
    const [loading, setLoading] = useState(false);
    
    const layoutData = useContext(LayoutContext);
@@ -116,7 +116,7 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
       }
    };
 
-   const deleteTag = async (tag: TagType) => {
+   const deleteTag = async (tag: Tag) => {
       try {
          loader.start();
          const response = await fetch('/api/tags', {
@@ -155,7 +155,7 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
       });
    };
 
-   const openDeleteDialog = (tag: TagType) => {
+   const openDeleteDialog = (tag: Tag) => {
       setTagToDelete(tag);
       setDeleteDialog(true);
    };
@@ -172,7 +172,7 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
    return (
       <>
          <Modal modalState={modalState} setModalState={setModalState} title="Správa tagů">
-                         {/* Seznam tagů */}
+               {/* Seznam tagů */}
                <div className="flex flex-col gap-2">
                   {loading ? (
                      <p className="text-wh text-center">Načítám tagy...</p>
@@ -182,7 +182,6 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
                      tags.map((tag) => {
                         const currentValue = editedTags[tag.id] ?? tag.name;
                         const isChanged = editedTags[tag.id] !== undefined && editedTags[tag.id] !== tag.name;
-                        
                         return (
                            <div key={tag.id} className="flex items-center gap-2">
                               <Input
@@ -191,7 +190,6 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
                                  onChange={(e) => handleTagChange(tag.id, e.target.value)}
                                  name={`tag-${tag.id}`}
                                  id={`tag-${tag.id}`}
-                                 label=""
                                  className="flex-grow"
                                  required={false}
                               />
@@ -204,11 +202,10 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
                                        prim 
                                        disabled={!currentValue.trim()}
                                     >
-                                       💾
+                                       <Image src={'/images/icons/save.svg'} alt={'Save'} height={22} width={22}/>
                                     </Btn>
-                                    <Btn type="button" onClick={() => cancelEdit(tag.id)}       
->
-                                       revert
+                                    <Btn type="button" onClick={() => cancelEdit(tag.id)} prim>
+                                       <Image src={'/images/icons/revert.svg'} alt={'Revert'} height={22} width={22}/>
                                     </Btn>
                                  </>
                               )}
@@ -217,7 +214,7 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
                                  onClick={() => openDeleteDialog(tag)}
                                  prim
                               >
-                                 <Image src={'/images/icons/binSolid.svg'} alt={'Delete'} width={16} height={16} className={'w-4 h-4'}/>
+                                 <Image src={'/images/icons/binSolid.svg'} alt={'Delete'} height={22} width={22}/>
                               </Btn>
                            </div>
                         );
@@ -233,19 +230,18 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
                      onChange={(e) => setNewTagName(e.target.value)}
                      name="new-tag"
                      id="new-tag"
-                     label="Vytvořit nový tag"
                      className="flex-grow"
                      required={false}
                   />
                   <Btn type="submit" prim disabled={!newTagName.trim()}>
-                     Přidat
+                     <Image src={'/images/icons/add.svg'} alt={'Add'} height={22} width={22}/>
                   </Btn>
                </form>
          </Modal>
 
          {/* Potvrzení mazání */}
          <Dialog DialogState={deleteDialog}>
-            <h4 className="text-wh font-quicksand text-lg">
+            <h4>
                Opravdu chcete smazat tag "{tagToDelete?.name}"?
             </h4>
             <div className="flex flex-wrap gap-4 w-full">
@@ -261,4 +257,4 @@ export const TagEditor: FC<TagEditorProps> = ({ modalState, setModalState }) => 
    );
 };
 
-export default TagEditor;
+export default TagModal;

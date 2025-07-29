@@ -50,7 +50,7 @@ export default function ONas() {
                       <h3>Reason</h3>
                     </div>
                     <p>
-                      Sledujeme moderní trendy, ale používáme je uvážlivě. Nesázíme na buzzwordy ani módní zkratky – zaměřujeme se na řešení, která dávají smysl, šetří čas a přinášejí skutečný přínos.
+                      Sledujeme moderní trendy, ale používáme je uvážlivě. Nesázíme na buzzwordy ani módní zkratky – zaměřujeme se na řešení, která dávají smysl, šetří čas a přinášejí skutečn.
                     </p>
                   </Card>
                 </div>
@@ -72,7 +72,7 @@ export default function ONas() {
                   animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'flex flex-col gap-4 lg:col-span-2 items-start'}>
                     <h3>Matěj Matějka</h3>
                     <p>
-                      Zdravíčko! Jmenuji se Matěj Matějka – jsem full-stack vývojář a grafik, známý online pod přezdívkou <strong>Pixelgon</strong>.
+                      Zdravím! Jmenuji se Matěj Matějka – jsem full-stack vývojář a grafik, známý online pod přezdívkou <strong>Pixelgon</strong>.
                       <br />
                       Baví mě propojovat techniku s estetikou a tvořit digitální řešení, která dávají smysl a fungují v praxi. Momentálně stojím za celým projektem sám – od návrhu přes vývoj až po nasazení, takže mám pod kontrolou celý proces od začátku do konce.
                       <br />
