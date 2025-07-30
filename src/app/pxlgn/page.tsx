@@ -21,8 +21,7 @@ const emptyProject: ProjectType = {
   background: "",
   photo: "",
   tags: [],
-  updatedAt: new Date(),
-  createdAt: new Date(),
+  visible: true,
 };
 
 const AdminPage = () => {
@@ -130,6 +129,27 @@ const AdminPage = () => {
     setProjectToDelete(null);
   };
 
+  const toggleProjectVisibility = async (projectId: string) => {
+    loader.start();
+    try {
+      const response = await fetch(`/api/projects/${projectId}`, {
+        method: 'PATCH',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const updatedProject = data.project; // API vrací { project: updatedProject }
+        setProjects(prev => prev.map(p => p.id === updatedProject.id ? updatedProject : p));
+        layoutData.showToast({ message: `Projekt ${updatedProject.visible ? 'zveřejněn' : 'skryt'}`, type: 'success' });
+      } else {
+        layoutData.showToast({ message: 'Chyba při změně viditelnosti projektu', type: 'error' });
+      }
+    } catch (error) {
+      layoutData.showToast({ message: 'Chyba při změně viditelnosti projektu', type: 'error' });
+    } finally {
+      loader.done();
+    }
+  };
+
   const deleteProject = async (projectId: string) => {
     try {
       loader.start();
@@ -155,7 +175,7 @@ const AdminPage = () => {
       const load = async () => {
         loader.start();
         setLoading(true);
-        const res = await fetch("/api/projects?limit=100"); // Načteme všechny pro admin
+        const res = await fetch("/api/projects"); // Načteme všechny pro admin
         const data = await res.json();
         setProjects(data.projects || data); // Kompatibilita s novým/starým API
         loader.done();
@@ -187,6 +207,7 @@ const AdminPage = () => {
               openProjectModal={openProjectModal}
               loading={loading}
               onDeleteProject={openDeleteDialog}
+              onToggleVisibility={toggleProjectVisibility}
             />
           </Section>
         </main>
@@ -208,7 +229,7 @@ const AdminPage = () => {
 
         <TagModal 
           modalState={tagModalModal} 
-          setModalState={setTagModalModal} 
+          setModalState={setTagModalModal}
         />
       </>
     );

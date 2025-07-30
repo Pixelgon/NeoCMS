@@ -10,6 +10,7 @@ async function main() {
     update: {},
     create: {
       name: 'Tag1',
+      slug: 'tag1',
     },
   })
 
@@ -18,6 +19,7 @@ async function main() {
     update: {},
     create: {
       name: 'Tag2',
+      slug: 'tag2',
     },
   })
 

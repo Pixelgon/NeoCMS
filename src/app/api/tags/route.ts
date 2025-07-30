@@ -31,7 +31,7 @@ export const POST = async (req: NextRequest) => {
       }
 
       const tag = await prisma.tag.create({
-         data: { name },
+         data: { name, slug: createTagSlug(name) },
       });
 
       return NextResponse.json(tag, { status: 201 });
@@ -78,7 +78,7 @@ export const PUT = async (req: NextRequest) => {
 
       const tag = await prisma.tag.update({
          where: { id },
-         data: { name },
+         data: { name, slug: createTagSlug(name) },
       });
 
       return NextResponse.json(tag, { status: 200 });
@@ -87,3 +87,9 @@ export const PUT = async (req: NextRequest) => {
    }
 };
 
+export const createTagSlug = (name: string): string => {
+   return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+}

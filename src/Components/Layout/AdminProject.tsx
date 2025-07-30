@@ -1,18 +1,20 @@
 import Image from "next/image";
-import Link from "next/link";
 import { FC } from "react";
 import { Btn } from "./Btn";
+import { EyeIcon, EyeSlashIcon, MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export interface AdminProjectProps {
    name: string;
    slug: string
    image: string;
+   visible: boolean;
    edit: () => void;
-   onDelete?: () => void;
+   onDelete: () => void;
+   onToggleVisibility: () => void;
 }
 
-export const AdminProject: FC<AdminProjectProps> = ({name, edit, image, slug, onDelete}) => {
-   
+export const AdminProject: FC<AdminProjectProps> = ({name, edit, image, slug, onDelete, onToggleVisibility, visible}) => {
+
    return (
       <div className="relative group">
          <button onClick={edit} className={'relative w-full h-auto before:bg-project-gradient before:absolute before: flex flex-col justify-center items-center before:bottom-0 before:duration-300 before:left-0 before:w-full before:transition-all group-hover:before:bottom-[-100%] before:h-full before:z-10 overflow-hidden rounded-3xl'}>
@@ -26,16 +28,20 @@ export const AdminProject: FC<AdminProjectProps> = ({name, edit, image, slug, on
                target="_blank"
                prim
             >
-               <Image src={'/images/icons/magnSolid.svg'} alt={'View'} width={16} height={16} className={'w-4 h-4'}/>
+               <MagnifyingGlassIcon className={'w-4 h-4'}/>
             </Btn>
-            {onDelete && (
                <Btn
                   onClick={() => onDelete()}
                   prim
                >
-                  <Image src={'/images/icons/binSolid.svg'} alt={'Delete'} width={16} height={16} className={'w-4 h-4'}/>
+                 <TrashIcon className={'w-4 h-4'}/>
                </Btn>
-            )}
+               <Btn
+                  onClick={() => onToggleVisibility()}
+                  prim
+               >
+                  {visible ? <EyeIcon className={'w-4 h-4'}/> : <EyeSlashIcon className={'w-4 h-4'}/>}
+               </Btn>
          </div>
       </div>
    );

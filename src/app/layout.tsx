@@ -40,7 +40,7 @@ export default function RootLayout({
 
   return (
       <>
-        <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`}>
+        <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`} data-scroll-behavior="smooth">
           <body className={'relative'}>
             <SessionProvider>
               <MotionConfig transition={{duration: .5}}>

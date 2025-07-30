@@ -8,11 +8,30 @@ import { FC } from "react";
 export const metadata: Metadata = {
     title: "Projekty | Pixelgon",
     description: "Portfolio projektů společnosti Pixelgon - webové aplikace, e-shopy a další digitální řešení.",
+    openGraph: {
+        title: "Projekty | Pixelgon",
+        description: "Podívejte se na naše nejnovější projekty - weby, webové aplikace, grafický design a další digitální řešení.",
+        type: "website",
+        url: "https://pixelgon.cz/projekty",
+        images: [
+            {
+                url: "/images/headers/projects-header.webp",
+                width: 1200,
+                height: 630,
+                alt: "Pixelgon",
+            },
+        ],
+    },
+    alternates: {
+        canonical: "https://pixelgon.cz/projekty",
+    },
+    keywords: ["webové aplikace", "e-shopy", "digitální řešení", "portfolio", "Pixelgon", "web development"],
 };
 
 async function getAllProjects() {
     const projects = await prisma.project.findMany({
         orderBy: { createdOn: "desc" },
+        where: { visible: true },
         select: {
             id: true,
             name: true,
@@ -53,15 +72,16 @@ async function getAllTags() {
 }
 
 interface PageProps {
-    searchParams: { [key: string]: string | string[] | undefined };
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export const Projekty: FC<PageProps> = async ({ searchParams }) => {
-    const [allProjects, availableTags] = await Promise.all([
+    const [allProjects, availableTags, resolvedSearchParams] = await Promise.all([
         getAllProjects(),
-        getAllTags()
+        getAllTags(),
+        searchParams
     ]);
-    const tagParam = searchParams.tag;
+    const tagParam = resolvedSearchParams.tag;
     const tagSlugs = Array.isArray(tagParam) ? tagParam : tagParam ? [tagParam] : [];
     const jsonLd = {
         "@context": "https://schema.org",
@@ -89,8 +109,8 @@ export const Projekty: FC<PageProps> = async ({ searchParams }) => {
             <Header bg="/images/headers/projects-header.webp" title="Projekty"/>
             <main>
                 <Section isPrim>
-                    <h2>Naše práce</h2>
-                    <p></p>
+                    <h2>Naše projekty</h2>
+                    <p>Zde najdete portfolio našich nejnovějších projektů. Specializujeme se na tvorbu webových aplikací, e-shopů a dalších digitálních řešení na míru.</p>
                     <ProjectsList 
                         projects={allProjects} 
                         availableTags={availableTags}

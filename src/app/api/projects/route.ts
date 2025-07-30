@@ -5,22 +5,25 @@ import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
    const { searchParams } = new URL(req.url);
-   const page = parseInt(searchParams.get('page') || '1');
-   const limit = parseInt(searchParams.get('limit') || '4');
-   const skip = (page - 1) * limit;
-
+   const session = await auth(); // Získání uživatelské session
+   
    try {
+      // Pokud je uživatel přihlášený, může vidět i skryté projekty
+      const whereCondition = session?.user 
+         ? {  } 
+         : { visible: true };
+
       const [projects, totalCount] = await Promise.all([
          prisma.project.findMany({
             orderBy: { createdOn: "desc" },
-            skip,
-            take: limit,
+            where: whereCondition,
             select: {
                id: true,
                name: true,
                slug: true,
                photo: true,
                description: true,
+               visible: true,
                tags: {
                   select: {
                      tag: {
@@ -35,17 +38,11 @@ export const GET = async (req: NextRequest) => {
          }),
          prisma.project.count()
       ]);
-
-      const hasMore = skip + limit < totalCount;
-
       return NextResponse.json({
          projects: projects.map(project => ({
             ...project,
             tags: project.tags.map((t) => t.tag)
          })),
-         hasMore,
-         totalCount,
-         currentPage: page
       });
    } catch (error) {
       return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });

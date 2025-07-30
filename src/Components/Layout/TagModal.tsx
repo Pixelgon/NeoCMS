@@ -7,6 +7,7 @@ import { useTopLoader } from "nextjs-toploader";
 import { Modal } from "./Modal";
 import Image from "next/image";
 import { Tag } from "@prisma/client";
+import { ArrowUturnLeftIcon, CheckIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 interface TagModalProps {
    modalState: boolean;
@@ -183,7 +184,7 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
                         const currentValue = editedTags[tag.id] ?? tag.name;
                         const isChanged = editedTags[tag.id] !== undefined && editedTags[tag.id] !== tag.name;
                         return (
-                           <div key={tag.id} className="flex items-center gap-2">
+                           <div key={tag.id} className="flex gap-2">
                               <Input
                                  type="text"
                                  value={currentValue}
@@ -202,10 +203,10 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
                                        prim 
                                        disabled={!currentValue.trim()}
                                     >
-                                       <Image src={'/images/icons/save.svg'} alt={'Save'} height={22} width={22}/>
+                                       <CheckIcon className={'w-4 h-4'}/>
                                     </Btn>
                                     <Btn type="button" onClick={() => cancelEdit(tag.id)} prim>
-                                       <Image src={'/images/icons/revert.svg'} alt={'Revert'} height={22} width={22}/>
+                                       <ArrowUturnLeftIcon className={'w-4 h-4'}/>
                                     </Btn>
                                  </>
                               )}
@@ -214,7 +215,7 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
                                  onClick={() => openDeleteDialog(tag)}
                                  prim
                               >
-                                 <Image src={'/images/icons/binSolid.svg'} alt={'Delete'} height={22} width={22}/>
+                                <TrashIcon className={'w-4 h-4'}/>
                               </Btn>
                            </div>
                         );
@@ -222,7 +223,7 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
                   )}
                </div>
                {/* Přidání nového tagu */}
-               <form onSubmit={(e) => { e.preventDefault(); createTag(); }} className="flex gap-2 mt-2">
+               <form onSubmit={(e) => { e.preventDefault(); createTag(); }} className="flex gap-2 mt-6">
                   <Input
                      type="text"
                      placeholder="Název nového tagu"
@@ -234,7 +235,7 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
                      required={false}
                   />
                   <Btn type="submit" prim disabled={!newTagName.trim()}>
-                     <Image src={'/images/icons/add.svg'} alt={'Add'} height={22} width={22}/>
+                     <CheckIcon className={'w-4 h-4'}/>
                   </Btn>
                </form>
          </Modal>

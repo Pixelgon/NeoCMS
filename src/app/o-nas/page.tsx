@@ -10,6 +10,21 @@ import { Card } from "@/components/layout/Card";
 export const metadata: Metadata = {
   title: 'O nás | Pixelgon',
   description: 'Zjistěte více o našem týmu, naší vizi a hodnotách, které nás vedou k vytváření unikátních digitálních řešení.',
+  openGraph: {
+    title: 'O nás | Pixelgon',
+    description: 'Zjistěte více o našem týmu, naší vizi a hodnotách, které nás vedou k vytváření unikátních digitálních řešení.',
+    type: 'website',
+    url: 'https://pixelgon.cz/o-nas',
+    images: [
+      {
+        url: '/images/headers/about-header.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Pixelgon O nás',
+      },
+    ],
+  },
+  keywords: ['O nás', 'Pixelgon', 'tým', 'vize', 'hodnoty', 'digitální řešení', 'web development'],
 };
 
 export default function ONas() {
@@ -20,8 +35,7 @@ export default function ONas() {
               <Section isPrim>
                <motion.h2
                   initial={{ opacity: 0, scale: 0 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: 1, scale: 1 }}
                 >
                   Naše vize
                 </motion.h2>

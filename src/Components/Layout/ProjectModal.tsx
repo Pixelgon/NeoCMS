@@ -68,7 +68,6 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
             [name]: value,
          }));
       }
-      console.log(project);
    };
    const loader = useTopLoader();
    const layoutData = useContext(LayoutContext);
@@ -180,14 +179,11 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
             });
          }
       } catch (error) {
-         console.error('Error uploading image:', error);
-         
          // V případě chyby zruší preview
          setProject((prev) => ({
             ...prev,
             [fieldName]: "",
          }));
-
          if (layoutData?.showToast) {
             layoutData.showToast({
                message: "Chyba při nahrávání obrázku",

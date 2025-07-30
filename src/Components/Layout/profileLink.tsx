@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FC } from "react";
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
 
 export enum ProfileLinkType {
     Instagram = 'instagram',
@@ -16,7 +17,7 @@ interface ProfileLinkProps {
     link: string;
 }
 
-const ImgaeClass = '!relative';
+const ImageClass = '!relative';
 
 export const ProfileLink:FC<ProfileLinkProps> = ({type, link}) => {
     return (
@@ -25,23 +26,23 @@ export const ProfileLink:FC<ProfileLinkProps> = ({type, link}) => {
                 switch (type) {
                     case ProfileLinkType.Instagram:
                         return (
-                            <Image src={'/images/icons/instagram.svg'} alt={'Instagram'} fill className={ImgaeClass}/>
+                            <Image src={'/images/icons/instagram.svg'} alt={'Instagram'} fill className={ImageClass}/>
                         );
                     case ProfileLinkType.Linkedin:
                         return (
-                            <Image src={'/images/icons/linked-in.svg'} alt={'Linkedin'} fill className={ImgaeClass}/>
+                            <Image src={'/images/icons/linked-in.svg'} alt={'Linkedin'} fill className={ImageClass}/>
                         );
                     case ProfileLinkType.Github:
                         return (
-                            <Image src={'/images/icons/github.svg'} alt={'Github'} fill className={ImgaeClass}/>
+                            <Image src={'/images/icons/github.svg'} alt={'Github'} fill className={ImageClass}/>
                         );
                     case ProfileLinkType.Discord:
                         return (
-                            <Image src={'/images/icons/discord.svg'} alt={'Discord'} fill className={ImgaeClass}/>
+                            <Image src={'/images/icons/discord.svg'} alt={'Discord'} fill className={ImageClass}/>
                         );
                     case ProfileLinkType.Email:
                         return (
-                            <Image src={'/images/icons/envelopeSolid.svg'} alt={'Email'} fill className={ImgaeClass}/>
+                            <EnvelopeIcon className={`w-fill h-fill text-sec ${ImageClass}`} aria-hidden="true" />
                         );
                     default:
                         return null;

@@ -5,9 +5,16 @@ import { NextResponse, NextRequest } from "next/server";
 export const GET = async ( req: NextRequest, context: { params: { id: string } } ) => {
    const params = await context.params;   
    const id = params.id;
+   const session = await auth(); // Získání uživatelské session
+   
    try {
+      // Pokud je uživatel přihlášený, může vidět i skryté projekty
+      const whereCondition = session?.user 
+         ? { id } 
+         : { id, visible: true };
+
       const project = await prisma.project.findUnique({
-         where: { id },
+         where: whereCondition,
          include: {
             tags: {
                select: {
@@ -15,6 +22,7 @@ export const GET = async ( req: NextRequest, context: { params: { id: string } }
                      select: {
                         id: true,
                         name: true,
+                        slug: true,
                      },
                   },
                },
@@ -46,7 +54,6 @@ export const PUT = async (req: NextRequest, context: { params: { id: string } })
    try {
       const { name, body, description, background, photo, slug, tags } = await req.json();
 
-      console.log('PUT /api/projects - Data received:', { name, body, description, background, photo, slug, tags });
 
       if (!name || !body || !description || !background || !photo || !slug) {
          return NextResponse.json({ error: "Všechna pole jsou povinná." }, { status: 400 });
@@ -101,6 +108,7 @@ export const PUT = async (req: NextRequest, context: { params: { id: string } })
                      select: {
                         id: true,
                         name: true,
+                        slug: true,
                      },
                   },
                },
@@ -175,3 +183,35 @@ export const DELETE = async (req: NextRequest, context: { params: { id: string }
       return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
    }
 };
+
+// toggle visibility
+export const PATCH = async (req: NextRequest, context: { params: { id: string } }) => {
+   const params = await context.params;
+   const id = params.id;
+   const session = await auth(); // Získání uživatelské session
+
+   if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+   }
+
+   try {
+      const existingProject = await prisma.project.findUnique({
+         where: { id },
+         select: { visible: true }
+      });
+      
+      if (!existingProject) {
+         return NextResponse.json({ error: "Projekt nenaleze" }, { status: 404 });
+      }
+
+      const updatedProject = await prisma.project.update({
+         where: { id },
+         data: { visible: !existingProject.visible },
+      });
+
+      return NextResponse.json({ project: updatedProject }, { status: 200 });
+   } catch (error) {
+      console.error("Error updating project:", error);
+      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+   }
+}

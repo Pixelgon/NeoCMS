@@ -15,8 +15,8 @@ model Project {
   background   String
   photo        String
   slug         String       @unique
-  createdOn    DateTime     @default(now())
-  lastModified DateTime     @updatedAt
+  createdOn    DateTime     @default(now()) @db.Timestamp(0)
+  lastModified DateTime     @updatedAt @db.Timestamp(0)
   tags         ProjectTag[]
   visible      Boolean      @default(true)
 }
