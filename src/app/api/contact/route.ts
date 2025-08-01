@@ -4,10 +4,15 @@ import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
   const formData: FormType = await req.json();
-  const { name, email, message } = formData;
+  const { name, address, message, email } = formData;
 
-  if (!formData.name || !formData.email || !formData.message) {
+  if (!formData.name || !formData.address || !formData.message) {
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+  }
+
+  if(formData.email) {
+    console.log("Honeypot field detected, ignoring email submission.");
+    return NextResponse.json({ success : true });
   }
 
   const transporter = nodemailer.createTransport({
@@ -26,7 +31,7 @@ export async function POST(req: Request) {
       to: process.env.ADMIN_EMAIL,
       subject: `Nová zpráva z kontaktního formuláře od ${name}`,
       text: message,
-      html: `<p><strong>Jméno:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Zpráva:</strong><br/>${message}</p>`,
+      html: `<p><strong>Jméno:</strong> ${name}</p><p><strong>Email:</strong> ${address}</p><p><strong>Zpráva:</strong><br/>${message}</p>`,
     });
 
     return NextResponse.json({ success: true });

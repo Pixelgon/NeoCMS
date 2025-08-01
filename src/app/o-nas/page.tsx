@@ -64,7 +64,7 @@ export default function ONas() {
                       <h3>Reason</h3>
                     </div>
                     <p>
-                      Sledujeme moderní trendy, ale používáme je uvážlivě. Nesázíme na buzzwordy ani módní zkratky – zaměřujeme se na řešení, která dávají smysl, šetří čas a přinášejí skutečn.
+                      Sledujeme moderní trendy, ale používáme je uvážlivě. Nehoníme buzzwordy – raději volíme technologie a přístupy, které řeší reálné problémy a šetří čas i prostředky.
                     </p>
                   </Card>
                 </div>

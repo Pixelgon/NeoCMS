@@ -21,8 +21,9 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
 
   const [formData, setFormData] = useState<FormType>({
     name: "",
-    email: "",
+    address: "",
     message: "",
+    email: "",
   });
 
   const layoutData = useContext(LayoutContext);
@@ -39,6 +40,9 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
     e.preventDefault();
     loader.start();
     try {
+      if (!formData.email) {
+        setFormData((prev) => ({ name: prev.name, address: prev.address, message: prev.message }));
+      }
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,7 +52,7 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
       if (response.ok) {
         loader.done();
         setModalState(false);
-        setFormData({ name: "", email: "", message: "" });
+        setFormData({ name: "", email: "", message: "", address: "" });
         layoutData.showToast({ message: 'Zpráva byla úspěšně odeslána.', type: 'success' });
       } else {
         const errorData = await response.json();
@@ -77,12 +81,22 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
         <Input
           type="email"
           placeholder="jmeno@email.cz"
+          name="address"
+          id="address"
+          label="Email*"
+          value={formData.address}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="email"
+          placeholder="Email"
           name="email"
           id="email"
           label="Email*"
           value={formData.email}
           onChange={handleChange}
-          required
+          className={'hidden'}
         />
         <Textarea
           placeholder="Vaše zpráva"

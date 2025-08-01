@@ -1,5 +1,6 @@
 export type FormType = {
     name: string;
-    email: string;
+    address: string;
     message: string;
+    email?: string; // Optional field for email
 }
