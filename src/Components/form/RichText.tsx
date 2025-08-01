@@ -1,15 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Bold from "@tiptap/extension-bold";
-import Italic from "@tiptap/extension-italic";
-import Heading from "@tiptap/extension-heading";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
-import { Dialog } from "./Dialog";
-import Input from "./Input";
-import { Btn } from "./Btn";
 import { useTopLoader } from "nextjs-toploader";
+import { Btn } from "../layout/Btn";
+import { Dialog } from "../layout/Dialog";
+import Input from "./Input";
 import RichTextTab from "./RichTextTab";
 
 interface RichTextProps {

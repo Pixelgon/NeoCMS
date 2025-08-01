@@ -1,13 +1,12 @@
 import { FC, useState, useEffect, useContext } from "react";
-import { Btn } from "./Btn";
-import Input from "./Input";
-import { Dialog } from "./Dialog";
 import { LayoutContext } from "@/context/LayoutContext";
 import { useTopLoader } from "nextjs-toploader";
-import { Modal } from "./Modal";
-import Image from "next/image";
 import { Tag } from "@prisma/client";
 import { ArrowUturnLeftIcon, CheckIcon, TrashIcon } from "@heroicons/react/24/outline";
+import Input from "../form/Input";
+import { Btn } from "../layout/Btn";
+import { Dialog } from "../layout/Dialog";
+import { Modal } from "../layout/Modal";
 
 interface TagModalProps {
    modalState: boolean;

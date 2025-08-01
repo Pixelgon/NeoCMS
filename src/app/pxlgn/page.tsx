@@ -2,15 +2,15 @@
 import { Header } from "@/components/header/Index";
 import { AdminProjectList } from "@/components/layout/AdminProjectList";
 import { Btn } from "@/components/layout/Btn";
-import { ProjectModal } from "@/components/layout/ProjectModal";
+import { ProjectModal } from "@/components/project/ProjectModal";
 import { Section } from "@/components/layout/Section";
 import { Dialog } from "@/components/layout/Dialog";
-import TagModal from "@/components/layout/TagModal";
 import { LayoutContext } from "@/context/LayoutContext";
 import ProjectType from "@/types/ProjectType";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useTopLoader } from "nextjs-toploader";
 import { useContext, useEffect, useState } from "react";
+import TagModal from "@/components/tag/TagModal";
 
 const emptyProject: ProjectType = {
   id: "",

@@ -1,14 +1,14 @@
 import { FC, ChangeEvent, useState, useEffect, useContext, use } from "react";
-import Input from "./Input";
-import { Modal } from "./Modal";
-import { Btn } from "./Btn";
-import ImageUpload from "./ImageUpload";
-import TagInput from "./TagInput";
+import Input from "../form/Input";
+import { Modal } from "../layout/Modal";
+import { Btn } from "../layout/Btn";
+import ImageUpload from "../form/ImageUpload";
+import TagInput from "../tag/TagInput";
 import ProjectType from "@/types/ProjectType";
-import RichText from "./RichText";
 import { useTopLoader } from "nextjs-toploader";
 import { LayoutContext } from "@/context/LayoutContext";
 import { Tag } from "@prisma/client";
+import RichText from "../form/RichText";
 
 
 interface ProjectModalProps {

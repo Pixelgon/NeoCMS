@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { AdminProject } from "@/components/layout/AdminProject";
-import { ProjectSkeleton } from "./ProjectSkeleton";
+import { ProjectSkeleton } from "../project/ProjectSkeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import ProjectType from "@/types/ProjectType";
 

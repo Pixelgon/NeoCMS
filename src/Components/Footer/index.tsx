@@ -7,13 +7,13 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { useContext, useState, useEffect, PropsWithChildren, FC } from "react";
 import { Btn } from "../layout/Btn";
-import Input from "../layout/Input";
+import Input from "../form/Input";
 import { Modal } from "../layout/Modal";
 import { Section } from "../layout/Section";
-import Textarea from "../layout/TextArea";
+import Textarea from "../form/TextArea";
 import Image from "next/image";
 import { FormType } from "@/types/FormType";
-import ContactForm from "../layout/ContactForm";
+import ContactForm from "../form/ContactForm";
 
 
 

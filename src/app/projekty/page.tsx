@@ -1,7 +1,8 @@
 import { Header } from "@/components/header/Index";
 import { Section } from "@/components/layout/Section";
-import ProjectsList from "@/components/layout/ProjectList";
-import { prisma } from "@/lib/prisma";
+import ProjectsList from "@/components/project/ProjectList";
+import getAllProjects from "@/utils/project/getAllProjects";
+import getAllTags from "@/utils/project/getAllTags";
 import { Metadata } from "next";
 import { FC } from "react";
 
@@ -28,48 +29,9 @@ export const metadata: Metadata = {
     keywords: ["webové aplikace", "e-shopy", "digitální řešení", "portfolio", "Pixelgon", "web development"],
 };
 
-async function getAllProjects() {
-    const projects = await prisma.project.findMany({
-        orderBy: { createdOn: "desc" },
-        where: { visible: true },
-        select: {
-            id: true,
-            name: true,
-            slug: true,
-            photo: true,
-            description: true,
-            tags: {
-                select: {
-                    tag: {
-                        select: {
-                            id: true,
-                            name: true,
-                            slug: true,
-                        }
-                    }
-                }
-            }
-        }
-    });
 
-    return projects.map(project => ({
-        ...project,
-        tags: project.tags.map((t) => t.tag)
-    }));
-}
 
-async function getAllTags() {
-    const tags = await prisma.tag.findMany({
-        orderBy: { name: "asc" },
-        select: {
-            id: true,
-            name: true,
-            slug: true,
-        }
-    });
 
-    return tags;
-}
 
 interface PageProps {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

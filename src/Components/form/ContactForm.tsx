@@ -1,8 +1,8 @@
 'use client'
 import { FC, FormEvent, useState, ChangeEvent, useContext } from "react";
-import { Btn } from "./Btn";
+import { Btn } from "../layout/Btn";
 import Input from "./Input";
-import { Modal } from "./Modal";
+import { Modal } from "../layout/Modal";
 import Textarea from "./TextArea";
 import { FormType } from "@/types/FormType";
 import { LayoutContext } from "@/context/LayoutContext";
