@@ -11,7 +11,6 @@ async function getAllProjects() {
             photo: true,
             description: true,
             lastModified: true,
-            createdOn: true,
             tags: {
                 select: {
                     tag: {

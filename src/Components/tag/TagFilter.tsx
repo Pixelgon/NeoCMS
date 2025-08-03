@@ -35,7 +35,7 @@ export const TagFilter: FC<TagFilterProps> = ({ availableTags, selectedTags, han
                >
                   <Btn
                         onClick={clearFilters}
-                        className="!bg-err-gradient !w-auto"
+                        className="!w-auto"
                         prim
                   >
                      Vyčistit filtry

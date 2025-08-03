@@ -1,5 +1,14 @@
 import { Header } from "@/components/header/Index";
 import { Section } from "@/components/layout/Section";
+import { Metadata } from "next";
+
+
+const metadata: Metadata = {
+    title: 'GDPR | Pixelgon',
+    robots: {
+        index: false,
+    },
+};
 
 export default function GDPR() {
 return (

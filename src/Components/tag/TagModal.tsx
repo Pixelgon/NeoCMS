@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useContext } from "react";
+import { FC, useState, useEffect, useContext, useCallback } from "react";
 import { LayoutContext } from "@/context/LayoutContext";
 import { useTopLoader } from "nextjs-toploader";
 import { Tag } from "@prisma/client";
@@ -20,18 +20,9 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
    const [deleteDialog, setDeleteDialog] = useState(false);
    const [tagToDelete, setTagToDelete] = useState<Tag | null>(null);
    const [loading, setLoading] = useState(false);
-   
    const layoutData = useContext(LayoutContext);
    const loader = useTopLoader();
-
-   // Načtení tagů při otevření editoru
-   useEffect(() => {
-      if (modalState) {
-         loadTags();
-      }
-   }, [modalState]);
-
-   const loadTags = async () => {
+   const loadTags = useCallback(async () => {
       try {
          setLoading(true);
          const response = await fetch('/api/tags');
@@ -44,7 +35,15 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
       } finally {
          setLoading(false);
       }
-   };
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
+   
+   // Načtení tagů při otevření editoru
+   useEffect(() => {
+      if (modalState) {
+         loadTags();
+      }
+   }, [modalState, loadTags]);
 
    const createTag = async () => {
       if (!newTagName.trim()) return;
@@ -242,7 +241,7 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
          {/* Potvrzení mazání */}
          <Dialog DialogState={deleteDialog}>
             <h4>
-               Opravdu chcete smazat tag "{tagToDelete?.name}"?
+               Opravdu chcete smazat tag &ldquo;{tagToDelete?.name}&rdquo;?
             </h4>
             <div className="flex flex-wrap gap-4 w-full">
                <Btn className="flex-grow" onClick={() => handleDeleteConfirm(true)} type="button" prim>

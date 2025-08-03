@@ -77,7 +77,7 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
          setTags(project.tags);
       }
       setInitialProject(project);
-   }, [project.tags]);
+   }, [project.tags, project]);
 
    // Cleanup URL objektů při unmount nebo změně
    useEffect(() => {

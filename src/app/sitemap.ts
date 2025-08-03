@@ -28,6 +28,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
          url: `${baseUrl}/projekty/${project.slug}`,
          lastModified: project.lastModified,
          changeFrequency: "monthly" as const,
+         images: [
+            `${baseUrl}${project.photo}`,
+         ],
          priority: 0.7,
       })),
    ]

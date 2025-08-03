@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import createTagSlug from "@/utils/tag/createTagSlug";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async () => {
@@ -86,10 +87,3 @@ export const PUT = async (req: NextRequest) => {
       return NextResponse.json({ error: "Failed to update tag." }, { status: 500 });
    }
 };
-
-export const createTagSlug = (name: string): string => {
-   return name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '');
-}

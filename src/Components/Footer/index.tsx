@@ -27,6 +27,7 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
         name: "",
         email: "",
         message: "",
+        address: "",
     });
 
 
@@ -52,6 +53,7 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
                             <motion.span className={'text-pxlgn font-semibold uppercase'}
                             initial={{ y: 10, opacity: 0}}
                             whileInView={{ y: 0, opacity: 1}}
+                            viewport={{ once: true, amount: 1}}
                             transition={{
                                 duration: .3,
                                 delay: i / 12

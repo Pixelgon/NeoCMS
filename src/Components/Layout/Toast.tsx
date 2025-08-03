@@ -16,7 +16,7 @@ export const Toast: FC<toastProps> = ({ setToast, toast }) => {
             exit={{ opacity: 0, y: 20, x: "-50%" }}
             onClick={() => setToast(null)}
             transition={{ ease: "easeInOut", duration: .5, delay: .5 }}
-            className={`fixed bottom-12 left-1/2 p-4 rounded-3xl backdrop-blur-md shadow-md z-[1000] text-wh flex items-center cursor-pointer bg-modal`}
+            className={`fixed bottom-16 left-1/2 p-4 rounded-3xl backdrop-blur-md shadow-md z-[1000] text-wh flex items-center cursor-pointer bg-modal`}
           >
             <Image src={`/images/icons/${toast?.type === 'success' ? 'check' : 'error'}.svg`} alt="" width={28} height={28} className="mr-2" />
             <div className={`${ toast?.type == 'success' ? "bg-pxlgn-gradient" : "bg-err-gradient"}  text-transparent bg-clip-text text-xl font-quicksand uppercase select-none break-all`}>

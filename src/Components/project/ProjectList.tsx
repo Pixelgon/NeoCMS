@@ -1,6 +1,6 @@
 'use client';
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
 import Project from "./Project";
 import { useRouter } from "next/navigation";
 import { Tag } from "@prisma/client";
@@ -27,24 +27,9 @@ export default function ProjectsList({ projects, availableTags, initialTagSlugs 
     const searchParams = useSearchParams();
     const [filteredProjects, setFilteredProjects] = useState(projects);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
-    // Inicializace tagů z URL při mount
-    useEffect(() => {
-        if (initialTagSlugs.length > 0) {
-            // Konvertuj slugy na ID
-            const tagIds = availableTags
-                .filter(tag => initialTagSlugs.includes(tag.slug))
-                .map(tag => tag.id);
-            
-            if (tagIds.length > 0) {
-                setSelectedTags(tagIds);
-                filterProjectsByTags(tagIds);
-            }
-        }
-    }, [initialTagSlugs, availableTags]);
-
+    
     // Funkce pro filtrování projektů
-    const filterProjectsByTags = (tagIds: string[]) => {
+    const filterProjectsByTags = useCallback((tagIds: string[]) => {
         if (tagIds.length === 0) {
             setFilteredProjects(projects);
             return;
@@ -56,7 +41,22 @@ export default function ProjectsList({ projects, availableTags, initialTagSlugs 
             )
         );
         setFilteredProjects(filtered);
-    };
+    }, [projects]);
+
+    // Inicializace tagů z URL při mount
+    useEffect(() => {
+        if (initialTagSlugs.length > 0) {
+            const tagIds = availableTags
+                .filter(tag => initialTagSlugs.includes(tag.slug))
+                .map(tag => tag.id);
+            
+            if (tagIds.length > 0) {
+                setSelectedTags(tagIds);
+                filterProjectsByTags(tagIds);
+            }
+        }
+    }, [initialTagSlugs, availableTags, filterProjectsByTags]);
+
 
     // Aktualizace URL při změně tagů
     const updateURL = (tagIds: string[]) => {
@@ -112,7 +112,7 @@ export default function ProjectsList({ projects, availableTags, initialTagSlugs 
                         <Project
                             key={project.id}
                             name={project.name}
-                            image={project.photo}
+                            photo={project.photo}
                             slug={project.slug}
                         />
                     ))}

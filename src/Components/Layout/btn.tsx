@@ -18,12 +18,12 @@ interface btnStyles {
 }
 
 const styles: btnStyles = {
-    innerStyles: 'w-full sm:w-auto text-center bg-pxlgn-gradient rounded-full relative before:transition-all before:duration-300 before:bg-sec before:absolute before:h-[calc(100%-2px)] before:w-[calc(100%-2px)] before:top-[1px] before:rounded-full before:left-[1px] hover:before:bg-transparent',
-    outerStyles: 'bg-pxlgn-gradient transition-all duration-300 text-transparent bg-clip-text px-4 py-2 md:px-8 md:py-4 z-10 relative hover:bg-none hover:text-sec hover:bg-clip-border'
+    innerStyles: 'w-full sm:w-auto text-center bg-pxlgn-gradient rounded-full relative before:transition-all before:duration-300 before:bg-sec before:absolute before:h-[calc(100%-2px)] before:w-[calc(100%-2px)] before:top-[1px] before:rounded-full before:left-[1px] hover:before:bg-transparent text-base',
+    outerStyles: 'bg-pxlgn-gradient transition-all duration-300 text-transparent bg-clip-text px-6 py-3 md:px-8 md:py-4 z-10 relative hover:bg-none hover:text-sec hover:bg-clip-border'
 };
 
 const stylesPrim: btnStyles = {
-    innerStyles: 'w-full sm:w-auto text-center bg-pxlgn-gradient rounded-full relative transition-all duration-300 hover:brightness-50 text-sec px-4 py-2 md:px-8 md:py-4',
+    innerStyles: 'w-full sm:w-auto text-center bg-pxlgn-gradient rounded-full relative transition-all duration-300 hover:brightness-50 text-sec px-6 py-3 md:px-8 md:py-4 text-base',
     outerStyles: ''
 };
 export const Btn: FC<btnProps> = ({children, prim, onClick, href, className, target, type, disabled}) => {

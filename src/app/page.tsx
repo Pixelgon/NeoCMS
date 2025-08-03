@@ -5,15 +5,19 @@ import { Section } from '@/components/layout/Section';
 import { Metadata } from 'next';
 import HeaderLogo from '@/components/header/HeaderLogo';
 import * as motion from "motion/react-client";
+import GetLastTwoProjects from '@/utils/project/getLastTwoProjects';
+import ProjectHM from '@/components/project/ProjectHM';
  
 
 export const metadata: Metadata = {
   title: 'Pixelgon - Your vision, our code',
-  description: 'Tvoříme webové stránky, které nejsou jen vizuálně přívětivé, ale především efektivní a unikátní. Naším cílem je vytvořit plně funkční digitální identitu, která se odliší od konkurence. Postaráme se o celý proces – od originálního designu přes technické provedení až po optimalizaci pro vyhledávače. Ke každému projektu přistupujeme individuálně s důrazem pro detail, abyste uspěli v digitálním světě.',
+  description: 'Digitální parťák pro vaše projekty. Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale efektivní a jedinečná.',
+  keywords: ['web design', 'app development', 'digitální řešení', 'progresivní webové aplikace', 'e-commerce', 'Pixelgon'],
 }
 
+export default async function Home() {
 
-export default function Home() {
+const lastProjects = await GetLastTwoProjects();
 
 return (
   <>
@@ -35,9 +39,9 @@ return (
               Váš digitální parťák
             </motion.h2>
             <p>
-              Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale hlavně efektivní a jedinečná. Vytváříme plně funkční digitální identitu, která vás odliší od konkurence. Postaráme se o vše – od designu přes vývoj až po nasazení a optimalizaci.
+              Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejen dobře vypadají, ale hlavně fungují. Vytvoříme vám silnou digitální identitu, která zaujme a odliší vás od konkurence – od designu přes vývoj až po nasazení.
             </p>
-            <Btn href="/projekty" prim className={'text-xl'}>Přesvědčit se</Btn>  
+            <Btn href="/projekty" prim className={'text-xl mt-4'}>Přesvědčit se</Btn>  
           </div>
           <motion.div initial={{opacity: .1, scale: 0}}
               whileInView={{opacity: 1, scale: 1,}}
@@ -60,7 +64,7 @@ return (
               </div>
               <p>
                 Tvoříme weby, které odpovídají vaší značce, cílové skupině i konkrétním cílům.
-                Navrhujeme firemní prezentace, e‑shopy i komplexní webové aplikace s důrazem na přehlednost, rychlost a technickou kvalitu. Každý web ladíme tak, aby dobře fungoval na všech zařízeních, byl snadno dohledatelný ve vyhledávačích a dal se dál rozvíjet podle vašich potřeb.             
+                Navrhujeme firemní prezentace, e‑shopy i komplexní webové aplikace s důrazem na přehlednost, rychlost a technickou kvalitu. Každý web ladíme tak, aby dobře fungoval na všech zařízeních, byl snadno dohledatelný ve vyhledávačích a dal se později rozvíjet podle vašich potřeb.             
               </p>
             </Card>  
             <Card delay={.3}>
@@ -86,14 +90,7 @@ return (
         </div>
         <Btn href="/o-nas" className={'text-xl'}>Naše vize</Btn>
       </Section>
-      <Section isPrim>
-        <motion.h2 
-        initial={{opacity: .1, scale: 0}}
-        whileInView={{opacity: 1, scale: 1}}
-        viewport={{ once: true }}>
-          Poslední projekty
-        </motion.h2>
-      </Section>
+      <ProjectHM projects={lastProjects} />
     </main>
   </>
 );

@@ -2,9 +2,11 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
-export const GET = async ( req: NextRequest, context: { params: { id: string } } ) => {
-   const params = await context.params;   
-   const id = params.id;
+export const GET = async ( 
+   req: NextRequest, 
+   { params }: { params: Promise<{ id: string }> }
+) => {
+   const { id } = await params;
    const session = await auth(); // Získání uživatelské session
    
    try {
@@ -42,9 +44,11 @@ export const GET = async ( req: NextRequest, context: { params: { id: string } }
    }
 };
 
-export const PUT = async (req: NextRequest, context: { params: { id: string } }) => {
-   const params = await context.params;
-   const id = params.id;
+export const PUT = async (
+   req: NextRequest, 
+   { params }: { params: Promise<{ id: string }> }
+) => {
+   const { id } = await params;
    const session = await auth(); // Získání uživatelské session
 
    if (!session || !session.user) {
@@ -145,9 +149,11 @@ export const PUT = async (req: NextRequest, context: { params: { id: string } })
    }
 }
 
-export const DELETE = async (req: NextRequest, context: { params: { id: string } }) => {
-   const params = await context.params;
-   const id = params.id;
+export const DELETE = async (
+   req: NextRequest, 
+   { params }: { params: Promise<{ id: string }> }
+) => {
+   const { id } = await params;
    const session = await auth(); // Získání uživatelské session
 
    if (!session || !session.user) {
@@ -185,9 +191,11 @@ export const DELETE = async (req: NextRequest, context: { params: { id: string }
 };
 
 // toggle visibility
-export const PATCH = async (req: NextRequest, context: { params: { id: string } }) => {
-   const params = await context.params;
-   const id = params.id;
+export const PATCH = async (
+   req: NextRequest, 
+   { params }: { params: Promise<{ id: string }> }
+) => {
+   const { id } = await params;
    const session = await auth(); // Získání uživatelské session
 
    if (!session || !session.user) {

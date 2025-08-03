@@ -41,6 +41,7 @@ export async function generateMetadata(props: { params: tParams }): Promise<Meta
         const keywords = project.tags.map(tag => tag.tag.name).join(", ");
         
         return {
+            metadataBase: new URL(process.env.BASE_URL ?? "https://pixelgon.cz"),
             title: `${project.name} | Pixelgon`,
             description: project.description,
             openGraph: {

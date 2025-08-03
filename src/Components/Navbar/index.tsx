@@ -13,7 +13,7 @@ export const Navbar: FC<PropsWithChildren> = (props) => {
 
     useEffect(() => {
         layoutData.toggleScroll();
-    }, [menuOpen]);
+    }, [menuOpen, layoutData]);
 
     useEffect(() => {
         setMenuOpen(false);

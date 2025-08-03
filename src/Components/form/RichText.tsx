@@ -2,12 +2,14 @@ import { FC, useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
+import ImageExtension from "@tiptap/extension-image";
 import { useTopLoader } from "nextjs-toploader";
 import { Btn } from "../layout/Btn";
 import { Dialog } from "../layout/Dialog";
 import Input from "./Input";
 import RichTextTab from "./RichTextTab";
+import Image from "next/image";
+
 
 interface RichTextProps {
   content: string;
@@ -39,7 +41,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
           target: "_blank",
         },
       }),
-      Image.configure({
+      ImageExtension.configure({
         HTMLAttributes: {
           class: "rounded-3xl w-full h-auto object-contain mt-4",
         },
@@ -145,7 +147,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
           required={false}
         />
         {imagePreview && (
-          <img
+          <Image
             src={imagePreview}
             alt="Náhled obrázku"
             className="w-full rounded-3xl"

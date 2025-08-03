@@ -8,7 +8,7 @@ import { FC } from "react";
 
 export const metadata: Metadata = {
     title: "Projekty | Pixelgon",
-    description: "Portfolio projektů společnosti Pixelgon - webové aplikace, e-shopy a další digitální řešení.",
+    description: "Podívejte se na naše nejnovější projekty - weby, webové aplikace, grafický design a další digitální řešení.",
     openGraph: {
         title: "Projekty | Pixelgon",
         description: "Podívejte se na naše nejnovější projekty - weby, webové aplikace, grafický design a další digitální řešení.",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
         url: "https://pixelgon.cz/projekty",
         images: [
             {
-                url: "/images/headers/projects-header.webp",
+                url: "/images/og.webp",
                 width: 1200,
                 height: 630,
                 alt: "Pixelgon",
@@ -26,18 +26,14 @@ export const metadata: Metadata = {
     alternates: {
         canonical: "https://pixelgon.cz/projekty",
     },
-    keywords: ["webové aplikace", "e-shopy", "digitální řešení", "portfolio", "Pixelgon", "web development"],
 };
-
-
-
 
 
 interface PageProps {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export const Projekty: FC<PageProps> = async ({ searchParams }) => {
+const Projekty: FC<PageProps> = async ({ searchParams }) => {
     const [allProjects, availableTags, resolvedSearchParams] = await Promise.all([
         getAllProjects(),
         getAllTags(),
@@ -45,6 +41,7 @@ export const Projekty: FC<PageProps> = async ({ searchParams }) => {
     ]);
     const tagParam = resolvedSearchParams.tag;
     const tagSlugs = Array.isArray(tagParam) ? tagParam : tagParam ? [tagParam] : [];
+    
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -82,6 +79,6 @@ export const Projekty: FC<PageProps> = async ({ searchParams }) => {
             </main>
         </>
     );
-}
+};
 
 export default Projekty;

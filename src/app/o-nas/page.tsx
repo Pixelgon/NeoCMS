@@ -1,5 +1,4 @@
 import { Header } from "@/components/header/Index";
-import { Btn } from "@/components/layout/Btn";
 import { ProfileLink, ProfileLinkType } from "@/components/layout/ProfileLink";
 import { Section } from "@/components/layout/Section";
 import { Metadata } from "next";
@@ -9,18 +8,18 @@ import { Card } from "@/components/layout/Card";
 
 export const metadata: Metadata = {
   title: 'O nás | Pixelgon',
-  description: 'Zjistěte více o našem týmu, naší vizi a hodnotách, které nás vedou k vytváření unikátních digitálních řešení.',
+  description: 'Zjistěte více o nás, naší vizi a hodnotách, které nás vedou k tomu, co děláme.',
   openGraph: {
     title: 'O nás | Pixelgon',
-    description: 'Zjistěte více o našem týmu, naší vizi a hodnotách, které nás vedou k vytváření unikátních digitálních řešení.',
+    description: 'Zjistěte více o nás, naší vizi a hodnotách, které nás vedou k tomu, co děláme.',
     type: 'website',
     url: 'https://pixelgon.cz/o-nas',
     images: [
       {
-        url: '/images/headers/about-header.webp',
+        url: '/images/og.webp',
         width: 1200,
         height: 630,
-        alt: 'Pixelgon O nás',
+        alt: 'Pixelgon',
       },
     ],
   },
@@ -41,7 +40,7 @@ export default function ONas() {
                 </motion.h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-10 w-full mt-5">
                   <Card sec>
-                    <div className={'flex gap-2 relative items-center'}>
+                    <div className={'flex gap-2 relative items-center flex-wrap justify-center'}>
                       <Image alt="" src={'/images/icons/gear.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
                       <h3>Purpose</h3>
                     </div>
@@ -50,7 +49,7 @@ export default function ONas() {
                     </p>
                   </Card>
                   <Card sec delay={.3}>
-                    <div className={'flex gap-2 relative items-center'}>
+                    <div className={'flex gap-2 relative items-center flex-wrap justify-center'}>
                       <Image alt="" src={'/images/icons/sun.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
                       <h3>Clarity</h3>
                     </div>
@@ -59,7 +58,7 @@ export default function ONas() {
                     </p>
                   </Card>
                   <Card sec delay={.6}>
-                    <div className={'flex gap-2 relative items-center'}>
+                    <div className={'flex gap-2 relative items-center flex-wrap justify-center'}>
                       <Image alt="" src={'/images/icons/magn.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
                       <h3>Reason</h3>
                     </div>
@@ -67,23 +66,20 @@ export default function ONas() {
                       Sledujeme moderní trendy, ale používáme je uvážlivě. Nehoníme buzzwordy – raději volíme technologie a přístupy, které řeší reálné problémy a šetří čas i prostředky.
                     </p>
                   </Card>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-10 w-full items-center mt-5 justify-center">
                   <motion.div
-                  initial={{opacity: 0, x: -200, filter: 'blur(5px)'}}
-                  animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'rounded-3xl overflow-hidden relative'}>
-                    <Image src={'/images/sections/profilovka.webp'} alt={'Matěj Matějka'} fill sizes="40vw" className={'col-span-5 !relative'}/>
-                    <div className={'grid grid-cols-5 bg-pxlgn-gradient'}>
-                      <ProfileLink type={ProfileLinkType.Email} link={'mailto:pixelgon@pixelgon.cz'}/>
-                      <ProfileLink type={ProfileLinkType.Linkedin} link={'https://www.linkedin.com/in/pixelgon/'}/> 
-                      <ProfileLink type={ProfileLinkType.Github} link={'https://github.com/Pixelgon'}/>
-                      <ProfileLink type={ProfileLinkType.Discord} link={'https://discordapp.com/users/397172105411559446'}/>
-                      <ProfileLink type={ProfileLinkType.Instagram} link={'https://www.instagram.com/pxlgn/'}/>
-                    </div>
+                    transition={{ delay: 0.9 }}
+                    initial={{opacity: 0, x: -200, filter: 'blur(5px)'}}
+                    animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'rounded-3xl overflow-hidden relative flex flex-col'}>
+                      <Image src={'/images/sections/profilovka.webp'} alt={'Matěj Matějka'} fill sizes="40vw" className={'!relative !h-auto flex-1 object-cover'}/>
+                      <div className={'grid grid-cols-5 bg-pxlgn-gradient'}>
+                        <ProfileLink type={ProfileLinkType.Email} link={'mailto:pixelgon@pixelgon.cz'}/>
+                        <ProfileLink type={ProfileLinkType.Linkedin} link={'https://www.linkedin.com/in/pixelgon/'}/> 
+                        <ProfileLink type={ProfileLinkType.Github} link={'https://github.com/Pixelgon'}/>
+                        <ProfileLink type={ProfileLinkType.Discord} link={'https://discordapp.com/users/397172105411559446'}/>
+                        <ProfileLink type={ProfileLinkType.Instagram} link={'https://www.instagram.com/pxlgn/'}/>
+                      </div>
                   </motion.div>
-                  <motion.div
-                  initial={{opacity: 0, x: 200, filter: 'blur(5px)'}}
-                  animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'flex flex-col gap-4 lg:col-span-2 items-start'}>
+                  <Card sec delay={1.2} className={'sm:col-span-2 justify-center !items-start'}>
                     <h3>Matěj Matějka</h3>
                     <p>
                       Zdravím! Jmenuji se Matěj Matějka – jsem full-stack vývojář a grafik, známý online pod přezdívkou <strong>Pixelgon</strong>.
@@ -92,7 +88,7 @@ export default function ONas() {
                       <br />
                       Ve volném čase brázdím traily na kole, chodím po horách, učím se novým věcem v IT, kutím vlastní projekty – a když je čas, rád si i něco zahraju.
                     </p>
-                  </motion.div>
+                  </Card>
                 </div>
               </Section>
           </main>

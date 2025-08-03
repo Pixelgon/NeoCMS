@@ -13,4 +13,4 @@ async function getAllTags() {
     return tags;
 }
 
-export default getAllTags; 
+export default getAllTags;

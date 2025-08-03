@@ -20,7 +20,7 @@ export const Modal: FC<ModalProps> = ({ children, modalState, setModalState, tit
   useEffect(() => { 
     layoutData.toggleScroll();
   }
-  , [modalState]);
+  , [modalState, layoutData]);
 
   const handleClose = (dialog: boolean) => {
     setDialog(false);

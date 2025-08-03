@@ -1,0 +1,228 @@
+'use client';
+import { LayoutContext } from "@/context/LayoutContext";
+import ProjectType from "@/types/ProjectType";
+import { signOut, useSession } from "next-auth/react";
+import { useTopLoader } from "nextjs-toploader";
+import { FC, useContext, useState } from "react";
+import { Btn } from "../layout/Btn";
+import { Dialog } from "../layout/Dialog";
+import TagModal from "../tag/TagModal";
+import { ProjectModal } from "../project/ProjectModal";
+import { AdminLink } from "./AdminPanelLink";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import { AdminProjectList } from "./AdminProjectList";
+
+
+const emptyProject: ProjectType = {
+  id: "",
+  name: "",
+  slug: "",
+  body: "",
+  description: "",
+  background: "",
+  photo: "",
+  tags: [],
+  visible: true,
+};
+
+export const AdminPanel: FC = () => {
+   const { data: session } = useSession();
+   const [projects, setProjects] = useState<ProjectType[]>([]);
+   const [project, setProject] = useState<ProjectType>(emptyProject);
+   const [modal, setModal] = useState(false);
+   const [deleteDialog, setDeleteDialog] = useState(false);
+   const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
+   const [tagModalModal, setTagModalModal] = useState(false);
+   const [projectListModal, setProjectListModal] = useState(false);
+   const layoutData = useContext(LayoutContext);
+   const loader = useTopLoader();
+
+   const openProjectModal = async(projectID?: string) => {
+       loader.start();
+       if(projectID) {
+         await fetch(`/api/projects/${projectID}`)
+           .then((res) => res.json())
+           .then((data) => {
+             setProject(data);
+           })
+           .catch((error) => {
+             layoutData.showToast({ message: error, type: "error" });
+           });
+       }
+       else {
+         setProject(emptyProject);
+       }
+       loader.done();
+       setModal(true);
+     }
+
+   const handleProjectSubmit = async (projectData: ProjectType, tags: any[]) => {
+    loader.start();
+    
+    try {
+      if (projectData.id) {
+        // Aktualizace existujícího projektu
+        const response = await fetch(`/api/projects/${projectData.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...projectData,
+            tags: tags.map(tag => tag.id),
+          }),
+        });
+        
+        if (response.ok) {
+          const updatedProject = await response.json();
+          setProjects(prev => prev.map(p => p.id === updatedProject.id ? updatedProject : p));
+          setProject(updatedProject);
+          setModal(false);
+          layoutData.showToast({ message: 'Projekt byl aktualizován', type: 'success' });
+        } else {
+          layoutData.showToast({ message: 'Chyba při aktualizaci', type: 'error' });
+        }
+      } else {
+        // Vytvoření nového projektu
+        const response = await fetch('/api/projects', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: projectData.name,
+            body: projectData.body,
+            description: projectData.description,
+            background: projectData.background,
+            photo: projectData.photo,
+            slug: projectData.slug,
+            tags: tags.map((tag) => tag.id)
+          }),
+        });
+        
+        if (response.ok) {
+          const newProject = await response.json();
+          setProjects(prev => [newProject, ...prev]);
+          setProject(newProject);
+          setModal(false);
+          layoutData.showToast({ message: 'Projekt byl vytvořen', type: 'success' });
+        } else {
+          layoutData.showToast({ message: 'Chyba při vytváření projektu', type: 'error' });
+        }
+      }
+    } catch (error) {
+      layoutData.showToast({ message: 'Chyba při ukládání projektu', type: 'error' });
+    } finally {
+      loader.done();
+    }
+  };
+
+  const openDeleteDialog = (projectId: string) => {
+    setProjectToDelete(projectId);
+    setDeleteDialog(true);
+  };
+
+  const handleDeleteConfirm = (confirm: boolean) => {
+    if (confirm && projectToDelete) {
+      deleteProject(projectToDelete);
+    }
+    setDeleteDialog(false);
+    setProjectToDelete(null);
+  };
+
+  const toggleProjectVisibility = async (projectId: string) => {
+    loader.start();
+    try {
+      const response = await fetch(`/api/projects/${projectId}`, {
+        method: 'PATCH',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const updatedProject = data.project; // API vrací { project: updatedProject }
+        setProjects(prev => prev.map(p => p.id === updatedProject.id ? updatedProject : p));
+        layoutData.showToast({ message: `Projekt ${updatedProject.visible ? 'zveřejněn' : 'skryt'}`, type: 'success' });
+      } else {
+        layoutData.showToast({ message: 'Chyba při změně viditelnosti projektu', type: 'error' });
+      }
+    } catch (error) {
+      layoutData.showToast({ message: 'Chyba při změně viditelnosti projektu', type: 'error' });
+    } finally {
+      loader.done();
+    }
+  };
+
+  const deleteProject = async (projectId: string) => {
+    try {
+      loader.start();
+      const response = await fetch(`/api/projects/${projectId}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        setProjects(prev => prev.filter(p => p.id !== projectId));
+        layoutData.showToast({ message: 'Projekt byl smazán', type: 'success' });
+      } else {
+        layoutData.showToast({ message: 'Chyba při mazání projektu', type: 'error' });
+      }
+    } catch (error) {
+      layoutData.showToast({ message: 'Chyba při mazání projektu', type: 'error' });
+    } finally {
+      loader.done();
+    }
+  };
+
+  const openProjectListModal = async() => {
+    loader.start();
+    try {
+      const response = await fetch('/api/projects');
+      if (response.ok) {
+        const data = await response.json();
+        setProjects(data);
+      } else {
+        layoutData.showToast({ message: 'Chyba při načítání projektů', type: 'error' });
+      }
+    } catch (error) {
+      layoutData.showToast({ message: 'Chyba při načítání projektů', type: 'error' });
+    } finally {
+      loader.done();
+    }
+    setProjectListModal(true);
+  }
+   
+  return (
+    <>
+      <div className={'fixed w-full bottom-0 left-0 p-4 bg-navbar backdrop-blur-md z-[98] flex gap-3 items-center justify-center flex-wrap'}>
+        <AdminLink onClick={() => openProjectModal()}>Vytvořit nový projekt</AdminLink>
+        <AdminLink onClick={() => setTagModalModal(true)}>Správa tagů</AdminLink>
+        <AdminLink onClick={() => openProjectListModal()}>Správa projektů</AdminLink>
+        <div className="flex items-center gap-3 ml-auto font-quicksand">
+          <AdminLink onClick={() => signOut({ callbackUrl: "/", redirect: true })}>
+            <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
+          </AdminLink>
+          <span className="text-base">Zdravíčko, <span className={'text-pxlgn font-semibold'}>{session?.user?.name}</span></span>
+        </div>
+     </div>
+     <ProjectModal
+           project={project}
+           setProject={setProject}
+           modalState={modal}
+           setModalState={setModal}
+           onSubmit={handleProjectSubmit} 
+      />
+      <Dialog DialogState={deleteDialog}>
+         <h4>Opravdu chcete smazat tento projekt?</h4>
+         <div className={'flex flex-wrap gap-4 w-full'}>
+            <Btn className={'flex-grow'} onClick={() => handleDeleteConfirm(true)} type="button" prim>Ano</Btn>
+            <Btn className={'flex-grow'} onClick={() => handleDeleteConfirm(false)} type="button">Ne</Btn>
+         </div>
+      </Dialog>
+      <TagModal
+         modalState={tagModalModal}
+         setModalState={setTagModalModal} 
+      />
+      
+   </>
+  );
+};
+
+export default AdminPanel;
