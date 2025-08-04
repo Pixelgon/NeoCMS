@@ -1,5 +1,5 @@
 type LayoutContextType = {
   Scroll: boolean;
-  toggleScroll: () => void;
+  setScroll: (scroll: boolean) => void;
   showToast: (toast: ToastType) => void;
 };

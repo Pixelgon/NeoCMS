@@ -3,14 +3,14 @@ import { LayoutContext } from "@/context/LayoutContext";
 import ProjectType from "@/types/ProjectType";
 import { signOut, useSession } from "next-auth/react";
 import { useTopLoader } from "nextjs-toploader";
-import { FC, useContext, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { Btn } from "../layout/Btn";
 import { Dialog } from "../layout/Dialog";
 import TagModal from "../tag/TagModal";
 import { ProjectModal } from "../project/ProjectModal";
 import { AdminLink } from "./AdminPanelLink";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
-import { AdminProjectList } from "./AdminProjectList";
+import AdminProjectList from "./AdminProjectList";
 
 
 const emptyProject: ProjectType = {
@@ -29,7 +29,7 @@ export const AdminPanel: FC = () => {
    const { data: session } = useSession();
    const [projects, setProjects] = useState<ProjectType[]>([]);
    const [project, setProject] = useState<ProjectType>(emptyProject);
-   const [modal, setModal] = useState(false);
+   const [projectModal, setProjectModal] = useState(false);
    const [deleteDialog, setDeleteDialog] = useState(false);
    const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
    const [tagModalModal, setTagModalModal] = useState(false);
@@ -37,24 +37,43 @@ export const AdminPanel: FC = () => {
    const layoutData = useContext(LayoutContext);
    const loader = useTopLoader();
 
+   const loadProjects = useCallback(async () => {
+      try {
+         loader.start();
+         const response = await fetch('/api/projects');
+         if (response.ok) {
+            const data = await response.json();
+            setProjects(data.projects);
+         } else {
+            layoutData.showToast({ message: 'Chyba při načítání projektů', type: 'error' });
+         }
+      } catch (error) {
+         layoutData.showToast({ message: 'Chyba při načítání projektů', type: 'error' });
+      } finally {
+         loader.done();
+      }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
+
    const openProjectModal = async(projectID?: string) => {
-       loader.start();
-       if(projectID) {
-         await fetch(`/api/projects/${projectID}`)
-           .then((res) => res.json())
-           .then((data) => {
-             setProject(data);
-           })
-           .catch((error) => {
-             layoutData.showToast({ message: error, type: "error" });
-           });
-       }
-       else {
-         setProject(emptyProject);
-       }
-       loader.done();
-       setModal(true);
-     }
+      if(projectID) {
+      loader.start();
+        await fetch(`/api/projects/${projectID}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setProject(data);
+          })
+          .catch((error) => {
+            layoutData.showToast({ message: error, type: "error" });
+          });
+      }
+      else {
+        setProject(emptyProject);
+      }
+      setProjectListModal(false);
+      setProjectModal(true);
+      loader.done();
+  }
 
    const handleProjectSubmit = async (projectData: ProjectType, tags: any[]) => {
     loader.start();
@@ -77,8 +96,11 @@ export const AdminPanel: FC = () => {
           const updatedProject = await response.json();
           setProjects(prev => prev.map(p => p.id === updatedProject.id ? updatedProject : p));
           setProject(updatedProject);
-          setModal(false);
-          layoutData.showToast({ message: 'Projekt byl aktualizován', type: 'success' });
+          setProjectModal(false);
+          setTimeout(() => {
+            setProjectListModal(true);
+            layoutData.showToast({ message: 'Projekt byl aktualizován', type: 'success' });
+          }, 300); 
         } else {
           layoutData.showToast({ message: 'Chyba při aktualizaci', type: 'error' });
         }
@@ -104,7 +126,7 @@ export const AdminPanel: FC = () => {
           const newProject = await response.json();
           setProjects(prev => [newProject, ...prev]);
           setProject(newProject);
-          setModal(false);
+          setProjectModal(false);
           layoutData.showToast({ message: 'Projekt byl vytvořen', type: 'success' });
         } else {
           layoutData.showToast({ message: 'Chyba při vytváření projektu', type: 'error' });
@@ -172,20 +194,9 @@ export const AdminPanel: FC = () => {
   };
 
   const openProjectListModal = async() => {
-    loader.start();
-    try {
-      const response = await fetch('/api/projects');
-      if (response.ok) {
-        const data = await response.json();
-        setProjects(data);
-      } else {
-        layoutData.showToast({ message: 'Chyba při načítání projektů', type: 'error' });
-      }
-    } catch (error) {
-      layoutData.showToast({ message: 'Chyba při načítání projektů', type: 'error' });
-    } finally {
-      loader.done();
-    }
+    // Pak načteme data na pozadí
+    await loadProjects();
+    // Nejdříve otevřeme modal
     setProjectListModal(true);
   }
    
@@ -195,7 +206,7 @@ export const AdminPanel: FC = () => {
         <AdminLink onClick={() => openProjectModal()}>Vytvořit nový projekt</AdminLink>
         <AdminLink onClick={() => setTagModalModal(true)}>Správa tagů</AdminLink>
         <AdminLink onClick={() => openProjectListModal()}>Správa projektů</AdminLink>
-        <div className="flex items-center gap-3 ml-auto font-quicksand">
+        <div className="flex items-center gap-3 md:ml-auto font-quicksand">
           <AdminLink onClick={() => signOut({ callbackUrl: "/", redirect: true })}>
             <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
           </AdminLink>
@@ -205,8 +216,8 @@ export const AdminPanel: FC = () => {
      <ProjectModal
            project={project}
            setProject={setProject}
-           modalState={modal}
-           setModalState={setModal}
+           modalState={projectModal}
+           setModalState={setProjectModal}
            onSubmit={handleProjectSubmit} 
       />
       <Dialog DialogState={deleteDialog}>
@@ -220,7 +231,14 @@ export const AdminPanel: FC = () => {
          modalState={tagModalModal}
          setModalState={setTagModalModal} 
       />
-      
+      <AdminProjectList 
+          modalState={projectListModal}
+          setModalState={setProjectListModal}
+          onEdit={openProjectModal}
+          onDelete={openDeleteDialog}
+          onToggleVisibility={toggleProjectVisibility}
+          projects={projects}
+      />
    </>
   );
 };

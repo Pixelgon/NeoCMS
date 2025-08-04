@@ -12,13 +12,13 @@ export const Navbar: FC<PropsWithChildren> = (props) => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
-        layoutData.toggleScroll();
-    }, [menuOpen, layoutData]);
+        layoutData.setScroll(!menuOpen);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menuOpen]);
 
     useEffect(() => {
         setMenuOpen(false);
     }, [pathName]);
-
 
     return (
         <nav className={`fixed top-0 transition-all left-0 w-full h-16 ${menuOpen ? 'h-svh' : ''} md:h-12 z-50 bg-navbar md:justify-center md:flex justify-center items-center backdrop-blur-md`}>

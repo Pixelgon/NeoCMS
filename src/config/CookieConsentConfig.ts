@@ -1,3 +1,6 @@
+const baseUrl = process.env.BASE_URL || "";
+const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
+
 export const CookieConsentConfig = {
     guiOptions: {
       consentModal: {
@@ -16,6 +19,9 @@ export const CookieConsentConfig = {
     categories: {
       necessary: {
         readOnly: true,
+      },
+      analytics: {
+        readOnly: false,
       },
     },
     language: {
@@ -52,38 +58,61 @@ export const CookieConsentConfig = {
                 cookieTable: {
                   headers: {
                       name: "Název",
-                      domain: "Služba",
+                      domain: "Doména",
                       description: "Popis",
                       expiration: "Expirace"
                   },
                   body: [
                       {
                           name: "authjs.callback-url",
-                          domain: "Autentizační služba",
+                          domain: baseUrl,
                           description: "Cookie používaná k uložení zpětné URL adresy během autentizace.",
                           expiration: "Relace"
                       },
                       {
                           name: "authjs.csrf-token",
-                          domain: "Autentizační služba",
+                          domain: baseUrl,
                           description: "Cookie používaná k ochraně proti útokům Cross-Site Request Forgery (CSRF).",
                           expiration: "Relace"
                       },
                       {
-                          name: "authjs.session-token",
-                          domain: "Autentizační služba",
-                          description: "Cookie ukládající token relace pro ověřené uživatele.",
-                          expiration: "Relace nebo dle konfigurace"
-                      },
-                      {
                         name: "cc-cookie",
-                        domain: "Cookie Consent",
+                        domain: baseUrl,
                         description: "Cookie používaná k uložení nastavení souhlasu s používáním cookies.",
                         expiration: "Vyprší za 1 rok"
                       }
                   ]
-              }
+                }
               },
+              {
+                title: "Analytické cookies",
+                description:
+                  "Tyto cookies nám pomáhají pochopit, jak návštěvníci používají naše webové stránky, což nám umožňuje zlepšovat jejich funkčnost a uživatelskou zkušenost.",
+                linkedCategory: "analytics",
+                cookieTable: {
+                  headers: {
+                      name: "Název",
+                      domain: "Doména",
+                      description: "Popis",
+                      expiration: "Expirace"
+                  },
+                  body: [
+                      {
+                          name: "_ga",
+                          domain: baseUrl,
+                          description: "Používá se k rozlišení uživatelů.",
+                          expiration: "2 roky"
+                      },
+                      {
+                          name: `_ga_${gaId}`,
+                          domain: baseUrl,
+                          description: "Používá se k rozlišení uživatelů.",
+                          expiration: "24 hodin"
+                      },
+                  ]
+                }
+              },
+
               {
                 title: "Více informací",
                 description:

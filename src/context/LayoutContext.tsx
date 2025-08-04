@@ -1,14 +1,13 @@
 'use client';
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { FC, PropsWithChildren, useState, useEffect, useCallback, useMemo, createContext } from "react";
-import Image from "next/image";
 import NextTopLoader from "nextjs-toploader";
 import { Toast } from "@/components/layout/Toast";
 
 
 export const LayoutContext = createContext<LayoutContextType>({
   Scroll: true,
-  toggleScroll: () => {},
+  setScroll: (scroll: boolean) => {},
   showToast: () => {},
 });
 
@@ -20,8 +19,8 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     document.body.classList.toggle("overflow-hidden", !Scroll);
   }, [Scroll]);
 
-  const toggleScroll = useCallback(() => {
-    setScroll((prev) => !prev);
+  const handleSetScroll = useCallback((scroll: boolean) => {
+    setScroll(scroll);
   }, []);
 
   const showToast = useCallback((toast: ToastType) => {
@@ -31,9 +30,9 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const contextValue = useMemo(() => ({
     Scroll,
-    toggleScroll,
+    setScroll: handleSetScroll,
     showToast,
-  }), [Scroll, toggleScroll, showToast]);
+  }), [Scroll, handleSetScroll, showToast]);
 
   return (
     <LayoutContext.Provider value={contextValue}>

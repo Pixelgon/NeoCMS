@@ -67,7 +67,6 @@ export default async function RootLayout({
             <SessionProvider>
               <MotionConfig transition={{duration: .5}}>
                 <LayoutProvider>
-                  <GoogleAnalytics gaId={process.env.GA_ID || ""} />
                   <Navbar>
                     {pages.map((page, index) => (
                         <NavItem key={index} href={page.href} text={page.name} />

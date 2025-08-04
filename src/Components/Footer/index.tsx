@@ -1,20 +1,14 @@
 'use client';
-
 import CookieConsentConfig from "@/config/CookieConsentConfig"
 import * as CookieConsent from "vanilla-cookieconsent";
-import { LayoutContext } from "@/context/LayoutContext";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useContext, useState, useEffect, PropsWithChildren, FC } from "react";
+import { useState, useEffect, PropsWithChildren, FC, useContext } from "react";
 import { Btn } from "../layout/Btn";
-import Input from "../form/Input";
-import { Modal } from "../layout/Modal";
 import { Section } from "../layout/Section";
-import Textarea from "../form/TextArea";
 import Image from "next/image";
-import { FormType } from "@/types/FormType";
 import ContactForm from "../form/ContactForm";
-
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 
 
@@ -22,25 +16,10 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
     const date = new Date();
     const ctaText = "Půjdete do toho s námi?".split(" ");
     const [ctaModal, setCtaModal] = useState(false);
-    const [cookieModal, setCookieModal] = useState(false);
-    const [formData, setFormData] = useState<FormType>({
-        name: "",
-        email: "",
-        message: "",
-        address: "",
-    });
-
 
     useEffect(() => {
-        CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, 
-            onModalShow: () => {
-                setCookieModal(true);
-            },
-            onModalHide: () => {
-                setCookieModal(false);
-            },
-        });
-    },);
+        CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, });
+    });
 
     return (
         <>
@@ -83,6 +62,7 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
                     </menu>    
                 </div>
             </footer>
+            {CookieConsent.acceptedCategory("analytics") && <GoogleAnalytics gaId={process.env.GA_ID || ""} />}
         </>
     );
 }
