@@ -12,6 +12,7 @@ import Navbar from "@/components/navbar/Index";
 import { Metadata } from "next";
 import { AdminPanel } from "@/components/admin/AdminPanel";
 import { auth } from "@/lib/auth";
+import { GA } from "@/components/layout/GoogleAnalytics";
 
 
 const OpenSans = Open_Sans({
@@ -87,6 +88,7 @@ export default async function RootLayout({
                 </LayoutProvider>
               </MotionConfig>
             </SessionProvider>
+            <GA />
           </body>
         </html>
       </>

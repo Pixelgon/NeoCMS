@@ -18,8 +18,24 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
     const [ctaModal, setCtaModal] = useState(false);
 
     useEffect(() => {
-        CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, });
-    });
+        CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, 
+            onConsent: () => {
+                console.log("Cookie consent granted");
+                if (!CookieConsent.acceptedCategory("analytics")) {
+                    document.cookie = "_ga=; Max-Age=0; path=/; SameSite=Lax";
+                    document.cookie = `_ga_${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}=; Max-Age=0; path=/; SameSite=Lax`;
+                }
+            },
+            onChange: () => {
+                console.log("Cookie consent changed");
+                if (!CookieConsent.acceptedCategory("analytics")) {
+                    document.cookie = "_ga=; Max-Age=0; path=/; SameSite=Lax";
+                    document.cookie = `_ga_${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}=; Max-Age=0; path=/; SameSite=Lax`;
+                }
+            },
+            }
+        );
+    }, []);
 
     return (
         <>
