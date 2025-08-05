@@ -1,3 +1,4 @@
+import Project from "@/components/project/Project";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
@@ -39,10 +40,7 @@ export const GET = async (req: NextRequest) => {
          prisma.project.count()
       ]);
       return NextResponse.json({
-         projects: projects.map(project => ({
-            ...project,
-            tags: project.tags.map((t) => t.tag)
-         })),
+         projects: projects,
       });
    } catch (error) {
       return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
@@ -58,8 +56,6 @@ export const POST = async (req: NextRequest) => {
 
    try {
       const { name, body, description, background, photo, slug, tags } = await req.json();
-      
-      console.log('POST /api/projects - Data received:', { name, body, description, background, photo, slug, tags });
       
       if (!name || !body || !description || !background || !photo || !slug) {
          return NextResponse.json({ error: "Všechna pole jsou povinná." }, { status: 400 });
@@ -112,7 +108,6 @@ export const POST = async (req: NextRequest) => {
       
       return NextResponse.json({
          ...project,
-         tags: project.tags.map((t) => t.tag),
       }, { status: 201 });
    } catch (error: any) {
       return NextResponse.json({ error: error.message }, { status: 500 });

@@ -7,8 +7,8 @@ import TagInput from "../tag/TagInput";
 import ProjectType from "@/types/ProjectType";
 import { useTopLoader } from "nextjs-toploader";
 import { LayoutContext } from "@/context/LayoutContext";
-import { Tag } from "@prisma/client";
 import RichText from "../form/RichText";
+import { Tag } from "../../../generated/prisma_client";
 
 
 interface ProjectModalProps {

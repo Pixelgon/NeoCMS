@@ -3,9 +3,9 @@ import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import Project from "./Project";
 import { useRouter } from "next/navigation";
-import { Tag } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { TagFilter } from "../tag/TagFilter";
+import { Tag } from "../../../generated/prisma_client";
 
 interface ProjectData {
    id: string;

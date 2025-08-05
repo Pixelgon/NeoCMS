@@ -7,10 +7,9 @@ export const GET = async (
    { params }: { params: Promise<{ id: string }> }
 ) => {
    const { id } = await params;
-   const session = await auth(); // Získání uživatelské session
+   const session = await auth();
    
    try {
-      // Pokud je uživatel přihlášený, může vidět i skryté projekty
       const whereCondition = session?.user 
          ? { id } 
          : { id, visible: true };
@@ -35,14 +34,15 @@ export const GET = async (
       if (!project) {
          return NextResponse.json({ error: "Project not found" }, { status: 404 });
       }
+      
       return NextResponse.json({
          ...project,
-         tags: project.tags.map((t) => t.tag), // extrahuje jen { id, name }
       });   
-} catch (error) {
+   } catch (error) {
       return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
    }
 };
+
 
 export const PUT = async (
    req: NextRequest, 
@@ -142,7 +142,6 @@ export const PUT = async (
 
       return NextResponse.json({
          ...project,
-         tags: project.tags.map((t) => t.tag),
       }, { status: 200 });
    } catch (error: any) {
       return NextResponse.json({ error: error.message }, { status: 500 });

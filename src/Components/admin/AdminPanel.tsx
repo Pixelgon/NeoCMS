@@ -71,7 +71,10 @@ export const AdminPanel: FC = () => {
         setProject(emptyProject);
       }
       setProjectListModal(false);
-      setProjectModal(true);
+      // O.3s delay
+      setTimeout(() => {
+        setProjectModal(true);
+      }, 300);
       loader.done();
   }
 

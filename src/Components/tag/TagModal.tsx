@@ -1,12 +1,12 @@
 import { FC, useState, useEffect, useContext, useCallback } from "react";
 import { LayoutContext } from "@/context/LayoutContext";
 import { useTopLoader } from "nextjs-toploader";
-import { Tag } from "@prisma/client";
 import { ArrowUturnLeftIcon, CheckIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Input from "../form/Input";
 import { Btn } from "../layout/Btn";
 import { Dialog } from "../layout/Dialog";
 import { Modal } from "../layout/Modal";
+import { Tag } from "../../../generated/prisma_client";
 
 interface TagModalProps {
    modalState: boolean;

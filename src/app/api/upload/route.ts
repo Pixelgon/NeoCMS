@@ -3,6 +3,7 @@ import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { auth } from '@/lib/auth';
 
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const filename = Date.now() + "-" + file.name.replace(/\s/g, "_");
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "images");
+    const uploadDir = path.join(process.cwd(), ".", "uploads", "images");
     const filePath = path.join(uploadDir, filename);
 
     // Vytvoří složku, pokud neexistuje
