@@ -5,7 +5,6 @@ import { LayoutProvider } from "@/context/LayoutContext";
 import { MotionConfig } from "motion/react";
 import Footer from "@/components/footer";
 import { SessionProvider } from "next-auth/react";
-import { GoogleAnalytics } from '@next/third-parties/google'
 import Link from "next/link";
 import { NavItem } from "@/components/navbar/NavbarItem";
 import Navbar from "@/components/navbar/Index";
@@ -25,8 +24,10 @@ const QuicksandFont = Quicksand({
   subsets: ["latin-ext"],
 });
 
+const baseUrl = new URL(process.env.BASE_URL || "https://pixelgon.cz");
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.BASE_URL || 'https://pixelgon.cz'),
+  metadataBase: baseUrl,
   title: 'Pixelgon - Your vision, our code',
   description: 'Digitální parťák pro vaše projekty. Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale efektivní a jedinečná.',
   keywords: ['web design', 'app development', 'digitální řešení', 'progresivní webové aplikace', 'e-commerce', 'Pixelgon'],
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     title: 'Pixelgon - Your vision, our code',
     description: 'Digitální parťák pro vaše projekty. Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale efektivní a jedinečná.',
     type: 'website',
-    url: 'https://pixelgon.cz',
+    url: baseUrl,
     images: [
       {
         url: '/images/og.webp',
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: 'https://pixelgon.cz',
+    canonical: baseUrl.toString(),
   },
 }
 
@@ -81,10 +82,10 @@ export default async function RootLayout({
                     <Link href="/gdpr" className="text-wh transition-colors hover:text-prim">
                       Ochrana osobních údajů
                     </Link>
-                    {session && session.user && (
-                      <AdminPanel />
-                    )}
                   </Footer>
+                  {session && session.user && (
+                    <AdminPanel />
+                  )}
                 </LayoutProvider>
               </MotionConfig>
             </SessionProvider>

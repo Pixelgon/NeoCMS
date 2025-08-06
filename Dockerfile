@@ -1,11 +1,11 @@
 FROM node:20-alpine AS base
 
-# Přidat pnpm do base image
 RUN corepack enable pnpm
  
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
+
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm i --frozen-lockfile
@@ -39,11 +39,9 @@ RUN AUTH_SECRET=$(openssl rand -base64 32) && \
     echo "AUTH_SECRET=\"$AUTH_SECRET\"" >> .env
 
 
-# Vytvořit potřebné složky a nastavit oprávnění
-RUN mkdir -p /app/uploads/images
+RUN mkdir -p /app/public/uploads/images
 RUN mkdir -p /app/.next/cache/images
 
-# Změnit vlastníka až nakonec
 RUN chown -R nextjs:nodejs /app
 
 USER nextjs

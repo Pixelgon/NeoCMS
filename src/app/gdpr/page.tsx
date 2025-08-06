@@ -1,6 +1,7 @@
 import { Header } from "@/components/header/Index";
 import { Section } from "@/components/layout/Section";
 import { Metadata } from "next";
+import Link from "next/link";
 
 
 const metadata: Metadata = {
@@ -17,7 +18,7 @@ return (
         <main>
             <Section isPrim>
                 <p>
-                    Webová stránka <a href="https://pixelgon.cz/">pixelgon.cz</a> (dále jen „<strong>Stránka</strong>“) je provozována především za účelem nabízení služeb (dále jen „<strong>služby</strong>“). To se&nbsp;sebou jako svou nutnou součást
+                    Webová stránka <Link href={process.env.BASE_PATH || "https://pixelgon.cz"}>{process.env.BASE_PATH || "https://pixelgon.cz"}</Link> (dále jen „<strong>Stránka</strong>“) je provozována především za účelem nabízení služeb (dále jen „<strong>služby</strong>“). To se&nbsp;sebou jako svou nutnou součást
                     nese i práci s osobními údaji. Protože chceme, abyste byli co nejlépe informováni o tom, co s&nbsp;takto nashromážděnými osobními údaji děláme, sepsali jsme pro Vás tyto Zásady ochrany osobních údajů, a to v&nbsp;souladu s nařízením
                     Evropského parlamentu a Rady (EU) č. 2016/679, o ochraně fyzických osob v souvislosti se zpracováním osobních údajů (dále jen „<strong>GDPR</strong>“).
                 </p>

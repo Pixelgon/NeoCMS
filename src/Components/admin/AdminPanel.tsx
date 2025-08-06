@@ -213,7 +213,7 @@ export const AdminPanel: FC = () => {
           <AdminLink onClick={() => signOut({ callbackUrl: "/", redirect: true })}>
             <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
           </AdminLink>
-          <span className="text-base">Zdravíčko, <span className={'text-pxlgn font-semibold'}>{session?.user?.name}</span></span>
+          <span className="text-base text-wh">Zdravíčko, <span className={'text-pxlgn font-semibold'}>{session?.user?.name}</span></span>
         </div>
      </div>
      <ProjectModal

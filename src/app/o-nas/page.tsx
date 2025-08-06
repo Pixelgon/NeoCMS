@@ -6,6 +6,8 @@ import Image from 'next/image';
 import * as motion from "motion/react-client";
 import { Card } from "@/components/layout/Card";
 
+const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
+
 export const metadata: Metadata = {
   title: 'O nás | Pixelgon',
   description: 'Zjistěte více o nás, naší vizi a hodnotách, které nás vedou k tomu, co děláme.',
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
     title: 'O nás | Pixelgon',
     description: 'Zjistěte více o nás, naší vizi a hodnotách, které nás vedou k tomu, co děláme.',
     type: 'website',
-    url: 'https://pixelgon.cz/o-nas',
+    url: `${baseUrl}/o-nas`,
     images: [
       {
         url: '/images/og.webp',

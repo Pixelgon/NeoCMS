@@ -6,6 +6,8 @@ import { Section } from "@/components/layout/Section";
 import { Btn } from "@/components/layout/Btn";
 import { Metadata } from "next";
 
+export const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
+
 async function getProject(slug: string) {
     const session = await auth(); 
     const whereCondition = session?.user 
@@ -39,16 +41,16 @@ export async function generateMetadata(props: { params: tParams }): Promise<Meta
         const project = await getProject(slug);
         
         const keywords = project.tags.map(tag => tag.tag.name).join(", ");
-        
+
         return {
-            metadataBase: new URL(process.env.BASE_URL ?? "https://pixelgon.cz"),
+            metadataBase: new URL(baseUrl),
             title: `${project.name} | Pixelgon`,
             description: project.description,
             openGraph: {
                 title: `${project.name} | Pixelgon`,
                 description: project.description,
                 type: "article",
-                url: `https://pixelgon.cz/projekty/${slug}`,
+                url: `${baseUrl}/projekty/${slug}`,
                 images: [
                     {
                         url: project.photo,
@@ -62,7 +64,7 @@ export async function generateMetadata(props: { params: tParams }): Promise<Meta
                 tags: project.tags.map(tag => tag.tag.name),
             },
             alternates: {
-                canonical: `https://pixelgon.cz/projekty/${slug}`,
+                canonical: `${baseUrl}/projekty/${slug}`,
             },
             keywords: keywords,
         };
@@ -84,13 +86,13 @@ export default async function ProjectDetail(props: { params: tParams }) {
         "name": project.name,
         "description": project.description,
         "image": project.photo,
-        "url": `https://pixelgon.cz/projekty/${slug}`,
+        "url": `${baseUrl}/projekty/${slug}`,
         "dateCreated": project.createdOn.toISOString(),
         "dateModified": project.lastModified.toISOString(),
         "author": {
             "@type": "Organization",
             "name": "Pixelgon",
-            "url": "https://pixelgon.cz"
+            "url": baseUrl
         },
         "keywords": project.tags.map(tag => tag.tag.name).join(", "),
         "creator": {

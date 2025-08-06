@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/images/icons/',
     },
-    sitemap: 'https://pixelgon.cz/sitemap.xml',
+    sitemap: `${process.env.BASE_URL || "https://pixelgon.cz"}/sitemap.xml`,
   }
 }

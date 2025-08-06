@@ -3,10 +3,10 @@ import { MetadataRoute } from "next";
 
 // Revalidace každou hodinu
 export const revalidate = 3600;
+export const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    try {
-      const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
       const projects = await getAllProjects();
 
       return [
@@ -40,9 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ];
    } catch (error) {
       console.error('Error generating sitemap:', error);
-      
       // Fallback bez projektů
-      const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
       return [
          {
             url: baseUrl,

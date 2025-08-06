@@ -3,7 +3,6 @@ import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { auth } from '@/lib/auth';
 
-
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -28,7 +27,7 @@ export async function POST(req: NextRequest) {
     
     await writeFile(filePath, buffer);
 
-    return NextResponse.json({ url: `/uploads/images/${filename}` });
+    return NextResponse.json({ url: `api/upload/images/${filename}` });
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

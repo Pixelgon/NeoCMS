@@ -6,6 +6,8 @@ import getAllTags from "@/utils/project/getAllTags";
 import { Metadata } from "next";
 import { FC } from "react";
 
+const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
+
 export const metadata: Metadata = {
     title: "Projekty | Pixelgon",
     description: "Podívejte se na naše nejnovější projekty - weby, webové aplikace, grafický design a další digitální řešení.",
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
         title: "Projekty | Pixelgon",
         description: "Podívejte se na naše nejnovější projekty - weby, webové aplikace, grafický design a další digitální řešení.",
         type: "website",
-        url: "https://pixelgon.cz/projekty",
+        url: `${baseUrl}/projekty`,
         images: [
             {
                 url: "/images/og.webp",
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
         ],
     },
     alternates: {
-        canonical: "https://pixelgon.cz/projekty",
+        canonical: `${baseUrl}/projekty`,
     },
 };
 
