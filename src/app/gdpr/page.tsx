@@ -18,7 +18,7 @@ return (
         <main>
             <Section isPrim>
                 <p>
-                    Webová stránka <Link href={process.env.BASE_PATH || "https://pixelgon.cz"}>{process.env.BASE_PATH || "https://pixelgon.cz"}</Link> (dále jen „<strong>Stránka</strong>“) je provozována především za účelem nabízení služeb (dále jen „<strong>služby</strong>“). To se&nbsp;sebou jako svou nutnou součást
+                    Webová stránka <Link href="/">{process.env.BASE_PATH || "https://pixelgon.cz"}</Link> (dále jen „<strong>Stránka</strong>“) je provozována především za účelem nabízení služeb (dále jen „<strong>služby</strong>“). To se&nbsp;sebou jako svou nutnou součást
                     nese i práci s osobními údaji. Protože chceme, abyste byli co nejlépe informováni o tom, co s&nbsp;takto nashromážděnými osobními údaji děláme, sepsali jsme pro Vás tyto Zásady ochrany osobních údajů, a to v&nbsp;souladu s nařízením
                     Evropského parlamentu a Rady (EU) č. 2016/679, o ochraně fyzických osob v souvislosti se zpracováním osobních údajů (dále jen „<strong>GDPR</strong>“).
                 </p>
@@ -47,7 +47,7 @@ return (
                 <p>
                     <strong>Právo na zpřístupnění informací a právo na jejich opravu&nbsp;</strong>
                     Kdykoliv v budoucnu budete chtít, můžete nás zasláním zprávy na e-mailovu adresu&nbsp;
-                    <a href="/cdn-cgi/l/email-protection#186871607d747f7776586871607d747f7776367b62"><span className="__cf_email__" data-cfemail="10607968757c777f7e50607968757c777f7e3e736a">[email&#160;protected]</span></a>&nbsp;(dále jen „
+                    <Link href="mailto:pixelgon@pixelgon.cz">pixelgon@pixelgon.cz</Link>&nbsp;(dále jen „
                     <strong>e-mailová adresa provozovatele</strong>“) požádat o zaslání potvrzení, zda jsou či nejsou Vaše osobní údaje zpracovávány. V&nbsp;případě, že Vaše údaje námi budou zpracovány, můžeme Vás na Vaši žádost nad rámec informací
                     poskytnutých v&nbsp;těchto Zásadách ochrany&nbsp;osobních údajů informovat i o případných třetích osobách, kterým byly nebo budou Vaše osobní údaje zpřístupněny a pokud nezískáme osobní údaje od Vás, máte právo na veškeré nám
                     dostupné informace o tom, odkud jsme Vaše osobní informace získali.
@@ -112,8 +112,8 @@ return (
                 <p>
                     <strong>Právo podat stížnost u Úřadu na ochranu osobních údajů</strong>
                     V&nbsp;případě, že podle Vašeho názoru nenaplníme všechny naše právní povinnosti vzniklé v&nbsp;souvislosti se zpracováním Vašich osobních údajů, můžete se obrátit na Úřad pro ochranu osobních údajů, a to buď na adrese jejich sídla
-                    Pplk. Sochora 27, Praha 7, PSČ 170 00, na e-mailu&nbsp;<a href="/cdn-cgi/l/email-protection#9eeef1edeaffdeebf1f1ebb0fde4"><span className="__cf_email__" data-cfemail="1b6b74686f7a5b6e74746e357861">[email&#160;protected]</span></a>, či
-                    jakoukoliv jinou cestou, kterou bude Úřad na ochranu osobních údajů akceptovat. Bližší informace o úřadu najdete na webových stránkách&nbsp;<a href="https://www.uoou.cz/" target="_blank" rel="noopener noreferrer">www.uoou.cz</a>.
+                    Pplk. Sochora 27, Praha 7, PSČ 170 00, na e-mailu&nbsp;<Link href="mailto:posta@uoou.gov.cz">posta@uoou.gov.cz</Link>, či
+                    jakoukoliv jinou cestou, kterou bude Úřad na ochranu osobních údajů akceptovat. Bližší informace o úřadu najdete na webových stránkách&nbsp;<Link href="https://www.uoou.cz/" target="_blank" rel="noopener noreferrer">www.uoou.cz</Link>.
                 </p>
             </Section>    
         </main>

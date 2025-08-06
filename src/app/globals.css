@@ -60,6 +60,10 @@
     @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal;
   }
 
+  p a:not(.rounded-full) {
+    @apply text-pxlgn hover:opacity-60 transition-all duration-300;
+  }
+
   .screen__chalupa {
     content: "";
     position: absolute;

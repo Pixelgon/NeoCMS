@@ -6,7 +6,7 @@ import { Section } from "@/components/layout/Section";
 import { Btn } from "@/components/layout/Btn";
 import { Metadata } from "next";
 
-export const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
+const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 
 async function getProject(slug: string) {
     const session = await auth(); 

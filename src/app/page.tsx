@@ -39,7 +39,7 @@ return (
               Váš digitální parťák
             </motion.h2>
             <p>
-              Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejen dobře vypadají, ale hlavně fungují. Vytvoříme vám silnou digitální identitu, která zaujme a odliší vás od konkurence – od designu přes vývoj až po nasazení.
+              Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejen dobře vypadají, ale hlavně dávají smysl. Vytvoříme vám silnou digitální identitu, která zaujme a odliší vás od konkurence – od designu přes vývoj až po nasazení.
             </p>
             <Btn href="/projekty" prim className={'text-xl mt-4'}>Přesvědčit se</Btn>  
           </div>
