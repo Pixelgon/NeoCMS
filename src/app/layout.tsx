@@ -6,12 +6,12 @@ import { MotionConfig } from "motion/react";
 import Footer from "@/components/footer";
 import { SessionProvider } from "next-auth/react";
 import Link from "next/link";
-import { NavItem } from "@/components/navbar/NavbarItem";
 import Navbar from "@/components/navbar/Index";
 import { Metadata } from "next";
 import { AdminPanel } from "@/components/admin/AdminPanel";
 import { auth } from "@/lib/auth";
 import { GA } from "@/components/layout/GoogleAnalytics";
+import { NavbarItem } from "@/components/navbar/NavbarItem";
 
 
 const OpenSans = Open_Sans({
@@ -71,7 +71,7 @@ export default async function RootLayout({
                 <LayoutProvider>
                   <Navbar>
                     {pages.map((page, index) => (
-                        <NavItem key={index} href={page.href} text={page.name} />
+                        <NavbarItem key={index} href={page.href} text={page.name} />
                     ))}
                   </Navbar>
                     {children}

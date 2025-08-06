@@ -8,7 +8,7 @@ interface NavlinkProps {
     text: string;
 }
 
-export const NavItem: FC<NavlinkProps> = ({ href, text }) => {
+export const NavbarItem: FC<NavlinkProps> = ({ href, text }) => {
     const pathName = usePathname();
     const isRoot = href === '/';
     const isExact = pathName === href;

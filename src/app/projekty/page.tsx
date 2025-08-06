@@ -71,7 +71,7 @@ const Projekty: FC<PageProps> = async ({ searchParams }) => {
             <main>
                 <Section isPrim>
                     <h2>Naše práce</h2>
-                    <p>Tvoříme věci, co nám dávají smysl. Navrhujeme, vyvíjíme, ladíme do detailu.<br/> Když něco stavíme, chceme, aby to bylo chytrý, praktický a mělo svou tvář.<br/> Tohle je naše práce na kterou jsme patřičně hrdí.</p>
+                    <p>Tvoříme věci, co nám dávají smysl. Navrhujeme, vyvíjíme, ladíme do detailu. Když něco stavíme, chceme, aby to bylo chytrý, praktický a mělo svou tvář.<br/> Tohle je naše práce na kterou jsme patřičně hrdí.</p>
                     <ProjectsList 
                         projects={allProjects} 
                         availableTags={availableTags}
