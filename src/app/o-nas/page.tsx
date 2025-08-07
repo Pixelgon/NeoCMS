@@ -1,10 +1,10 @@
-import { Header } from "@/components/header/Index";
-import { ProfileLink, ProfileLinkType } from "@/components/layout/ProfileLink";
-import { Section } from "@/components/layout/Section";
 import { Metadata } from "next";
 import Image from 'next/image';
 import * as motion from "motion/react-client";
-import { Card } from "@/components/layout/Card";
+import { Header } from "@/components/header";
+import { Section } from "@/components/layout/section";
+import { Card } from "@/components/layout/card";
+import { ProfileLink, ProfileLinkType } from "@/components/layout/profileLink";
 
 const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 

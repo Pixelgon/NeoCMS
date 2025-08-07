@@ -1,9 +1,9 @@
 import { FC, use, useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import { LayoutContext } from "@/context/LayoutContext";
-import { Btn } from "./Btn";
-import { Dialog } from "./Dialog";
+import { Btn } from "./btn";
+import { Dialog } from "./dialog";
+import { LayoutContext } from "@/context/layoutContext";
 
 interface ModalProps { 
   modalState: boolean;

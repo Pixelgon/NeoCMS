@@ -1,4 +1,4 @@
-import { FormType } from '@/types/FormType';
+import { FormType } from '@/types/formType';
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 

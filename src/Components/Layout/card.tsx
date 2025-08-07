@@ -1,6 +1,6 @@
 'use client'
 import { motion } from "motion/react";
-import { FC, PropsWithChildren } from "react";
+import { FC } from "react";
 
 interface CardProps {
     children: React.ReactNode;

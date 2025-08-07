@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useMemo, useContext, FC, PropsWithChildren } from "react";
-import { LayoutContext } from '@/context/LayoutContext';
+import { useEffect, useState, useContext, FC, PropsWithChildren } from "react";
+import { LayoutContext } from '@/context/layoutContext';
 
 
 export const Navbar: FC<PropsWithChildren> = (props) => {   

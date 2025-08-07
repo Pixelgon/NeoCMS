@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { dialog } from "motion/react-client";
-import { FC, PropsWithChildren } from "react";
+import { FC } from "react";
 
 
 interface DialogProps {

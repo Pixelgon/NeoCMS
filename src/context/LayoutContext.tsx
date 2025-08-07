@@ -2,7 +2,7 @@
 import { AnimatePresence } from "framer-motion";
 import { FC, PropsWithChildren, useState, useEffect, useCallback, useMemo, createContext } from "react";
 import NextTopLoader from "nextjs-toploader";
-import { Toast } from "@/components/layout/Toast";
+import { Toast } from "@/components/layout/toast";
 
 
 export const LayoutContext = createContext<LayoutContextType>({

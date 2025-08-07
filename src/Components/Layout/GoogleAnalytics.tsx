@@ -1,5 +1,4 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { tr } from 'motion/react-client';
 import { cookies } from 'next/headers';
 
 export async function GA() {

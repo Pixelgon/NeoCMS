@@ -1,10 +1,10 @@
 'use client';
 import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
-import Project from "./Project";
+import Project from "./project";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import { TagFilter } from "../tag/TagFilter";
+import { TagFilter } from "../tag/tagFilter";
 import { Tag } from "../../../generated/prisma_client";
 
 interface ProjectData {

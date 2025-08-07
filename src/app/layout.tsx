@@ -1,17 +1,17 @@
 import { Open_Sans, Quicksand } from "next/font/google";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import "./globals.css";
-import { LayoutProvider } from "@/context/LayoutContext";
+import { LayoutProvider } from "@/context/layoutContext";
 import { MotionConfig } from "motion/react";
 import Footer from "@/components/footer";
 import { SessionProvider } from "next-auth/react";
 import Link from "next/link";
-import Navbar from "@/components/navbar/Index";
+import Navbar from "@/components/navbar";
 import { Metadata } from "next";
-import { AdminPanel } from "@/components/admin/AdminPanel";
+import { AdminPanel } from "@/components/admin/adminPanel";
 import { auth } from "@/lib/auth";
-import { GA } from "@/components/layout/GoogleAnalytics";
-import { NavbarItem } from "@/components/navbar/NavbarItem";
+import { GA } from "@/components/layout/googleAnalytics";
+import { NavbarItem } from "@/components/navbar/navbarItem";
 
 
 const OpenSans = Open_Sans({

@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
          })),
       ];
    } catch (error) {
-      console.error('Error generating sitemap:', error);
+      console.error('Database is not available, during docker build, returning fallback sitemap:', error);
       // Fallback bez projektů
       return [
          {

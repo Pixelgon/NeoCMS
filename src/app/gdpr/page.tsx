@@ -1,5 +1,5 @@
-import { Header } from "@/components/header/Index";
-import { Section } from "@/components/layout/Section";
+import { Header } from "@/components/header";
+import { Section } from "@/components/layout/section";
 import { Metadata } from "next";
 import Link from "next/link";
 

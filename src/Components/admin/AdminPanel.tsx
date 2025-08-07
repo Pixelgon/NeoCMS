@@ -1,16 +1,16 @@
 'use client';
-import { LayoutContext } from "@/context/LayoutContext";
-import ProjectType from "@/types/ProjectType";
+import { LayoutContext } from "@/context/layoutContext";
 import { signOut, useSession } from "next-auth/react";
 import { useTopLoader } from "nextjs-toploader";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { Btn } from "../layout/Btn";
-import { Dialog } from "../layout/Dialog";
-import TagModal from "../tag/TagModal";
-import { ProjectModal } from "../project/ProjectModal";
-import { AdminLink } from "./AdminPanelLink";
+import { Btn } from "../layout/btn";
+import { Dialog } from "../layout/dialog";
+import TagModal from "../tag/tagModal";
+import { ProjectModal } from "../project/projectModal";
+import { AdminLink } from "./adminPanelLink";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
-import AdminProjectList from "./AdminProjectList";
+import AdminProjectList from "./adminProjectList";
+import ProjectType from "@/types/projectType";
 
 
 const emptyProject: ProjectType = {

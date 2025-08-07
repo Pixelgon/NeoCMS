@@ -1,6 +1,6 @@
-import { Header } from "@/components/header/Index";
-import { Section } from "@/components/layout/Section";
-import ProjectsList from "@/components/project/ProjectList";
+import { Header } from "@/components/header";
+import { Section } from "@/components/layout/section";
+import ProjectsList from "@/components/project/projectList";
 import getAllProjects from "@/utils/project/getAllProjects";
 import getAllTags from "@/utils/project/getAllTags";
 import { Metadata } from "next";

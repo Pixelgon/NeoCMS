@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FC } from "react";
 import { EyeIcon, EyeSlashIcon, MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { Btn } from "../layout/Btn";
+import { Btn } from "../layout/btn";
 
 export interface AdminProjectProps {
    name: string;

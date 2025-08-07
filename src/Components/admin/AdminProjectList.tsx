@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import ProjectType from "@/types/ProjectType";
-import { AdminProject } from "./AdminProject";
-import { Modal } from "../layout/Modal";
+import { AdminProject } from "./adminProject";
+import { Modal } from "../layout/modal";
+import ProjectType from "@/types/projectType";
 
 interface AdminProjectListProps {
   modalState: boolean;

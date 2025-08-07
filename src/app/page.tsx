@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { Btn } from '@/components/layout/Btn';
-import { Card } from '@/components/layout/Card';
-import { Section } from '@/components/layout/Section';
+import { Btn } from '@/components/layout/btn';
+import { Card } from '@/components/layout/card';
+import { Section } from '@/components/layout/section';
 import { Metadata } from 'next';
-import HeaderLogo from '@/components/header/HeaderLogo';
+import HeaderLogo from '@/components/header/headerLogo';
 import * as motion from "motion/react-client";
 import GetLastTwoProjects from '@/utils/project/getLastTwoProjects';
-import ProjectHM from '@/components/project/ProjectHM';
+import ProjectHM from '@/components/project/projectHM';
  
 
 export const metadata: Metadata = {

@@ -1,14 +1,14 @@
 'use client';
-import CookieConsentConfig from "@/config/CookieConsentConfig"
 import * as CookieConsent from "vanilla-cookieconsent";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useState, useEffect, PropsWithChildren, FC, useContext } from "react";
-import { Btn } from "../layout/Btn";
-import { Section } from "../layout/Section";
+import { Btn } from "../layout/btn";
+import { Section } from "../layout/section";
 import Image from "next/image";
-import ContactForm from "../form/ContactForm";
+import ContactForm from "../form/contactForm";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import CookieConsentConfig from "@/config/cookieConsentConfig";
 
 const removeAnalyticsCookies = () => {
     document.cookie = "_ga=; Max-Age=0; path=/; SameSite=Lax";

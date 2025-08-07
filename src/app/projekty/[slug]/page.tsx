@@ -1,10 +1,10 @@
-import { Header } from "@/components/header/Index";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { notFound } from "next/navigation";
-import { Section } from "@/components/layout/Section";
-import { Btn } from "@/components/layout/Btn";
 import { Metadata } from "next";
+import { Header } from "@/components/header";
+import { Section } from "@/components/layout/section";
+import { Btn } from "@/components/layout/btn";
 
 const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 

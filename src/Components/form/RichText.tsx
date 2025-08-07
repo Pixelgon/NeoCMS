@@ -4,10 +4,10 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import ImageExtension from "@tiptap/extension-image";
 import { useTopLoader } from "nextjs-toploader";
-import { Btn } from "../layout/Btn";
-import { Dialog } from "../layout/Dialog";
-import Input from "./Input";
-import RichTextTab from "./RichTextTab";
+import { Btn } from "../layout/btn";
+import { Dialog } from "../layout/dialog";
+import Input from "./input";
+import RichTextTab from "./richTextTab";
 import Image from "next/image";
 
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import { motion } from "motion/react";
 import { FC } from "react";
-import { HeaderFull } from "./HeaderFull";
+import { HeaderFull } from "./headerFull";
 
 interface HeaderLogoProps {
    children?: React.ReactNode;

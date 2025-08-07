@@ -1,12 +1,12 @@
 'use client'
 import { FC, FormEvent, useState, ChangeEvent, useContext } from "react";
-import { Btn } from "../layout/Btn";
-import Input from "./Input";
-import { Modal } from "../layout/Modal";
-import Textarea from "./TextArea";
-import { FormType } from "@/types/FormType";
-import { LayoutContext } from "@/context/LayoutContext";
+import { Btn } from "../layout/btn";
+import Input from "./input";
+import { Modal } from "../layout/modal";
+import Textarea from "./textArea";
+import { LayoutContext } from "@/context/layoutContext";
 import { useTopLoader } from 'nextjs-toploader';
+import { FormType } from "@/types/formType";
 
 
 
