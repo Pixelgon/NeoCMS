@@ -1,0 +1,83 @@
+'use client';
+import * as CookieConsent from "vanilla-cookieconsent";
+import { motion } from "motion/react";
+import Link from "next/link";
+import { useState, useEffect, PropsWithChildren, FC, useContext } from "react";
+import { Btn } from "../layout/btn";
+import { Section } from "../layout/section";
+import Image from "next/image";
+import ContactForm from "../form/contactForm";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import CookieConsentConfig from "@/config/cookieConsentConfig";
+
+const removeAnalyticsCookies = () => {
+    document.cookie = "_ga=; Max-Age=0; path=/; SameSite=Lax";
+    document.cookie = `_ga_${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}=; Max-Age=0; path=/; SameSite=Lax`;
+}
+
+export const Footer: FC<PropsWithChildren> = ({children}) => {
+    const date = new Date();
+    const ctaText = "Půjdete do toho s námi?".split(" ");
+    const [ctaModal, setCtaModal] = useState(false);
+
+    useEffect(() => {
+        CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, 
+            onConsent: () => {
+                if (!CookieConsent.acceptedCategory("analytics"))
+                    removeAnalyticsCookies();
+            },
+            onChange: () => {
+                if (!CookieConsent.acceptedCategory("analytics"))
+                    removeAnalyticsCookies();
+            },
+            }
+        );
+    }, []);
+
+    return (
+        <>
+            <ContactForm setModalState={setCtaModal} modalState={ctaModal}/>
+            <footer className="bg-bg text-wh">
+                <div className={'bg-sec-gradient'}>
+                    <Section className="">
+                        <p className={'text-[min(10vw,5rem)] font-quicksand leading-[1.15]'}>
+                            {ctaText.map((el, i) => (
+                            <motion.span className={'text-pxlgn font-semibold uppercase'}
+                            initial={{ y: 10, opacity: 0}}
+                            whileInView={{ y: 0, opacity: 1}}
+                            viewport={{ once: true, amount: 1}}
+                            transition={{
+                                duration: .3,
+                                delay: i / 12
+                            }}
+                            key={i}
+                            >
+                            {el}{" "}
+                            </motion.span>
+                        ))}
+                        </p>
+                        <div className={'flex gap-6 items-center flex-wrap'}>
+                            <Btn onClick={() => setCtaModal(!ctaModal)} className={'text-xl'} prim>Kontaktovat</Btn>
+                            <a href="mailto:pixelgon@pixelgon.cz" className={'w-full sm:w-auto flex gap-2 relative hover:brightness-50 transition-all duration-300'}><Image height={30} width={30} src={'/images/icons/envelope.svg'} alt={""}/><p className={'text-pxlgn'}>pixelgon@pixelgon.cz</p></a>
+                        </div>
+                    </Section>    
+                </div>
+                <div className="max-w-7xl flex justify-between mx-auto items-center flex-wrap gap-2 py-4 px-reg xl:px-0">
+                    <div className={'relative'}>
+                        <Link href="/" className={'relative'}>
+                            <Image src="/images/logo/LogoText.svg" fill className={'!relative w-full h-auto max-w-[222px]'} alt="Logo Pixelgon" priority={false}/>
+                        </Link>
+                        <p className="m-0 font-light text-xs mt-2 w">&copy;&nbsp;{date.getFullYear()}&nbsp;| Matěj Matějka | IČO: 21164720</p>
+                    </div>
+                    
+                    <menu className="flex justify-center items-center list-none gap-4 m-0 mt-4 bg-bg font-light text-xs">
+                        {children}
+                    </menu>    
+                </div>
+            </footer>
+            {CookieConsent.acceptedCategory("analytics") && <GoogleAnalytics gaId={process.env.GA_ID || ""} />}
+        </>
+    );
+}
+
+export default Footer;
