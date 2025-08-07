@@ -1,5 +1,5 @@
+import { Tag } from "@prisma/client";
 import { FC, useState, useEffect } from "react";
-import { Tag } from "../../../generated/prisma_client";
 
 interface TagInputProps {
    tags: Tag[];

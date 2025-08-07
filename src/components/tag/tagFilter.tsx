@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FC } from "react";
 import { TagBtn } from "./tagBtn";
 import { Btn } from "../layout/btn";
-import { Tag } from "../../../generated/prisma_client";
+import { Tag } from "@prisma/client";
 
 interface TagFilterProps {
    availableTags: Tag[];

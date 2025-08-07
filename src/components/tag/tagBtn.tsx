@@ -1,5 +1,5 @@
+import { Tag } from "@prisma/client";
 import { FC } from "react";
-import { Tag } from "../../../generated/prisma_client";
 
 interface TagBtnProps {
       tag: Tag;

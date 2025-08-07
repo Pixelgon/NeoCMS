@@ -6,7 +6,7 @@ import Input from "../form/input";
 import { Btn } from "../layout/btn";
 import { Dialog } from "../layout/dialog";
 import { Modal } from "../layout/modal";
-import { Tag } from "../../../generated/prisma_client";
+import { Tag } from "@prisma/client";
 
 interface TagModalProps {
    modalState: boolean;

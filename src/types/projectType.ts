@@ -1,4 +1,4 @@
-import { Tag } from "../../generated/prisma_client";
+import { Tag } from "@prisma/client";
 
 export type ProjectType = {
       id: string;

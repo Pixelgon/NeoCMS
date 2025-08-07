@@ -5,7 +5,7 @@ import Project from "./project";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { TagFilter } from "../tag/tagFilter";
-import { Tag } from "../../../generated/prisma_client";
+import { Tag } from "@prisma/client";
 
 interface ProjectData {
    id: string;
