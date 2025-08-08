@@ -2,7 +2,7 @@ import { FC } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AdminProject } from "./adminProject";
 import { Modal } from "../layout/modal";
-import ProjectType from "@/types/projectType";
+import ProjectCardType from "@/types/projectCardType";
 
 interface AdminProjectListProps {
   modalState: boolean;
@@ -10,7 +10,7 @@ interface AdminProjectListProps {
   onEdit: (id?: string) => void;
   onDelete: (id: string) => void;
   onToggleVisibility: (id: string) => void;
-  projects: ProjectType[];
+  projects: ProjectCardType[];
   loading?: boolean;
 }
 

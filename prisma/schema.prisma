@@ -11,7 +11,7 @@ model Project {
   id           String       @id @default(cuid())
   name         String
   body         String
-  description  String
+  description  String       @db.VarChar(155)
   background   String
   photo        String
   slug         String       @unique

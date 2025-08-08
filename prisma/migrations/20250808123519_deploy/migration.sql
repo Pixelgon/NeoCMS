@@ -3,7 +3,7 @@ CREATE TABLE "public"."Project" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "body" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" VARCHAR(155) NOT NULL,
     "background" TEXT NOT NULL,
     "photo" TEXT NOT NULL,
     "slug" TEXT NOT NULL,

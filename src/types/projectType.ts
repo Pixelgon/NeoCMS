@@ -9,6 +9,6 @@ export type ProjectType = {
       photo: string;
       slug: string;
       visible: boolean;
-      tags: Tag[];
+      tags: string[];
 }
 export default ProjectType;

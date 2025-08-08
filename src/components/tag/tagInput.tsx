@@ -2,8 +2,8 @@ import { Tag } from "@prisma/client";
 import { FC, useState, useEffect } from "react";
 
 interface TagInputProps {
-   tags: Tag[];
-   setTags: (tags: Tag[]) => void;
+   tags: string[];
+   setTags: (tags: string[]) => void;
    label?: string;
 }
 
@@ -26,11 +26,11 @@ export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy" }) =
    }, []);
 
    const toggleTag = (tag: Tag) => {
-      const exists = tags.find((t) => t.id === tag.id);
+      const exists = tags.includes(tag.id);
       if (exists) {
-         setTags(tags.filter((t) => t.id !== tag.id));
+         setTags(tags.filter((t) => t !== tag.id));
       } else {
-         setTags([...tags, tag]);
+         setTags([...tags, tag.id]);
       }
    };
 
@@ -39,7 +39,7 @@ export const TagInput: FC<TagInputProps> = ({ tags, setTags, label = "Tagy" }) =
          <span className="text-wh font-quicksand text-lg pl-3 pb-1">{label}</span>
          <div className="flex flex-wrap gap-2 p-2 min-h-12 border border-prim rounded-3xl bg-sec">
             {allTags.map((tag) => {
-               const isSelected = tags.some((t) => t.id === tag.id);
+               const isSelected = tags.includes(tag.id);
                return (
                   <button
                      key={tag.id}

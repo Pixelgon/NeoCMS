@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-   const { searchParams } = new URL(req.url);
    const session = await auth(); // Získání uživatelské session
    
    try {
@@ -13,34 +12,19 @@ export const GET = async (req: NextRequest) => {
          ? {  } 
          : { visible: true };
 
-      const [projects, totalCount] = await Promise.all([
-         prisma.project.findMany({
-            orderBy: { createdOn: "desc" },
-            where: whereCondition,
-            select: {
-               id: true,
-               name: true,
-               slug: true,
-               photo: true,
-               description: true,
-               visible: true,
-               tags: {
-                  select: {
-                     tag: {
-                        select: {
-                           id: true,
-                           name: true
-                        }
-                     }
-                  }
-               }
-            }
-         }),
-         prisma.project.count()
-      ]);
-      return NextResponse.json({
-         projects: projects,
+      const projects = await prisma.project.findMany({
+         orderBy: { createdOn: "desc" },
+         where: whereCondition,
+         select: {
+            id: true,
+            name: true,
+            slug: true,
+            photo: true,
+            visible: true,
+         }
       });
+      
+      return NextResponse.json(projects);
    } catch (error) {
       return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
    }

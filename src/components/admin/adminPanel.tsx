@@ -11,6 +11,7 @@ import { AdminLink } from "./adminPanelLink";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import AdminProjectList from "./adminProjectList";
 import ProjectType from "@/types/projectType";
+import ProjectCardType from "@/types/projectCardType";
 
 
 const emptyProject: ProjectType = {
@@ -27,7 +28,7 @@ const emptyProject: ProjectType = {
 
 export const AdminPanel: FC = () => {
    const { data: session } = useSession();
-   const [projects, setProjects] = useState<ProjectType[]>([]);
+   const [projects, setProjects] = useState<ProjectCardType[]>([]);
    const [project, setProject] = useState<ProjectType>(emptyProject);
    const [projectModal, setProjectModal] = useState(false);
    const [deleteDialog, setDeleteDialog] = useState(false);
@@ -43,7 +44,7 @@ export const AdminPanel: FC = () => {
          const response = await fetch('/api/projects');
          if (response.ok) {
             const data = await response.json();
-            setProjects(data.projects);
+            setProjects(data);
          } else {
             layoutData.showToast({ message: 'Chyba při načítání projektů', type: 'error' });
          }
@@ -55,9 +56,14 @@ export const AdminPanel: FC = () => {
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
+   useEffect(() => {
+      console.log('Updated project:', project);
+   }, [project]);
+
    const openProjectModal = async(projectID?: string) => {
+      setProject(emptyProject);
       if(projectID) {
-      loader.start();
+        loader.start();
         await fetch(`/api/projects/${projectID}`)
           .then((res) => res.json())
           .then((data) => {
@@ -66,19 +72,15 @@ export const AdminPanel: FC = () => {
           .catch((error) => {
             layoutData.showToast({ message: error, type: "error" });
           });
+          setProjectListModal(false);
       }
-      else {
-        setProject(emptyProject);
-      }
-      setProjectListModal(false);
-      // O.3s delay
       setTimeout(() => {
         setProjectModal(true);
       }, 300);
       loader.done();
   }
 
-   const handleProjectSubmit = async (projectData: ProjectType, tags: any[]) => {
+   const handleProjectSubmit = async (projectData: ProjectType) => {
     loader.start();
     
     try {
@@ -91,7 +93,6 @@ export const AdminPanel: FC = () => {
           },
           body: JSON.stringify({
             ...projectData,
-            tags: tags.map(tag => tag.id),
           }),
         });
         
@@ -103,6 +104,7 @@ export const AdminPanel: FC = () => {
           setTimeout(() => {
             setProjectListModal(true);
             layoutData.showToast({ message: 'Projekt byl aktualizován', type: 'success' });
+            setProject(emptyProject);
           }, 300); 
         } else {
           layoutData.showToast({ message: 'Chyba při aktualizaci', type: 'error' });
@@ -121,7 +123,7 @@ export const AdminPanel: FC = () => {
             background: projectData.background,
             photo: projectData.photo,
             slug: projectData.slug,
-            tags: tags.map((tag) => tag.id)
+            tags: projectData.tags,
           }),
         });
         

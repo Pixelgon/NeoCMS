@@ -22,8 +22,6 @@ export const GET = async (
                   tag: {
                      select: {
                         id: true,
-                        name: true,
-                        slug: true,
                      },
                   },
                },
@@ -34,9 +32,12 @@ export const GET = async (
       if (!project) {
          return NextResponse.json({ error: "Project not found" }, { status: 404 });
       }
+
+      const tagIds = project.tags.map(tagRelation => tagRelation.tag.id);
       
       return NextResponse.json({
          ...project,
+         tags: tagIds,
       });   
    } catch (error) {
       return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -141,7 +142,10 @@ export const PUT = async (
       }
 
       return NextResponse.json({
-         ...project,
+         name: project.name,
+         photo: project.photo,
+         id: project.id,
+         
       }, { status: 200 });
    } catch (error: any) {
       return NextResponse.json({ error: error.message }, { status: 500 });
