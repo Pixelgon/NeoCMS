@@ -115,7 +115,7 @@ export default async function ProjectDetail(props: { params: tParams }) {
                         <footer className={'mt-6 flex flex-wrap gap-4'}>
                             <Btn href={`/projekty`} prim>Zpět na projekty</Btn>
                             {project.tags.map((tag) => (
-                                <Btn href={`/projekty?tag=${tag.tag.id}`} key={tag.tag.id}>
+                                <Btn href={`/projekty?tag=${tag.tag.slug}`} key={tag.tag.id}>
                                     {tag.tag.name}
                                 </Btn>
                             ))}
