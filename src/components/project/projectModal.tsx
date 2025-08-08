@@ -96,6 +96,7 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
    useEffect(() => {
       // Uložení původního projektu při otevření modalu
       setInitialProject(project);
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [modalState]);
 
    // Kontrola, zda byl projekt upraven
