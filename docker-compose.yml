@@ -13,7 +13,7 @@ services:
   db:
     image: postgres:15
     restart: always
-    container_name: pgdb
+    container_name: NeoCMS-db
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password

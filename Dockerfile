@@ -41,7 +41,7 @@ RUN AUTH_SECRET=$(openssl rand -base64 32) && \
 RUN mkdir -p /app/uploads/images
 RUN mkdir -p /app/.next/cache/images
 
-RUN chown -R nextjs:nodejs /app
+RUN chown -R nextjs:nodejs /app/uploads /app/.next
 
 USER nextjs
 
