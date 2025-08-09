@@ -80,7 +80,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
 
     try {
       loader.start();
-      const res = await fetch("/api/upload", {
+      const res = await fetch("/api/uploads", {
         method: "POST",
         body: formData,
       });

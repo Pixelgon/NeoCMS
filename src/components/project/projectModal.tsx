@@ -151,7 +151,7 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
          const formData = new FormData();
          formData.append('file', file);
 
-         const response = await fetch('/api/upload', {
+         const response = await fetch('/api/uploads', {
             method: 'POST',
             body: formData,
          });

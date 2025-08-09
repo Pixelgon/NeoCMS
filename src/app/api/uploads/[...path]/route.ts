@@ -34,3 +34,4 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     return new NextResponse('File not found', { status: 404 });
   }
 }
+
