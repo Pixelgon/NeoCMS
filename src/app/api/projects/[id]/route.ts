@@ -126,25 +126,30 @@ export const PUT = async (
          const fs = require('fs');
          const path = require('path');
          
-         if (currentProject.photo !== photo && currentProject.photo.startsWith('/uploads/')) {
-            const oldPhotoPath = path.join(process.cwd(), 'public', currentProject.photo);
+          const cleanPhoto = currentProject.photo.replace(/^\/api/, '');
+          const cleanBackground = currentProject.background.replace(/^\/api/, '');
+
+          if (currentProject.photo !== photo && cleanPhoto.startsWith('/uploads/images/')) {
+            const oldPhotoPath = path.join(process.cwd(), cleanPhoto);
             if (fs.existsSync(oldPhotoPath)) {
                fs.unlinkSync(oldPhotoPath);
             }
-         }
-         
-         if (currentProject.background !== background && currentProject.background.startsWith('/uploads/')) {
-            const oldBackgroundPath = path.join(process.cwd(), 'public', currentProject.background);
+          }
+          
+          if (currentProject.background !== background && cleanBackground.startsWith('/uploads/images/')) {
+            const oldBackgroundPath = path.join(process.cwd(), cleanBackground);
             if (fs.existsSync(oldBackgroundPath)) {
                fs.unlinkSync(oldBackgroundPath);
             }
-         }
+          }
       }
 
       return NextResponse.json({
          name: project.name,
          photo: project.photo,
          id: project.id,
+         slug: project.slug,
+         visible: project.visible,
          
       }, { status: 200 });
    } catch (error: any) {
@@ -177,8 +182,12 @@ export const DELETE = async (
       if (projectImgs) {
          const fs = require('fs');
          const path = require('path');
-         const photoPath = path.join(process.cwd(), 'public', projectImgs.photo);
-         const backgroundPath = path.join(process.cwd(), 'public', projectImgs.background);
+
+         const cleanPhoto = projectImgs.photo.replace(/^\/api/, '');
+         const cleanBackground = projectImgs.background.replace(/^\/api/, '');
+
+         const photoPath = path.join(process.cwd(), cleanPhoto);
+         const backgroundPath = path.join(process.cwd(), cleanBackground);
          if (fs.existsSync(photoPath)) {
             fs.unlinkSync(photoPath);
          }

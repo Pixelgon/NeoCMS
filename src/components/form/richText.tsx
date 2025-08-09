@@ -143,7 +143,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
           label="Vybrat obrázek"
           name="image-upload"
           id="image-upload"
-          className={'w-full'}
+          className={'w-full file:border-none file:text-sec file:bg-pxlgn-gradient file:p-2 file:mr-2 file:rounded-3xl'}
           required={false}
         />
         {imagePreview && (
