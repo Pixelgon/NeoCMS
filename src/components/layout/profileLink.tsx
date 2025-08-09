@@ -26,19 +26,19 @@ export const ProfileLink:FC<ProfileLinkProps> = ({type, link}) => {
                 switch (type) {
                     case ProfileLinkType.Instagram:
                         return (
-                            <Image src={'/images/icons/instagram.svg'} alt={'Instagram'} fill className={ImageClass}/>
+                            <Image src={'/images/icons/instagram.svg'} alt={'Instagram'} fill className={ImageClass} width={40} height={40}/>
                         );
                     case ProfileLinkType.Linkedin:
                         return (
-                            <Image src={'/images/icons/linked-in.svg'} alt={'Linkedin'} fill className={ImageClass}/>
+                            <Image src={'/images/icons/linked-in.svg'} alt={'Linkedin'} fill className={ImageClass} width={40} height={40}/>
                         );
                     case ProfileLinkType.Github:
                         return (
-                            <Image src={'/images/icons/github.svg'} alt={'Github'} fill className={ImageClass}/>
+                            <Image src={'/images/icons/github.svg'} alt={'Github'} fill className={ImageClass} width={40} height={40}/>
                         );
                     case ProfileLinkType.Discord:
                         return (
-                            <Image src={'/images/icons/discord.svg'} alt={'Discord'} fill className={ImageClass}/>
+                            <Image src={'/images/icons/discord.svg'} alt={'Discord'} fill className={ImageClass} width={40} height={40}/>
                         );
                     case ProfileLinkType.Email:
                         return (
