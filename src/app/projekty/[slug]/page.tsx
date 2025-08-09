@@ -110,7 +110,7 @@ export default async function ProjectDetail(props: { params: tParams }) {
             <Header bg={project.background} title={project.name} />
             <main>
                 <Section isPrim>
-                        <div dangerouslySetInnerHTML={{ __html: project.body }}></div>
+                        <div dangerouslySetInnerHTML={{ __html: project.body }} className={'flex gap-4 flex-col'}></div>
                         <div className={'flex flex-wrap gap-4'}>
                             <Btn href={`/projekty`} prim>Zpět na projekty</Btn>
                             {project.tags.map((tag) => (
