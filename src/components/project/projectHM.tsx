@@ -38,7 +38,7 @@ export const ProjectHM: FC<ProjectHMProps> = ({ projects }) => {
                   >
                      <Image src={photo} alt={name} fill sizes="40vw" className={'aspect-[3/2] object-cover h-auto !relative transition-transform duration-300 group-hover:scale-110'}/>
                   </Link>
-                  <div className={`flex flex-col justify-center ${isEven ? 'lg:col-start-1 lg:items-end' : 'items-start'}`}>
+                  <div className={`flex flex-col justify-center ${isEven ? 'lg:col-start-1 lg:items-end text-right' : 'items-start'}`}>
                      <h2>{name}</h2>
                      <p className="mt-3 text-wh">{description}</p>
                      <Btn href={`/projekty/${slug}`} className="mt-6">
