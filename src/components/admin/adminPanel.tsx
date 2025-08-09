@@ -107,7 +107,8 @@ export const AdminPanel: FC = () => {
             setProject(emptyProject);
           }, 300); 
         } else {
-          layoutData.showToast({ message: 'Chyba při aktualizaci', type: 'error' });
+          const resp = await response.json();
+          layoutData.showToast({ message: resp.error || 'Chyba při aktualizaci', type: 'error' });
         }
       } else {
         // Vytvoření nového projektu
@@ -134,7 +135,8 @@ export const AdminPanel: FC = () => {
           setProjectModal(false);
           layoutData.showToast({ message: 'Projekt byl vytvořen', type: 'success' });
         } else {
-          layoutData.showToast({ message: 'Chyba při vytváření projektu', type: 'error' });
+          const resp = await response.json();
+          layoutData.showToast({ message: resp.error || 'Chyba při vytváření projektu', type: 'error' });
         }
       }
     } catch (error) {
