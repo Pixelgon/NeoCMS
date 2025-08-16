@@ -17,7 +17,7 @@ export const Card: FC<CardProps> = ({children, delay, sec, className}) => {
             whileInView={{opacity: 1, scale: 1}}
             transition={{delay: delay ? delay : 0}}
             viewport={{ once: true, amount: .01 }}
-            className={'flex flex-col gap-3 items-center rounded-3xl p-14 relative h-full '+ (sec ? 'bg-sec' : 'bg-bg') + (className ? ' ' + className : '')}>
+            className={'flex flex-col gap-3 items-center rounded-3xl p-reg xl:p-14 relative h-full '+ (sec ? 'bg-sec' : 'bg-bg') + (className ? ' ' + className : '')}>
             {children}
         </motion.article>
     );
