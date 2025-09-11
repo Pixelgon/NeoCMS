@@ -1,4 +1,4 @@
-const baseUrl = process.env.BASE_URL || "";
+const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || "";
 const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
 
 export const CookieConsentConfig = {

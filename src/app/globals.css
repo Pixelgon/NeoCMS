@@ -209,7 +209,7 @@
 }
 
 #cc-main .pm__body, #cc-main .pm__footer, #cc-main .pm__header {
-  padding: 1.5rem;
+  padding: 1.5rem!important;
 }
 
 #cc-main .cm__btns {
@@ -235,6 +235,10 @@
 
 .cm__btn--secondary, .pm__close-btn, #cc-main .pm__btn--secondary {
   @apply w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative before:transition-all before:duration-300 before:bg-sec before:absolute before:h-[calc(100%-2px)] before:w-[calc(100%-2px)] before:top-[1px] before:rounded-3xl before:left-[1px] hover:before:bg-transparent border-none p-0 !important;
+}
+
+#cc-main .pm__close-btn {
+  @apply !w-auto;
 }
 
 .cm__btn--secondary:hover span, .pm__close-btn:hover span, #cc-main .pm__btn--secondary:hover span {
@@ -323,4 +327,8 @@
 
 #cc-main .pm--flip .pm__btn+.pm__btn, #cc-main .pm--flip .pm__btn-group+.pm__btn-group {
     margin-right: .75rem;
+}
+
+#cc-main .pm__table-td:before {
+  @apply text-wh;
 }
