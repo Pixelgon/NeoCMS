@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { FC, useCallback, useContext, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { AdminProject } from "./adminProject";
-import { Modal } from "../layout/modal";
 import ProjectCardType from "@/types/projectCardType";
+import { useTopLoader } from "nextjs-toploader";
+import { LayoutContext } from "@/context/layoutContext";
 
 interface AdminProjectListProps {
   modalState: boolean;
@@ -10,8 +11,6 @@ interface AdminProjectListProps {
   onEdit: (id?: string) => void;
   onDelete: (id: string) => void;
   onToggleVisibility: (id: string) => void;
-  projects: ProjectCardType[];
-  loading?: boolean;
 }
 
 export const AdminProjectList: FC<AdminProjectListProps> = ({ 
@@ -20,11 +19,38 @@ export const AdminProjectList: FC<AdminProjectListProps> = ({
   onEdit, 
   onDelete, 
   onToggleVisibility,
-  projects,
 }) => {
+  
+  const loader = useTopLoader();
+  const layoutData = useContext(LayoutContext);
+  const [projects, setProjects] = useState<ProjectCardType[]>([]);
+
+
+  const loadProjects = useCallback(async () => {
+    try {
+      loader.start();
+      const response = await fetch("/api/projects");
+      if (response.ok) {
+        const data = await response.json();
+        setProjects(data);
+      } else {
+        layoutData.showToast({
+          message: "Chyba při načítání projektů",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      layoutData.showToast({
+        message: "Chyba při načítání projektů",
+        type: "error",
+      });
+    } finally {
+      loader.done();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <Modal setModalState={setModalState} modalState={modalState} title="Správa projektů">
       <AnimatePresence mode="wait">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-reg lg:gap-8 mt-5 w-full h-auto relative">
           {projects.length > 0 ? (
@@ -60,7 +86,6 @@ export const AdminProjectList: FC<AdminProjectListProps> = ({
           )}
         </div>
       </AnimatePresence>
-    </Modal>
   );
 };
 

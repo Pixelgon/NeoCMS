@@ -10,16 +10,14 @@ import RichText from "../form/richText";
 import ProjectType from "@/types/projectType";
 
 
-interface ProjectModalProps {
+interface AdminProjectFormProps {
    project: ProjectType
    setProject: (project: ProjectType | ((prev: ProjectType) => ProjectType)) => void;
-   modalState: boolean;
-   setModalState: (state: boolean) => void;
    onSubmit: (projectData: ProjectType) => Promise<void>;
 }
 
 
-export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modalState, setModalState, onSubmit }) => {
+export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProject, onSubmit }) => {
    const [initialProject, setInitialProject] = useState<ProjectType>(project);
    const [isSubmitting, setIsSubmitting] = useState(false);
    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -92,12 +90,6 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
              project.description &&
              project.tags.length > 0;
    };
-
-   useEffect(() => {
-      // Uložení původního projektu při otevření modalu
-      setInitialProject(project);
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [modalState]);
 
    // Kontrola, zda byl projekt upraven
    const isProjectModified = () => {
@@ -204,24 +196,22 @@ export const ProjectModal: FC<ProjectModalProps> = ({ project, setProject, modal
    };
 
    return (
-      <Modal modalState={modalState} setModalState={setModalState} title={project.id != "" ? `Upravuješ ${project.name}` : "Vytvořit nový projekt"} asking>
-         <form className="flex flex-col gap-2 w-full justify-center" onSubmit={(e) => handleSubmit(e)}>
-            <Input type="text" placeholder="Název projekt" name="name" id="name" label="Jméno*" value={project?.name || ""} onChange={handleInputChange} required />
-            <Input type="text" placeholder="Slug" name="slug" id="slug" label="Slug*" value={project?.slug || ""} onChange={handleInputChange} required />
-            <Input type="text" placeholder="Popis" name="description" id="description" label="Popis*" value={project?.description || ""} onChange={handleInputChange} required limit={155} />
-            <ImageUpload name="bg" id="bg" label="Pozadí*" value={project?.background || ""} onChange={(file) => handleChangeImage(file, 'background')} required />
-            <ImageUpload name="photo" id="photo" label="Titulní obrázek*" value={project?.photo || ""} onChange={(file) => handleChangeImage(file, 'photo')} required />
-            <RichText content={project?.body || ""} onChange={handleRichTextChange} />
-            <TagInput tags={project?.tags} setTags={(tags) => setProject((prev) => ({ ...prev, tags }))} />
-            <Btn
-               prim
-               type="submit"
-               disabled={isSubmitDisabled}
-               className="mt-5"
-            >
-               {isSubmitting ? "Ukládám..." : (project.id ? "Uložit změny" : "Vytvořit projekt")}
-            </Btn>
-         </form>
-      </Modal>
+      <form className="flex flex-col gap-2 w-full justify-center" onSubmit={(e) => handleSubmit(e)}>
+         <Input type="text" placeholder="Název projekt" name="name" id="name" label="Jméno*" value={project?.name || ""} onChange={handleInputChange} required />
+         <Input type="text" placeholder="Slug" name="slug" id="slug" label="Slug*" value={project?.slug || ""} onChange={handleInputChange} required />
+         <Input type="text" placeholder="Popis" name="description" id="description" label="Popis*" value={project?.description || ""} onChange={handleInputChange} required limit={155} />
+         <ImageUpload name="bg" id="bg" label="Pozadí*" value={project?.background || ""} onChange={(file) => handleChangeImage(file, 'background')} required />
+         <ImageUpload name="photo" id="photo" label="Titulní obrázek*" value={project?.photo || ""} onChange={(file) => handleChangeImage(file, 'photo')} required />
+         <RichText content={project?.body || ""} onChange={handleRichTextChange} />
+         <TagInput tags={project?.tags} setTags={(tags) => setProject((prev) => ({ ...prev, tags }))} />
+         <Btn
+            prim
+            type="submit"
+            disabled={isSubmitDisabled}
+            className="mt-5"
+         >
+            {isSubmitting ? "Ukládám..." : (project.id ? "Uložit změny" : "Vytvořit projekt")}
+         </Btn>
+      </form>
    );
 };

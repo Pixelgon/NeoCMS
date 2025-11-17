@@ -8,12 +8,12 @@ import { Dialog } from "../layout/dialog";
 import { Modal } from "../layout/modal";
 import { Tag } from "@prisma/client";
 
-interface TagModalProps {
+interface AdminTagListProps {
    modalState: boolean;
    setModalState: (state: boolean) => void;
 }
 
-export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
+export const AdminTagList: FC<AdminTagListProps> = ({ modalState, setModalState }) => {
    const [tags, setTags] = useState<Tag[]>([]);
    const [newTagName, setNewTagName] = useState("");
    const [editedTags, setEditedTags] = useState<Record<string, string>>({});
@@ -170,73 +170,70 @@ export const TagModal: FC<TagModalProps> = ({ modalState, setModalState }) => {
 
    return (
       <>
-         <Modal modalState={modalState} setModalState={setModalState} title="Správa tagů">
-               {/* Seznam tagů */}
-               <div className="flex flex-col gap-2">
-                  {loading ? (
-                     <p className="text-wh text-center">Načítám tagy...</p>
-                  ) : tags.length === 0 ? (
-                     <p className="text-wh text-center">Žádné tagy</p>
-                  ) : (
-                     tags.map((tag) => {
-                        const currentValue = editedTags[tag.id] ?? tag.name;
-                        const isChanged = editedTags[tag.id] !== undefined && editedTags[tag.id] !== tag.name;
-                        return (
-                           <div key={tag.id} className="flex gap-2">
-                              <Input
-                                 type="text"
-                                 value={currentValue}
-                                 onChange={(e) => handleTagChange(tag.id, e.target.value)}
-                                 name={`tag-${tag.id}`}
-                                 id={`tag-${tag.id}`}
-                                 className="flex-grow"
-                                 required={false}
-                              />
-                              
-                              {isChanged && (
-                                 <>
-                                    <Btn 
-                                       type="button" 
-                                       onClick={() => updateTag(tag.id)}
-                                       prim 
-                                       disabled={!currentValue.trim()}
-                                    >
-                                       <CheckIcon className={'w-4 h-4'}/>
-                                    </Btn>
-                                    <Btn type="button" onClick={() => cancelEdit(tag.id)} prim>
-                                       <ArrowUturnLeftIcon className={'w-4 h-4'}/>
-                                    </Btn>
-                                 </>
-                              )}
+         <div className="flex flex-col gap-2">
+            {loading ? (
+               <p className="text-wh text-center">Načítám tagy...</p>
+            ) : tags.length === 0 ? (
+               <p className="text-wh text-center">Žádné tagy</p>
+            ) : (
+               tags.map((tag) => {
+                  const currentValue = editedTags[tag.id] ?? tag.name;
+                  const isChanged = editedTags[tag.id] !== undefined && editedTags[tag.id] !== tag.name;
+                  return (
+                     <div key={tag.id} className="flex gap-2">
+                        <Input
+                           type="text"
+                           value={currentValue}
+                           onChange={(e) => handleTagChange(tag.id, e.target.value)}
+                           name={`tag-${tag.id}`}
+                           id={`tag-${tag.id}`}
+                           className="flex-grow"
+                           required={false}
+                        />
+                        
+                        {isChanged && (
+                           <>
                               <Btn 
                                  type="button" 
-                                 onClick={() => openDeleteDialog(tag)}
-                                 prim
+                                 onClick={() => updateTag(tag.id)}
+                                 prim 
+                                 disabled={!currentValue.trim()}
                               >
-                                <TrashIcon className={'w-4 h-4'}/>
+                                 <CheckIcon className={'w-4 h-4'}/>
                               </Btn>
-                           </div>
-                        );
-                     })
-                  )}
-               </div>
-               {/* Přidání nového tagu */}
-               <form onSubmit={(e) => { e.preventDefault(); createTag(); }} className="flex gap-2 mt-6">
-                  <Input
-                     type="text"
-                     placeholder="Název nového tagu"
-                     value={newTagName}
-                     onChange={(e) => setNewTagName(e.target.value)}
-                     name="new-tag"
-                     id="new-tag"
-                     className="flex-grow"
-                     required={false}
-                  />
-                  <Btn type="submit" prim disabled={!newTagName.trim()}>
-                     <CheckIcon className={'w-4 h-4'}/>
-                  </Btn>
-               </form>
-         </Modal>
+                              <Btn type="button" onClick={() => cancelEdit(tag.id)} prim>
+                                 <ArrowUturnLeftIcon className={'w-4 h-4'}/>
+                              </Btn>
+                           </>
+                        )}
+                        <Btn 
+                           type="button" 
+                           onClick={() => openDeleteDialog(tag)}
+                           prim
+                        >
+                           <TrashIcon className={'w-4 h-4'}/>
+                        </Btn>
+                     </div>
+                  );
+               })
+            )}
+         </div>
+         {/* Přidání nového tagu */}
+         <form onSubmit={(e) => { e.preventDefault(); createTag(); }} className="flex gap-2 mt-6">
+            <Input
+               type="text"
+               placeholder="Název nového tagu"
+               value={newTagName}
+               onChange={(e) => setNewTagName(e.target.value)}
+               name="new-tag"
+               id="new-tag"
+               className="flex-grow"
+               required={false}
+            />
+            <Btn type="submit" prim disabled={!newTagName.trim()}>
+               <CheckIcon className={'w-4 h-4'}/>
+            </Btn>
+         </form>
 
          {/* Potvrzení mazání */}
          <Dialog DialogState={deleteDialog}>
