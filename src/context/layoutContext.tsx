@@ -5,10 +5,11 @@ import NextTopLoader from "nextjs-toploader";
 import { Toast } from "@/components/layout/toast";
 import { Dialog } from "@/components/layout/dialog";
 import { Modal } from "@/components/layout/modal";
+import { LayoutContextType } from "@/types/layoutContextType";
+import { DialogType } from "@/types/dialogType";
 
 
 export const LayoutContext = createContext<LayoutContextType>({
-  Scroll: true,
   setScroll: (scroll: boolean) => {},
   showToast: () => {},
   showDialog: () => {},
@@ -18,14 +19,14 @@ export const LayoutContext = createContext<LayoutContextType>({
 });
 
 export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [Scroll, setScroll] = useState(true);
+  const [scroll, setScroll] = useState(true);
   const [toast, setToast] = useState<ToastType | null>(null);
-  const [dialogContent, setDialogContent] = useState<React.ReactNode | null>(null);
+  const [dialog, setDialogContent] = useState<DialogType | null>(null);
   const [modal, setModal] = useState<ModalType | null>(null);
 
   useEffect(() => {
-    document.body.classList.toggle("overflow-hidden", !Scroll);
-  }, [Scroll]);
+    document.body.classList.toggle("overflow-hidden", !scroll);
+  }, [scroll]);
 
   const handleSetScroll = useCallback((scroll: boolean) => {
     setScroll(scroll);
@@ -36,31 +37,38 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     setTimeout(() => setToast(null), 4000);
   }, []);
 
-  const showDialog = useCallback((children: React.ReactNode) => {
-    setDialogContent(children);
+  const showDialog = useCallback((dialog: DialogType) => {
+    setDialogContent(dialog);
   }, []);
 
   const closeDialog = useCallback(() => {
     setDialogContent(null);
   }, []);
 
-  const showModal = useCallback((modal: ModalType) => {
-    setModal(modal);
-  }, []);
+  const showModal = useCallback((modalData: ModalType) => {
+    if (modal) {
+      setModal(null);
+      setTimeout(() => {
+        setModal(modalData);
+      }, 150);
+    } else {
+      setModal(modalData);
+    }
+  }, [modal]);
 
   const closeModal = useCallback(() => {
     setModal(null);
   }, []);
 
   const contextValue = useMemo(() => ({
-    Scroll,
+    scroll,
     setScroll: handleSetScroll,
     showToast,
     showDialog,
     closeDialog,
     showModal,
     closeModal
-  }), [Scroll, handleSetScroll, showToast, showDialog, closeDialog, showModal, closeModal]);
+  }), [scroll, handleSetScroll, showToast, showDialog, closeDialog, showModal, closeModal]);
 
   return (
     <LayoutContext.Provider value={contextValue}>
@@ -84,10 +92,8 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
             toast={toast}
           />
         )}
-        {dialogContent && (
-          <Dialog key="dialog">
-            {dialogContent}
-          </Dialog>
+        {dialog && (
+          <Dialog key="dialog" dialog={dialog} />
         )}
         {modal && (
           <Modal

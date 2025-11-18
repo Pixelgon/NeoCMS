@@ -1,6 +1,5 @@
-import { FC, ChangeEvent, useState, useEffect, useContext, use } from "react";
+import { FC, ChangeEvent, useState, useEffect, useContext } from "react";
 import Input from "../form/input";
-import { Modal } from "../layout/modal";
 import { Btn } from "../layout/btn";
 import ImageUpload from "../form/imageUpload";
 import TagInput from "../tag/tagInput";
@@ -11,21 +10,23 @@ import ProjectType from "@/types/projectType";
 
 
 interface AdminProjectFormProps {
-   project: ProjectType
-   setProject: (project: ProjectType | ((prev: ProjectType) => ProjectType)) => void;
-   onSubmit: (projectData: ProjectType) => Promise<void>;
+   project: ProjectType;
+   onChange: (patch: Partial<ProjectType>) => void;
+   onSaved: (project: ProjectType) => void;
 }
 
-
-export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProject, onSubmit }) => {
-   const [initialProject, setInitialProject] = useState<ProjectType>(project);
+export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, onChange, onSaved }) => {
    const [isSubmitting, setIsSubmitting] = useState(false);
+   const loader = useTopLoader();
+   const layoutData = useContext(LayoutContext);
+
+
    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       
       if (name === 'name') {
          // Automaticky generuj slug z názvu (pouze pokud je slug prázdný nebo se rovná současnému slug)
-         const currentSlug = project.slug;
+         const currentSlug = project?.slug;
          const autoSlug = value.toLowerCase()
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "") // Odstraní diakritiku
@@ -34,17 +35,19 @@ export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProjec
             .replace(/-+/g, '-') // Sloučí více pomlček za sebou
             .replace(/^-+|-+$/g, ''); // Odstraní pomlčky ze začátku a konce
          
-         setProject((prev) => ({
-            ...prev,
-            [name]: value,
-            slug: !currentSlug || currentSlug === prev.name?.toLowerCase()
-               .normalize("NFD")
-               .replace(/[\u0300-\u036f]/g, "")
-               .replace(/[^a-z0-9\s-]/g, '')
-               .replace(/\s+/g, '-')
-               .replace(/-+/g, '-')
-               .replace(/^-+|-+$/g, '') ? autoSlug : currentSlug,
-         }));
+         const shouldAutoGenerateSlug = !currentSlug || currentSlug === project.name?.toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '');
+         
+         const patch: Partial<ProjectType> = { name: value };
+         if (shouldAutoGenerateSlug) {
+            patch.slug = autoSlug;
+         }
+         onChange(patch);
       } else if (name === 'slug') {
          const slugValue = value.toLowerCase()
             .normalize("NFD")
@@ -54,19 +57,11 @@ export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProjec
             .replace(/-+/g, '-') // Sloučí více pomlček za sebou
             .replace(/^-+|-+$/g, ''); // Odstraní pomlčky ze začátku a konce
          
-         setProject((prev) => ({
-            ...prev,
-            [name]: slugValue,
-         }));
+         onChange({ slug: slugValue });
       } else {
-         setProject((prev) => ({
-            ...prev,
-            [name]: value,
-         }));
+         onChange({ [name]: value } as Partial<ProjectType>);
       }
    };
-   const loader = useTopLoader();
-   const layoutData = useContext(LayoutContext);
 
    // Cleanup URL objektů při unmount nebo změně
    useEffect(() => {
@@ -91,37 +86,18 @@ export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProjec
              project.tags.length > 0;
    };
 
-   // Kontrola, zda byl projekt upraven
-   const isProjectModified = () => {
-      const tagsChanged = JSON.stringify(project.tags.map(t => t).sort()) !== 
-                          JSON.stringify((initialProject.tags || []).map(t => t).sort());
-
-      return project.name !== initialProject.name ||
-             project.slug !== initialProject.slug ||
-             project.background !== initialProject.background ||
-             project.photo !== initialProject.photo ||
-             project.body !== initialProject.body ||
-             project.description !== initialProject.description ||
-             tagsChanged;
-   };
-
-   // Tlačítko je disabled pokud projekt není kompletní nebo (pokud existuje) nebyl upraven nebo se submittuje
-   const isSubmitDisabled = !isProjectComplete() || (project.id && !isProjectModified()) || isSubmitting;
+   // Tlačítko je disabled pokud projekt není kompletní nebo se submittuje
+   const isSubmitDisabled = !isProjectComplete() || isSubmitting;
 
    const handleRichTextChange = (content: string) => {
-      setProject((prev) => ({
-         ...prev,
-         body: content,
-      }));
+      onChange({ body: content });
    };
 
    const handleChangeImage = async (file: File | null, fieldName: 'photo' | 'background') => {
       loader.start();
       if (!file) {
-         setProject((prev) => ({
-            ...prev,
-            [fieldName]: "",
-         }));
+         onChange({ [fieldName]: "" });
+         loader.done();
          return;
       }
 
@@ -134,10 +110,7 @@ export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProjec
 
          // Zobrazí preview okamžitě
          const previewUrl = URL.createObjectURL(file);
-         setProject((prev) => ({
-            ...prev,
-            [fieldName]: previewUrl,
-         }));
+         onChange({ [fieldName]: previewUrl });
 
          // Uploaduje soubor na server
          const formData = new FormData();
@@ -156,10 +129,7 @@ export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProjec
          
          // Uvolní preview URL a nahradí serverovou URL
          URL.revokeObjectURL(previewUrl);
-         setProject((prev) => ({
-            ...prev,
-            [fieldName]: data.url,
-         }));
+         onChange({ [fieldName]: data.url });
 
          if (layoutData?.showToast) {
             layoutData.showToast({
@@ -169,10 +139,7 @@ export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProjec
          }
       } catch (error) {
          // V případě chyby zruší preview
-         setProject((prev) => ({
-            ...prev,
-            [fieldName]: "",
-         }));
+         onChange({ [fieldName]: "" });
          if (layoutData?.showToast) {
             layoutData.showToast({
                message: "Chyba při nahrávání obrázku",
@@ -188,10 +155,42 @@ export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProjec
       if (isSubmitDisabled) return;
       
       setIsSubmitting(true);
+      loader.start();
+
       try {
-         await onSubmit(project);
+         const url = project.id ? `/api/projects/${project.id}` : '/api/projects';
+         const method = project.id ? 'PUT' : 'POST';
+
+         const response = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(project),
+         });
+
+         if (response.ok) {
+            const savedData = await response.json();
+            
+            layoutData.showToast({
+               message: project.id ? 'Projekt byl aktualizován' : 'Projekt byl vytvořen',
+               type: 'success',
+            });
+
+            onSaved(savedData);
+         } else {
+            const error = await response.json();
+            layoutData.showToast({
+               message: error.error || 'Chyba při ukládání projektu',
+               type: 'error',
+            });
+         }
+      } catch (error) {
+         layoutData.showToast({
+            message: 'Chyba při ukládání projektu',
+            type: 'error',
+         });
       } finally {
          setIsSubmitting(false);
+         loader.done();
       }
    };
 
@@ -203,7 +202,7 @@ export const AdminProjectForm: FC<AdminProjectFormProps> = ({ project, setProjec
          <ImageUpload name="bg" id="bg" label="Pozadí*" value={project?.background || ""} onChange={(file) => handleChangeImage(file, 'background')} required />
          <ImageUpload name="photo" id="photo" label="Titulní obrázek*" value={project?.photo || ""} onChange={(file) => handleChangeImage(file, 'photo')} required />
          <RichText content={project?.body || ""} onChange={handleRichTextChange} />
-         <TagInput tags={project?.tags} setTags={(tags) => setProject((prev) => ({ ...prev, tags }))} />
+         <TagInput tags={project?.tags} setTags={(tags) => onChange({ tags })} />
          <Btn
             prim
             type="submit"
