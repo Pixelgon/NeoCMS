@@ -7,7 +7,7 @@ import { useTopLoader } from "nextjs-toploader";
 import Input from "./input";
 import RichTextTab from "./richTextTab";
 import Image from "next/image";
-import { LayoutContext } from "@/context/layoutContext";
+import { useLayout } from "@/context/layoutContext";
 
 interface RichTextProps {
   content: string;
@@ -20,7 +20,8 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const loader = useTopLoader();
-  const layoutData = useContext(LayoutContext);
+  const layoutData = useLayout();
+
 
   const editor = useEditor({
     immediatelyRender: false,

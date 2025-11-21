@@ -9,7 +9,7 @@ import Image from "next/image";
 import ContactForm from "../form/contactForm";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import CookieConsentConfig from "@/config/cookieConsentConfig";
-import { LayoutContext } from "@/context/layoutContext";
+import { useLayout } from "@/context/layoutContext";
 
 const removeAnalyticsCookies = () => {
     document.cookie = "_ga=; Max-Age=0; path=/; SameSite=Lax";
@@ -19,7 +19,7 @@ const removeAnalyticsCookies = () => {
 export const Footer: FC<PropsWithChildren> = ({children}) => {
     const date = new Date();
     const ctaText = "Půjdete do toho s námi?".split(" ");
-    const layoutData = useContext(LayoutContext);
+    const layoutData = useLayout();
 
     useEffect(() => {
         CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, 

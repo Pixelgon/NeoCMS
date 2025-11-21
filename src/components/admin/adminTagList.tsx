@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, useContext, useCallback } from "react";
-import { LayoutContext } from "@/context/layoutContext";
+import { useLayout } from "@/context/layoutContext";
 import { useTopLoader } from "nextjs-toploader";
 import {
   ArrowUturnLeftIcon,
@@ -15,7 +15,8 @@ export const AdminTagList: FC = () => {
   const [newTagName, setNewTagName] = useState("");
   const [editedTags, setEditedTags] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const layoutData = useContext(LayoutContext);
+  const layoutData = useLayout();
+
   const loader = useTopLoader();
   const loadTags = useCallback(async () => {
     try {

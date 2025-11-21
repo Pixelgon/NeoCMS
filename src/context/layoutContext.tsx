@@ -1,6 +1,6 @@
 'use client';
 import { AnimatePresence } from "motion/react";
-import { FC, PropsWithChildren, useState, useEffect, useCallback, useMemo, createContext } from "react";
+import { FC, PropsWithChildren, useState, useEffect, useCallback, useMemo, createContext, useContext } from "react";
 import NextTopLoader from "nextjs-toploader";
 import { Toast } from "@/components/layout/toast";
 import { Dialog } from "@/components/layout/dialog";
@@ -9,14 +9,7 @@ import { LayoutContextType } from "@/types/layoutContextType";
 import { DialogType } from "@/types/dialogType";
 
 
-export const LayoutContext = createContext<LayoutContextType>({
-  setScroll: (scroll: boolean) => {},
-  showToast: () => {},
-  showDialog: () => {},
-  closeDialog: () => {},
-  showModal: () => {},
-  closeModal: () => {}
-});
+export const LayoutContext = createContext<LayoutContextType | null>(null);
 
 export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
   const [scroll, setScroll] = useState(true);
@@ -105,3 +98,11 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     </LayoutContext.Provider>
   );
 };
+
+export const useLayout = () => {
+  const context =  useContext(LayoutContext);
+  if (!context) {
+    throw new Error("useLayout must be used within a LayoutProvider");
+  }
+  return context;
+}

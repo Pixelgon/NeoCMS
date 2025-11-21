@@ -3,12 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useContext, FC, PropsWithChildren } from "react";
-import { LayoutContext } from '@/context/layoutContext';
+import { useLayout } from '@/context/layoutContext';
 
 
 export const Navbar: FC<PropsWithChildren> = (props) => {   
     const pathName = "/" + usePathname().split('/')[1];
-    const layoutData = useContext(LayoutContext);
+   const layoutData = useLayout();
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {

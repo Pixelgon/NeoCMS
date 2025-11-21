@@ -1,5 +1,5 @@
 "use client";
-import { LayoutContext } from "@/context/layoutContext";
+import { useLayout } from "@/context/layoutContext";
 import { signOut, useSession } from "next-auth/react";
 import { useTopLoader } from "nextjs-toploader";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import ProjectType from "@/types/projectType";
 import { AdminTagList } from "./adminTagList";
 import { AdminProjectForm } from "./adminProjectForm";
+import AdminProjectList from "./adminProjectList";
 
 const emptyProject: ProjectType = {
   id: "",
@@ -23,14 +24,9 @@ const emptyProject: ProjectType = {
 
 export const AdminPanel: FC = () => {
   const { data: session } = useSession();
-  const layoutData = useContext(LayoutContext);
-  const loader = useTopLoader();
-  // Pouziva se pro upravu nebo vytvoreni projektu
-  const [draftProject, setDraftProject] = useState<ProjectType>(emptyProject);
+  const layoutData = useLayout();
 
-  const handleProjectChange = useCallback((patch: Partial<ProjectType>) => {
-    setDraftProject((prev) => ({ ...prev, ...patch }));
-  }, []);
+  const loader = useTopLoader();
   
   type ModalType = "project" | "projectList" | "tagModal";
 
@@ -40,13 +36,16 @@ export const AdminPanel: FC = () => {
       case "project":
         layoutData.showModal({
           children: (
-            <AdminProjectForm project={draftProject} onChange={handleProjectChange} onSaved={() => {}} />
+            <AdminProjectForm />
           ),
           title: "Vytvořit nový projekt",
         });
         break;
       case "projectList":
-        console.log("Otevírám správu projektů");
+        layoutData.showModal({
+          children: <AdminProjectList />,
+          title: "Správa projektů",
+        });
         break;
       case "tagModal":
         layoutData.showModal({

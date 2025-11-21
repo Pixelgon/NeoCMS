@@ -4,7 +4,7 @@ import { Btn } from "../layout/btn";
 import Input from "./input";
 import { Modal } from "../layout/modal";
 import Textarea from "./textArea";
-import { LayoutContext } from "@/context/layoutContext";
+import { useLayout } from "@/context/layoutContext";
 import { useTopLoader } from 'nextjs-toploader';
 import { FormType } from "@/types/formType";
 
@@ -19,7 +19,8 @@ export const ContactForm: FC = () => {
     email: "",
   });
 
-  const layoutData = useContext(LayoutContext);
+  const layoutData = useLayout();
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

@@ -1,14 +1,14 @@
 import { FC, useContext, useEffect } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { LayoutContext } from "@/context/layoutContext";
+import { LayoutContext, useLayout } from "@/context/layoutContext";
 
 interface ModalProps { 
   modal: ModalType;
 }
 
 export const Modal: FC<ModalProps> = ({ modal }) => {
-  const layoutData = useContext(LayoutContext);
+  const layoutData = useLayout();
 
   useEffect(() => { 
     layoutData.setScroll(false);
@@ -39,6 +39,10 @@ export const Modal: FC<ModalProps> = ({ modal }) => {
     <motion.div 
       className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,.65)] z-[100] flex justify-center items-center backdrop-blur-sm p-reg 2xl:px`} 
       onClick={handleBackdropClick}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ ease: "easeInOut", duration: 0.3 }}
     >
       <motion.div 
         className={'max-h-full bg-modal p-6 rounded-[3rem] flex w-full flex-col gap-1 items-start relative backdrop-blur-sm max-w-7xl'} 
@@ -58,7 +62,7 @@ export const Modal: FC<ModalProps> = ({ modal }) => {
             initial={{scale: .1}} 
             animate={{scale: 1}} 
             exit={{scale: 0}} 
-            transition={{ease: "easeInOut", duration: .25}} 
+            transition={{ease: "easeInOut", duration: .3}} 
             onClick={handleBackdropClick}
           >
             <Image src={'/images/icons/close.svg'} alt={'Zavřít okno'} width={24} height={24} className={'transition-all hover:brightness-50 select-none drag-none'} />
