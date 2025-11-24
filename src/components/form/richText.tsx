@@ -15,7 +15,6 @@ interface RichTextProps {
 }
 
 export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
-  const [showImageDialog, setShowImageDialog] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -87,7 +86,6 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
       const data = await res.json();
       if (data.url) {
         editor.chain().focus().setImage({ src: data.url }).run();
-        setShowImageDialog(false);
       }
     } catch (err) {
       console.error("Chyba při nahrávání:", err);
@@ -203,7 +201,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
           H3
         </RichTextTab>
         <RichTextTab onClick={() => OpenLinkDialog()}>Link</RichTextTab>
-        <RichTextTab onClick={() => setShowImageDialog(true)}>
+        <RichTextTab onClick={() => OpenImageDialog()}>
           Obrázek
         </RichTextTab>
         <RichTextTab

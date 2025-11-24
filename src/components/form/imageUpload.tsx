@@ -7,7 +7,7 @@ interface ImageUploadProps {
    label: string;
    required?: boolean;
    className?: string;
-   value?: string; // URL obrázku z databáze
+   value?: string;
    onChange: (file: File | null) => void;
 }
 

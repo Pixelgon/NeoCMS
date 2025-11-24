@@ -146,28 +146,38 @@ export const AdminProjectList: FC = () => {
     }
   };
 
-  const onEdit = (projectID: string) => {
-    if (project.name || project.id) {
+  const getAndOpenEditForm = async (projectID: string) => {
+    loader.start();
+      await fetch(`/api/projects/${projectID}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setProject(data);
+        })
+        .catch((error) => {
+          layoutData.showToast({ message: error, type: "error" });
+        });
+      loader.done();
+      layoutData.showModal({
+        children: <AdminProjectForm />,
+        title: `Upravit projekt ${project.name}`,
+      });
+  }
+
+  const onEdit = async(projectID: string) => {
+    if (projectID === project.id) {
+      layoutData.showModal({
+        children: <AdminProjectForm />,
+        title: `Upravit projekt ${project.name}`,
+      });
+      return;
+    } else if (project.name || project.id) {
       layoutData.showDialog({
         message: `Probíhá úprava projektu ${project.name}, opravdu chcete pokračovat? Neuložené změny budou ztraceny.`,
         btnR: {
           text: "Ano",
           onClick: async () => {
             layoutData.closeDialog();
-            loader.start();
-            await fetch(`/api/projects/${projectID}`)
-              .then((res) => res.json())
-              .then((data) => {
-                setProject(data);
-              })
-              .catch((error) => {
-                layoutData.showToast({ message: error, type: "error" });
-              });
-            loader.done();
-            layoutData.showModal({
-              children: <AdminProjectForm />,
-              title: `Upravit projekt ${project.name}`,
-            });
+            await getAndOpenEditForm(projectID);
           },
         },
         btnL: {
@@ -176,11 +186,7 @@ export const AdminProjectList: FC = () => {
         },
       });
     } else {
-      layoutData.closeDialog();
-      layoutData.showModal({
-        children: <AdminProjectForm />,
-        title: "Upravit projekt",
-      });
+      await getAndOpenEditForm(projectID);
     }
   };
 

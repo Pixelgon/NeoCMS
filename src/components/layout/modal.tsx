@@ -1,7 +1,8 @@
 import { FC, useContext, useEffect } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { LayoutContext, useLayout } from "@/context/layoutContext";
+import { useLayout } from "@/context/layoutContext";
+import { useSession } from "next-auth/react";
 
 interface ModalProps { 
   modal: ModalType;
@@ -9,6 +10,8 @@ interface ModalProps {
 
 export const Modal: FC<ModalProps> = ({ modal }) => {
   const layoutData = useLayout();
+  const { data: session } = useSession();
+  const isAdmin = !!session;
 
   useEffect(() => { 
     layoutData.setScroll(false);
@@ -37,7 +40,7 @@ export const Modal: FC<ModalProps> = ({ modal }) => {
 
   return (
     <motion.div 
-      className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,.65)] z-[100] flex justify-center items-center backdrop-blur-sm p-reg 2xl:px`} 
+      className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,.65)] z-[100] flex justify-center items-center backdrop-blur-sm ${isAdmin ? 'p-reg pb-[80px] 2xl:px-0 2xl:pb-[calc(max(1.5rem,2svw)+56px)]' : 'p-reg 2xl:px-0'}`} 
       onClick={handleBackdropClick}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
