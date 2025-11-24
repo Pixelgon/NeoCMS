@@ -3,7 +3,6 @@ import { FC } from "react";
 import { Btn } from "./btn";
 import { DialogType } from "@/types/dialogType";
 
-
 interface DialogProps {
   dialog: DialogType;
 }
@@ -17,13 +16,29 @@ export const Dialog: FC<DialogProps> = ({ dialog }) => {
       transition={{ ease: "easeInOut", duration: 0.3 }}
       key="dialog"
       className={
-        "fixed top-1/2 left-1/2 flex flex-1 p-6 flex-col items-center justify-center gap-4 text-center text-wh bg-modal backdrop-blur-md rounded-[3rem] w-fit z-[1001] drop-shadow-xl"
+        "fixed top-1/2 left-1/2 flex flex-1 p-6 flex-col items-center justify-center gap-4 text-center text-wh bg-modal backdrop-blur-md rounded-[3rem] w-fit z-[1001] drop-shadow-xl max-w-sm"
       }
     >
-      {dialog.upperPart}
+      {dialog.upperPart && <>{dialog.upperPart}</>}
+      {dialog.message && (
+        <p className="text-lg pxl">{dialog.message}</p>
+      )}
       <div className="flex flex-wrap gap-4 w-full">
-        <Btn className={'flex-grow'} prim onClick={dialog.btnR.onClick} disabled={dialog.btnR.disabled}>{dialog.btnR.text}</Btn>
-        <Btn className={'flex-grow'} onClick={dialog.btnL.onClick} disabled={dialog.btnL.disabled}>{dialog.btnL.text}</Btn>
+        <Btn
+          className={"flex-grow"}
+          prim
+          onClick={dialog.btnR.onClick}
+          disabled={dialog.btnR.disabled}
+        >
+          {dialog.btnR.text}
+        </Btn>
+        <Btn
+          className={"flex-grow"}
+          onClick={dialog.btnL.onClick}
+          disabled={dialog.btnL.disabled}
+        >
+          {dialog.btnL.text}
+        </Btn>
       </div>
     </motion.div>
   );

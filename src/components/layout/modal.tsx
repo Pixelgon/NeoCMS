@@ -29,7 +29,7 @@ export const Modal: FC<ModalProps> = ({ modal }) => {
 
   const handleBackdropClick = () => {
     if (modal.asking) {
-      layoutData.showDialog({upperPart: <h4>Opravdu chcete zavřít okno?</h4>, btnR: {text: 'Ano', onClick: () => handleClose(true)}, btnL: {text: 'Ne', onClick: () => handleClose(false)} });
+      layoutData.showDialog({message: "Opravdu chcete zavřít okno?", btnR: {text: 'Ano', onClick: () => handleClose(true)}, btnL: {text: 'Ne', onClick: () => handleClose(false)} });
     } else {
       layoutData.closeModal();
     }

@@ -2,13 +2,14 @@
 import { useLayout } from "@/context/layoutContext";
 import { signOut, useSession } from "next-auth/react";
 import { useTopLoader } from "nextjs-toploader";
-import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { FC } from "react";
 import { AdminLink } from "./adminPanelLink";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import ProjectType from "@/types/projectType";
 import { AdminTagList } from "./adminTagList";
 import { AdminProjectForm } from "./adminProjectForm";
 import AdminProjectList from "./adminProjectList";
+import { useAdminProject } from "@/context/adminProjectContext";
 
 const emptyProject: ProjectType = {
   id: "",
@@ -25,6 +26,7 @@ const emptyProject: ProjectType = {
 export const AdminPanel: FC = () => {
   const { data: session } = useSession();
   const layoutData = useLayout();
+  const {project} = useAdminProject();
 
   const loader = useTopLoader();
   
@@ -63,8 +65,8 @@ export const AdminPanel: FC = () => {
           "fixed w-full bottom-0 left-0 p-4 bg-navbar backdrop-blur-md flex gap-3 items-center justify-center flex-wrap z-[1003]"
         }
       >
-        <AdminLink onClick={() => openModal("project")}>
-          Vytvořit nový projekt
+        <AdminLink onClick={() => openModal("project")} className={project.id || project.name ? "!text-prim" : ""}>
+          {project.id || project.name ? "Máš neuložený projekt" : "Vytvořit projekt"}
         </AdminLink>
         <AdminLink onClick={() => openModal("tagModal")}>Správa tagů</AdminLink>
         <AdminLink onClick={() => openModal("projectList")}>
@@ -74,7 +76,7 @@ export const AdminPanel: FC = () => {
           <AdminLink
             onClick={() => signOut({ callbackUrl: "/", redirect: true })}
           >
-            <ArrowLeftStartOnRectangleIcon className="w-6 h-6" />
+            <ArrowLeftStartOnRectangleIcon className="w-6 h-6 text-prim" />
           </AdminLink>
           <span className="text-base text-wh">
             Zdravíčko,{" "}

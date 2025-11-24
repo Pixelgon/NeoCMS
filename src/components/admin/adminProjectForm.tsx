@@ -10,7 +10,6 @@ import ProjectType from "@/types/projectType";
 import { useAdminProject } from "@/context/adminProjectContext";
 import AdminProjectList from "./adminProjectList";
 
-
 export const AdminProjectForm: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const loader = useTopLoader();
@@ -265,13 +264,40 @@ export const AdminProjectForm: FC = () => {
       />
       <RichText content={project?.body || ""} onChange={handleRichTextChange} />
       <TagInput tags={project?.tags} setTags={(tags) => onChange({ tags })} />
-      <Btn prim type="submit" disabled={isSubmitDisabled} className="mt-5">
-        {isSubmitting
-          ? "Ukládám..."
-          : project.id
-          ? "Uložit změny"
-          : "Vytvořit projekt"}
-      </Btn>
+      <div className={"flex mt-5 gap-2"}>
+        <Btn prim type="submit" disabled={isSubmitDisabled}>
+          {isSubmitting
+            ? "Ukládám..."
+            : project.id
+            ? "Uložit změny"
+            : "Vytvořit projekt"}
+        </Btn>
+        {project.id || project.name ? (
+          <Btn
+            type="button"
+            disabled={isSubmitting}
+            onClick={() => {
+              layoutData.showDialog({
+                message:
+                  "Opravdu chcete smazat všechny neuložené změny tohoto projektu?",
+                btnR: {
+                  text: "Ano",
+                  onClick: () => {
+                    layoutData.closeDialog();
+                    resetProject();
+                  },
+                },
+                btnL: {
+                  text: "Ne",
+                  onClick: () => layoutData.closeDialog(),
+                },
+              });
+            }}
+          >
+            Smazat změny
+          </Btn>
+        ) : null}
+      </div>
     </form>
   );
 };

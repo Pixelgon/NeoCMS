@@ -174,9 +174,7 @@ export const AdminTagList: FC = () => {
 
   const openDeleteDialog = (tag: Tag) => {
     layoutData.showDialog({
-      upperPart: (
-        <h4>Opravdu chcete smazat tag &ldquo;{tag.name}&rdquo;?</h4>
-      ),
+      message: `Opravdu chcete smazat tag "${tag.name}"?`,
       btnR: {
         text: "Ano",
         onClick: () => {
@@ -197,9 +195,9 @@ export const AdminTagList: FC = () => {
     <>
       <div className="flex flex-col gap-2">
         {loading ? (
-          <p className="text-wh text-center">Načítám tagy...</p>
+          <p className="text-gray-600 text-center">Načítám tagy...</p>
         ) : tags.length === 0 ? (
-          <p className="text-wh text-center">Žádné tagy</p>
+          <p className="text-gray-600 text-center">Neexistují žádné tagy.</p>
         ) : (
           tags.map((tag) => {
             const currentValue = editedTags[tag.id] ?? tag.name;

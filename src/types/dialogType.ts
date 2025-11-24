@@ -1,5 +1,6 @@
 export type DialogType = {
-  upperPart: React.ReactNode;
+  message?: string;
+  upperPart?: React.ReactNode;
   btnR: DialogButton;
   btnL: DialogButton;
 }
