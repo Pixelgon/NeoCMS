@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState, useRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -6,8 +6,8 @@ import ImageExtension from "@tiptap/extension-image";
 import { useTopLoader } from "nextjs-toploader";
 import Input from "./input";
 import RichTextTab from "./richTextTab";
-import Image from "next/image";
 import { useLayout } from "@/context/layoutContext";
+import ImageUpload from "./imageUpload";
 
 interface RichTextProps {
   content: string;
@@ -16,11 +16,10 @@ interface RichTextProps {
 
 export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
   const [inputValue, setInputValue] = useState("");
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const selectedFileRef = useRef<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const loader = useTopLoader();
   const layoutData = useLayout();
-
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -58,23 +57,30 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
     };
   }, [editor, onChange]);
 
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
+
   const applyLink = () => {
     editor?.chain().focus().setLink({ href: inputValue }).run();
     setInputValue("");
   };
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setImagePreview(URL.createObjectURL(file));
-    setSelectedFile(file);
-  };
-
   const insertUploadedImage = async () => {
-    if (!selectedFile || !editor) return;
+    const file = selectedFileRef.current;
+    
+    if (!file || !editor) {
+      layoutData.showToast?.({
+        message: "Nejprve vyberte obrázek",
+        type: "error",
+      });
+      return;
+    }
 
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("file", file);
 
     try {
       loader.start();
@@ -84,15 +90,25 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
       });
 
       const data = await res.json();
+
       if (data.url) {
         editor.chain().focus().setImage({ src: data.url }).run();
+        setImagePreview("");
+        selectedFileRef.current = null;
+      } else {
+        layoutData.showToast?.({
+          message: "Obrázek nebyl nahrán",
+          type: "error",
+        });
       }
     } catch (err) {
       console.error("Chyba při nahrávání:", err);
+      layoutData.showToast?.({
+        message: "Chyba při nahrávání obrázku",
+        type: "error",
+      });
     } finally {
       loader.done();
-      setImagePreview(null);
-      setSelectedFile(null);
     }
   };
 
@@ -123,44 +139,42 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
   };
 
   const OpenImageDialog = () => {
+    // Reset state
+    setImagePreview("");
+    selectedFileRef.current = null;
+    
     layoutData.showDialog({
       upperPart: (
-        <>
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={handleImageSelect}
-            label="Vybrat obrázek"
-            name="image-upload"
-            id="image-upload"
-            className={
-              "w-full file:border-none file:text-sec file:bg-pxlgn-gradient file:p-2 file:mr-2 file:rounded-3xl"
+        <ImageUpload
+          id="rich-image-upload"
+          name="rich-image-upload"
+          label="Nahrát obrázek"
+          value={imagePreview}
+          onChange={(file) => {
+            if (file) {
+              const preview = URL.createObjectURL(file);
+              setImagePreview(preview);
+              selectedFileRef.current = file;
+            } else {
+              setImagePreview("");
+              selectedFileRef.current = null;
             }
-            required={false}
-          />
-          {imagePreview && (
-            <Image
-              src={imagePreview}
-              alt="Náhled obrázku"
-              className="w-full rounded-3xl"
-            />
-          )}
-        </>
+          }}
+        />
       ),
       btnR: {
         text: "Vložit obrázek",
-        onClick: () => {
-          insertUploadedImage();
+        onClick: async () => {
+          await insertUploadedImage();
           layoutData.closeDialog();
         },
-        disabled: !selectedFile,
       },
       btnL: {
         text: "Zrušit",
         onClick: () => {
           layoutData.closeDialog();
-          setSelectedFile(null);
-          setImagePreview(null);
+          selectedFileRef.current = null;
+          setImagePreview("");
         },
       },
     });
@@ -171,7 +185,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
       <span className="text-wh font-quicksand text-lg pl-3 pb-1">
         Obsah projektu*
       </span>
-      <div className="flex px-6 rounded-t-3xl bg-pxlgn-gradient text-sec font-quicksand">
+      <div className="flex px-2 rounded-t-3xl border bg-sec border-prim text-prim font-quicksand overflow-auto">
         <RichTextTab
           onClick={() => editor?.chain().focus().toggleBold().run()}
           isActive={editor?.isActive("bold")}
@@ -201,9 +215,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
           H3
         </RichTextTab>
         <RichTextTab onClick={() => OpenLinkDialog()}>Link</RichTextTab>
-        <RichTextTab onClick={() => OpenImageDialog()}>
-          Obrázek
-        </RichTextTab>
+        <RichTextTab onClick={() => OpenImageDialog()}>Obrázek</RichTextTab>
         <RichTextTab
           onClick={() => editor?.chain().focus().undo().run()}
           isActive={false}

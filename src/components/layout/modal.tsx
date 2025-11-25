@@ -40,7 +40,7 @@ export const Modal: FC<ModalProps> = ({ modal }) => {
 
   return (
     <motion.div 
-      className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,.65)] z-[100] flex justify-center items-center backdrop-blur-sm ${isAdmin ? 'p-reg pb-[80px] 2xl:px-0 2xl:pb-[calc(max(1.5rem,2svw)+56px)]' : 'p-reg 2xl:px-0'}`} 
+      className={`fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,.65)] z-[100] flex justify-center items-center backdrop-blur-sm ${isAdmin ? 'p-reg 2xl:px-0 pb-[calc(max(1.5rem,2svw)+128px)] min-[418px]:pb-[calc(max(1.5rem,2svw)+92px)] min-[700px]:pb-[calc(max(1.5rem,2svw)+56px)]' : 'p-reg 2xl:px-0'}`} 
       onClick={handleBackdropClick}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

@@ -5,6 +5,7 @@ export type LayoutContextType = {
   showToast: (toast: ToastType) => void;
   showDialog: (dialog: DialogType) => void;
   closeDialog: () => void;
-  showModal: (modal: ModalType) => void;
+  showModal: (modal: ModalType, key?: string) => void;
   closeModal: () => void;
+  activeModalKey: string | null;
 };

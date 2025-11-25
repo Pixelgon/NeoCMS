@@ -11,7 +11,7 @@ const RichTextTab: FC<RichTextTabProps> = ({ onClick, isActive, children }) => {
       <button 
          type="button" 
          onClick={onClick} 
-         className={`p-2 text-base ${isActive ? "bg-sec text-wh" : ""}`}
+         className={`p-2 text-base ${isActive ? "bg-prim text-sec" : ""}`}
       >
          {children}
       </button>

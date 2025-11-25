@@ -10,39 +10,46 @@ import ProjectType from "@/types/projectType";
 import { useAdminProject } from "@/context/adminProjectContext";
 import AdminProjectList from "./adminProjectList";
 
+const normalizeSlug = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Odstraní diakritiku
+    .replace(/[^a-z0-9\s-]/g, "") // Odstraní nepovolené znaky
+    .replace(/\s+/g, "-") // Nahradí mezery pomlčkami
+    .replace(/-+/g, "-") // Sloučí více pomlček za sebou
+    .replace(/^-+|-+$/g, ""); // Odstraní pomlčky ze začátku a konce
+
 export const AdminProjectForm: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [savedProject, setSavedProject] = useState<ProjectType | null>(null);
   const loader = useTopLoader();
   const layoutData = useLayout();
   const adminProject = useAdminProject();
   const { project, updateProject: onChange, resetProject } = adminProject;
 
+  // Uložit počáteční stav projektu při načtení/změně
+  useEffect(() => {
+    if (project.id && (!savedProject || savedProject.id !== project.id)) {
+      setSavedProject({ ...project });
+    } else if (!project.id) {
+      setSavedProject(null);
+    }
+    // We only want to capture the initial state when a project is loaded,
+    // not on every field change, so we intentionally depend only on project.id
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project.id]);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (name === "name") {
-      // Automaticky generuj slug z názvu (pouze pokud je slug prázdný nebo se rovná současnému slug)
-      const currentSlug = project?.slug;
-      const autoSlug = value
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // Odstraní diakritiku
-        .replace(/[^a-z0-9\s-]/g, "") // Odstraní nepovolené znaky
-        .replace(/\s+/g, "-") // Nahradí mezery pomlčkami
-        .replace(/-+/g, "-") // Sloučí více pomlček za sebou
-        .replace(/^-+|-+$/g, ""); // Odstraní pomlčky ze začátku a konce
+      const autoSlug = normalizeSlug(value);
+      const currentSlug = project.slug;
+      const originalNameSlug = project.name ? normalizeSlug(project.name) : "";
 
       const shouldAutoGenerateSlug =
-        !currentSlug ||
-        currentSlug ===
-          project.name
-            ?.toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[^a-z0-9\s-]/g, "")
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-")
-            .replace(/^-+|-+$/g, "");
+        !currentSlug || currentSlug === originalNameSlug;
 
       const patch: Partial<ProjectType> = { name: value };
       if (shouldAutoGenerateSlug) {
@@ -50,16 +57,7 @@ export const AdminProjectForm: FC = () => {
       }
       onChange(patch);
     } else if (name === "slug") {
-      const slugValue = value
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // Odstraní diakritiku
-        .replace(/[^a-z0-9\s-]/g, "") // Odstraní nepovolené znaky
-        .replace(/\s+/g, "-") // Nahradí mezery pomlčkami
-        .replace(/-+/g, "-") // Sloučí více pomlček za sebou
-        .replace(/^-+|-+$/g, ""); // Odstraní pomlčky ze začátku a konce
-
-      onChange({ slug: slugValue });
+      onChange({ slug: normalizeSlug(value)});
     } else {
       onChange({ [name]: value } as Partial<ProjectType>);
     }
@@ -90,8 +88,28 @@ export const AdminProjectForm: FC = () => {
     );
   };
 
-  // Tlačítko je disabled pokud projekt není kompletní nebo se submittuje
-  const isSubmitDisabled = !isProjectComplete() || isSubmitting;
+  // Kontrola, zda byl projekt upraven
+  const isProjectModified = () => {
+    if (!project.id || !savedProject) return true; // Nový projekt je vždy považován za změněný
+
+    const tagsChanged =
+      JSON.stringify([...project.tags].sort()) !==
+      JSON.stringify([...savedProject.tags].sort());
+
+    return (
+      project.name !== savedProject.name ||
+      project.slug !== savedProject.slug ||
+      project.background !== savedProject.background ||
+      project.photo !== savedProject.photo ||
+      project.body !== savedProject.body ||
+      project.description !== savedProject.description ||
+      tagsChanged
+    );
+  };
+
+  // Tlačítko je disabled pokud projekt není kompletní, nebyl upraven nebo se submittuje
+  const isSubmitDisabled =
+    !isProjectComplete() || !isProjectModified() || isSubmitting;
 
   const handleRichTextChange = (content: string) => {
     onChange({ body: content });
@@ -184,6 +202,7 @@ export const AdminProjectForm: FC = () => {
           type: "success",
         });
 
+        setSavedProject({ ...savedData });
         resetProject();
         layoutData.closeModal();
         if (project.id) {
@@ -272,19 +291,20 @@ export const AdminProjectForm: FC = () => {
             ? "Uložit změny"
             : "Vytvořit projekt"}
         </Btn>
-        {project.id || project.name ? (
+        {project.id && (
           <Btn
             type="button"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isProjectModified()}
             onClick={() => {
               layoutData.showDialog({
-                message:
-                  "Opravdu chcete smazat všechny neuložené změny tohoto projektu?",
+                message: "Opravdu chcete zahodit všechny neuložené změny?",
                 btnR: {
                   text: "Ano",
                   onClick: () => {
                     layoutData.closeDialog();
-                    resetProject();
+                    if (savedProject) {
+                      onChange(savedProject);
+                    }
                   },
                 },
                 btnL: {
@@ -294,9 +314,32 @@ export const AdminProjectForm: FC = () => {
               });
             }}
           >
-            Smazat změny
+            Zahodit změny
           </Btn>
-        ) : null}
+        )}
+        <Btn
+          type="button"
+          disabled={isSubmitting}
+          onClick={() => {
+            layoutData.showDialog({
+              message:
+                "Opravdu chcete smazat všechny neuložené změny tohoto projektu?",
+              btnR: {
+                text: "Ano",
+                onClick: () => {
+                  layoutData.closeDialog();
+                  resetProject();
+                },
+              },
+              btnL: {
+                text: "Ne",
+                onClick: () => layoutData.closeDialog(),
+              },
+            });
+          }}
+        >
+          Nový projekt
+        </Btn>
       </div>
     </form>
   );

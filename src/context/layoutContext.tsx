@@ -16,6 +16,7 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
   const [toast, setToast] = useState<ToastType | null>(null);
   const [dialog, setDialogContent] = useState<DialogType | null>(null);
   const [modal, setModal] = useState<ModalType | null>(null);
+  const [activeModalKey, setActiveModalKey] = useState<string | null>(null);
 
   useEffect(() => {
     document.body.classList.toggle("overflow-hidden", !scroll);
@@ -38,19 +39,23 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     setDialogContent(null);
   }, []);
 
-  const showModal = useCallback((modalData: ModalType) => {
+  const showModal = useCallback((modalData: ModalType, key?: string) => {
     if (modal) {
       setModal(null);
+      setActiveModalKey(null);
       setTimeout(() => {
         setModal(modalData);
+        setActiveModalKey(key || null);
       }, 150);
     } else {
       setModal(modalData);
+      setActiveModalKey(key || null);
     }
   }, [modal]);
 
   const closeModal = useCallback(() => {
     setModal(null);
+    setActiveModalKey(null);
   }, []);
 
   const contextValue = useMemo(() => ({
@@ -60,8 +65,9 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     showDialog,
     closeDialog,
     showModal,
-    closeModal
-  }), [scroll, handleSetScroll, showToast, showDialog, closeDialog, showModal, closeModal]);
+    closeModal,
+    activeModalKey
+  }), [scroll, handleSetScroll, showToast, showDialog, closeDialog, showModal, closeModal, activeModalKey]);
 
   return (
     <LayoutContext.Provider value={contextValue}>
