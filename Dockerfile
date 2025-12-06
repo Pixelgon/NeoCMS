@@ -1,11 +1,10 @@
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 
 RUN corepack enable pnpm
  
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm i --frozen-lockfile
@@ -18,20 +17,21 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN pnpm exec prisma generate
-RUN pnpm run build
+RUN pnpm run build --turbopack
 
 FROM base AS runner
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/.env ./.env
+COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
+COPY --from=builder /app/.env.docker ./.env
 RUN apk add --no-cache openssl
 RUN AUTH_SECRET=$(openssl rand -base64 32) && \
     sed -i '$a\' .env && \
