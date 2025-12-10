@@ -35,3 +35,10 @@ model ProjectTag {
 
   @@id([projectId, tagId])
 }
+
+model ContentBlock {
+  id        String   @id
+  html      String
+  createdOn DateTime @default(now()) @db.Timestamp(0)
+  updatedOn DateTime @updatedAt @db.Timestamp(0)
+}
