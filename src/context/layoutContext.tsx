@@ -1,23 +1,26 @@
 'use client';
-import { AnimatePresence } from "framer-motion";
-import { FC, PropsWithChildren, useState, useEffect, useCallback, useMemo, createContext } from "react";
+import { AnimatePresence } from "motion/react";
+import { FC, PropsWithChildren, useState, useEffect, useCallback, useMemo, createContext, useContext } from "react";
 import NextTopLoader from "nextjs-toploader";
 import { Toast } from "@/components/layout/toast";
+import { Dialog } from "@/components/layout/dialog";
+import { Modal } from "@/components/layout/modal";
+import { LayoutContextType } from "@/types/layoutContextType";
+import { DialogType } from "@/types/dialogType";
 
 
-export const LayoutContext = createContext<LayoutContextType>({
-  Scroll: true,
-  setScroll: (scroll: boolean) => {},
-  showToast: () => {},
-});
+export const LayoutContext = createContext<LayoutContextType | null>(null);
 
 export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [Scroll, setScroll] = useState(true);
+  const [scroll, setScroll] = useState(true);
   const [toast, setToast] = useState<ToastType | null>(null);
+  const [dialog, setDialogContent] = useState<DialogType | null>(null);
+  const [modal, setModal] = useState<ModalType | null>(null);
+  const [activeModalKey, setActiveModalKey] = useState<string | null>(null);
 
   useEffect(() => {
-    document.body.classList.toggle("overflow-hidden", !Scroll);
-  }, [Scroll]);
+    document.body.classList.toggle("overflow-hidden", !scroll);
+  }, [scroll]);
 
   const handleSetScroll = useCallback((scroll: boolean) => {
     setScroll(scroll);
@@ -28,11 +31,43 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     setTimeout(() => setToast(null), 4000);
   }, []);
 
+  const showDialog = useCallback((dialog: DialogType) => {
+    setDialogContent(dialog);
+  }, []);
+
+  const closeDialog = useCallback(() => {
+    setDialogContent(null);
+  }, []);
+
+  const showModal = useCallback((modalData: ModalType, key?: string) => {
+    if (modal) {
+      setModal(null);
+      setActiveModalKey(null);
+      setTimeout(() => {
+        setModal(modalData);
+        setActiveModalKey(key || null);
+      }, 150);
+    } else {
+      setModal(modalData);
+      setActiveModalKey(key || null);
+    }
+  }, [modal]);
+
+  const closeModal = useCallback(() => {
+    setModal(null);
+    setActiveModalKey(null);
+  }, []);
+
   const contextValue = useMemo(() => ({
-    Scroll,
+    scroll,
     setScroll: handleSetScroll,
     showToast,
-  }), [Scroll, handleSetScroll, showToast]);
+    showDialog,
+    closeDialog,
+    showModal,
+    closeModal,
+    activeModalKey
+  }), [scroll, handleSetScroll, showToast, showDialog, closeDialog, showModal, closeModal, activeModalKey]);
 
   return (
     <LayoutContext.Provider value={contextValue}>
@@ -51,11 +86,29 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
       <AnimatePresence>
         {toast && (
           <Toast
+            key="toast"
             setToast={setToast}
             toast={toast}
+          />
+        )}
+        {dialog && (
+          <Dialog key="dialog" dialog={dialog} />
+        )}
+        {modal && (
+          <Modal
+            key="modal"
+            modal={modal}
           />
         )}
       </AnimatePresence>
     </LayoutContext.Provider>
   );
 };
+
+export const useLayout = () => {
+  const context =  useContext(LayoutContext);
+  if (!context) {
+    throw new Error("useLayout must be used within a LayoutProvider");
+  }
+  return context;
+}

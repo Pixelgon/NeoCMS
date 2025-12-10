@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FC } from "react";
 import Image from "next/image";
 import { Section } from "../layout/section";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Btn } from "../layout/btn";
 
 type ProjectHMType = {

@@ -12,7 +12,7 @@ import { AdminPanel } from "@/components/admin/adminPanel";
 import { auth } from "@/lib/auth";
 import { GA } from "@/components/layout/googleAnalytics";
 import { NavbarItem } from "@/components/navbar/navbarItem";
-
+import { AdminProjectProvider } from "@/context/adminProjectContext";
 
 const OpenSans = Open_Sans({
   variable: "--open-sans",
@@ -28,70 +28,96 @@ const baseUrl = new URL(process.env.BASE_URL || "https://pixelgon.cz");
 
 export const metadata: Metadata = {
   metadataBase: baseUrl,
-  title: 'Pixelgon - Your vision, our code',
-  description: 'Digitální parťák pro vaše projekty. Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale efektivní a jedinečná.',
-  keywords: ['web design', 'app development', 'digitální řešení', 'progresivní webové aplikace', 'e-commerce', 'Pixelgon'],
+  title: "Pixelgon - Your vision, our code",
+  description:
+    "Digitální parťák pro vaše projekty. Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale efektivní a jedinečná.",
+  keywords: [
+    "web design",
+    "app development",
+    "digitální řešení",
+    "progresivní webové aplikace",
+    "e-commerce",
+    "Pixelgon",
+  ],
   openGraph: {
-    title: 'Pixelgon - Your vision, our code',
-    description: 'Digitální parťák pro vaše projekty. Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale efektivní a jedinečná.',
-    type: 'website',
+    title: "Pixelgon - Your vision, our code",
+    description:
+      "Digitální parťák pro vaše projekty. Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejsou jen vizuálně přívětivá, ale efektivní a jedinečná.",
+    type: "website",
     url: baseUrl,
     images: [
       {
-        url: '/images/og.webp',
+        url: "/images/og.webp",
         width: 1200,
         height: 630,
-        alt: 'Pixelgon',
+        alt: "Pixelgon",
       },
     ],
   },
   alternates: {
     canonical: baseUrl.toString(),
   },
-}
+};
+const pages = [
+  { name: "Domů", href: "/" },
+  { name: "O nás", href: "/o-nas" },
+  { name: "Projekty", href: "/projekty" },
+];
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pages = [
-        { name: "Domů", href: "/" },
-        { name: "O nás", href: "/o-nas" },
-        { name: "Projekty", href: "/projekty"},
-  ]
   const session = await auth();
+  const content = (
+    <>
+      <Navbar>
+        {pages.map((page, index) => (
+          <NavbarItem key={index} href={page.href} text={page.name} />
+        ))}
+      </Navbar>
+      {children}
+      <Footer>
+        <button
+          data-cc="show-preferencesModal"
+          className="text-wh transition-colors hover:text-prim"
+        >
+          Nastavení cookies
+        </button>
+        <Link
+          href="/gdpr"
+          className="text-wh transition-colors hover:text-prim"
+        >
+          Ochrana osobních údajů
+        </Link>
+      </Footer>
+      {session && session.user && <AdminPanel />}
+    </>
+  );
 
   return (
-      <>
-        <html lang="cs" className={`${OpenSans.variable} ${QuicksandFont.variable}`} data-scroll-behavior="smooth">
-          <body className={`relative ${session && session.user ? "mb-14" : ""}`}>
-            <SessionProvider>
-              <MotionConfig transition={{duration: .5}}>
-                <LayoutProvider>
-                  <Navbar>
-                    {pages.map((page, index) => (
-                        <NavbarItem key={index} href={page.href} text={page.name} />
-                    ))}
-                  </Navbar>
-                    {children}
-                  <Footer>
-                    <button data-cc="show-preferencesModal" className="text-wh transition-colors hover:text-prim">
-                      Nastavení cookies
-                    </button>
-                    <Link href="/gdpr" className="text-wh transition-colors hover:text-prim">
-                      Ochrana osobních údajů
-                    </Link>
-                  </Footer>
-                  {session && session.user && (
-                    <AdminPanel />
-                  )}
-                </LayoutProvider>
-              </MotionConfig>
-            </SessionProvider>
-            <GA />
-          </body>
-        </html>
-      </>
+    <>
+      <html
+        lang="cs"
+        className={`${OpenSans.variable} ${QuicksandFont.variable}`}
+        data-scroll-behavior="smooth"
+      >
+        <body className={`relative ${session && session.user ? "mb-14" : ""}`}>
+          <SessionProvider>
+            <MotionConfig transition={{ duration: 0.3 }}>
+              {session && session.user ? (
+                <AdminProjectProvider>
+                  <LayoutProvider>{content}</LayoutProvider>
+                </AdminProjectProvider>
+              ) : (
+                <LayoutProvider>{content}</LayoutProvider>
+              )}
+            </MotionConfig>
+          </SessionProvider>
+          <GA />
+        </body>
+      </html>
+    </>
   );
 }

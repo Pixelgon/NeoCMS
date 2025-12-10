@@ -54,12 +54,19 @@ export const DELETE = async (req: NextRequest) => {
          return NextResponse.json({ error: "Tag ID is required." }, { status: 400 });
       }
 
+      // Nejdřív smaž všechny vazby na projekty
+      await prisma.projectTag.deleteMany({
+         where: { tagId: id },
+      });
+
+      // Pak smaž samotný tag
       const tag = await prisma.tag.delete({
          where: { id },
       });
 
       return NextResponse.json(tag, { status: 200 });
    } catch (error) {
+      console.error("Error deleting tag:", error);
       return NextResponse.json({ error: "Failed to delete tag." }, { status: 500 });
    }
 }

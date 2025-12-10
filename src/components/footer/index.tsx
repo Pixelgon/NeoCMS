@@ -9,6 +9,7 @@ import Image from "next/image";
 import ContactForm from "../form/contactForm";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import CookieConsentConfig from "@/config/cookieConsentConfig";
+import { useLayout } from "@/context/layoutContext";
 
 const removeAnalyticsCookies = () => {
     document.cookie = "_ga=; Max-Age=0; path=/; SameSite=Lax";
@@ -18,7 +19,7 @@ const removeAnalyticsCookies = () => {
 export const Footer: FC<PropsWithChildren> = ({children}) => {
     const date = new Date();
     const ctaText = "Půjdete do toho s námi?".split(" ");
-    const [ctaModal, setCtaModal] = useState(false);
+    const layoutData = useLayout();
 
     useEffect(() => {
         CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, 
@@ -34,9 +35,16 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
         );
     }, []);
 
+    const openContactForm = () => {
+        layoutData.showModal({
+            children: <ContactForm />,
+            title: "Kontaktujte nás",
+            asking: true
+        });
+    }
+
     return (
         <>
-            <ContactForm setModalState={setCtaModal} modalState={ctaModal}/>
             <footer className="bg-bg text-wh">
                 <div className={'bg-sec-gradient'}>
                     <Section className="">
@@ -57,7 +65,7 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
                         ))}
                         </p>
                         <div className={'flex gap-6 items-center flex-wrap'}>
-                            <Btn onClick={() => setCtaModal(!ctaModal)} className={'text-xl'} prim>Kontaktovat</Btn>
+                            <Btn onClick={() => openContactForm()} className={'text-xl'} prim>Kontaktovat</Btn>
                             <a href="mailto:pixelgon@pixelgon.cz" className={'w-full sm:w-auto flex gap-2 relative hover:brightness-50 transition-all duration-300'}><Image height={30} width={30} src={'/images/icons/envelope.svg'} alt={""}/><p className={'text-pxlgn'}>pixelgon@pixelgon.cz</p></a>
                         </div>
                     </Section>    

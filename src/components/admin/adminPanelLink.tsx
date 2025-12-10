@@ -2,14 +2,14 @@ import { FC } from "react";
 
 interface AdminLinkProps {
    onClick: () => void;
-   children: React.ReactNode;
    className?: string;
+   title: string;
 }
 
-export const AdminLink: FC<AdminLinkProps> = ({ onClick, children, className }) => {
+export const AdminLink: FC<AdminLinkProps> = ({ onClick, title, className }) => {
    return (
-      <button onClick={onClick} className={`text-prim uppercase text-base transition-all font-quicksand font-medium duration-300 hover:brightness-50 ${className}`}>
-         {children}
+      <button onClick={onClick} className={`uppercase text-base transition-all font-quicksand font-medium duration-300 hover:brightness-50 text-wh ${className}`}>
+         {title}
       </button>
    );
 }

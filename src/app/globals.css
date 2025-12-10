@@ -26,7 +26,7 @@
     flex-grow: 1;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold uppercase;
+    @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold uppercase w-fit;
     line-height: 1.15;
   }
   h1 {

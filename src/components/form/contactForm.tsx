@@ -4,18 +4,11 @@ import { Btn } from "../layout/btn";
 import Input from "./input";
 import { Modal } from "../layout/modal";
 import Textarea from "./textArea";
-import { LayoutContext } from "@/context/layoutContext";
+import { useLayout } from "@/context/layoutContext";
 import { useTopLoader } from 'nextjs-toploader';
 import { FormType } from "@/types/formType";
 
-
-
-interface ModalProps {
-  setModalState: (state: boolean) => void;
-  modalState: boolean;
-}
-
-export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
+export const ContactForm: FC = () => {
 
   const loader = useTopLoader(); 
 
@@ -26,7 +19,8 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
     email: "",
   });
 
-  const layoutData = useContext(LayoutContext);
+  const layoutData = useLayout();
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -51,7 +45,7 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
 
       if (response.ok) {
         loader.done();
-        setModalState(false);
+        layoutData.closeModal();
         setFormData({ name: "", email: "", message: "", address: "" });
         layoutData.showToast({ message: 'Zpráva byla úspěšně odeslána.', type: 'success' });
       } else {
@@ -66,7 +60,6 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
   };
 
   return (
-    <Modal modalState={modalState} setModalState={setModalState} title="Kontaktujte nás" asking>
       <form className="flex flex-col gap-2 w-full justify-center" onSubmit={handleSubmit}>
         <Input
           type="text"
@@ -111,7 +104,6 @@ export const ContactForm: FC<ModalProps> = ({ setModalState, modalState }) => {
           Odeslat
         </Btn>
       </form>
-    </Modal>
   );
 };
 

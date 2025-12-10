@@ -1,5 +1,5 @@
 'use client';
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
 import Project from "./project";
 import { useRouter } from "next/navigation";
