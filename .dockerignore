@@ -20,5 +20,4 @@ package-lock.json
 yarn.lock
 .pnpm-store
 .env.local
-.env.docker
 .env
