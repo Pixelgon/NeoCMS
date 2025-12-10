@@ -21,7 +21,7 @@ export const Toast: FC<toastProps> = ({ setToast, toast }) => {
       exit={{ opacity: 0, y: 20, x: "-50%" }}
       onClick={() => setToast(null)}
       transition={{ ease: "easeInOut", duration: 0.3, delay: 0.5 }}
-      className={`fixed ${isAdmin ? "bottom-[calc(max(1.5rem,2svw)+80px)]" : "bottom-16px"} left-1/2 p-4 rounded-3xl backdrop-blur-md shadow-md z-[1002] text-wh flex items-center cursor-pointer bg-modal`}
+      className={`fixed ${isAdmin ? "bottom-[calc(max(1.5rem,2svw)+80px)]" : "bottom-4"} left-1/2 p-4 rounded-3xl backdrop-blur-md shadow-md z-[1002] text-wh flex items-center cursor-pointer bg-modal`}
     >
       <Image
         src={`/images/icons/${
