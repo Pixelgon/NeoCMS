@@ -16,10 +16,8 @@ services:
     image: postgres:15
     restart: always
     container_name: NeoCMS-db
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: NeoCMS
+    env_file:
+      - .env.docker
     volumes:
       - pgdata:/var/lib/postgresql/data
 

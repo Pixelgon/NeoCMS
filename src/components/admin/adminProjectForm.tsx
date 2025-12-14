@@ -63,18 +63,6 @@ export const AdminProjectForm: FC = () => {
     }
   };
 
-  // Cleanup URL objektů při unmount nebo změně
-  useEffect(() => {
-    return () => {
-      if (project.photo && project.photo.startsWith("blob:")) {
-        URL.revokeObjectURL(project.photo);
-      }
-      if (project.background && project.background.startsWith("blob:")) {
-        URL.revokeObjectURL(project.background);
-      }
-    };
-  }, [project.photo, project.background]);
-
   // Kontrola, zda je projekt kompletní
   const isProjectComplete = () => {
     return (
@@ -113,66 +101,6 @@ export const AdminProjectForm: FC = () => {
 
   const handleRichTextChange = (content: string) => {
     onChange({ body: content });
-  };
-
-  const handleChangeImage = async (
-    file: File | null,
-    fieldName: "photo" | "background"
-  ) => {
-    loader.start();
-    if (!file) {
-      onChange({ [fieldName]: "" });
-      loader.done();
-      return;
-    }
-
-    try {
-      // Uvolní předchozí URL objekty pro předcházení memory leaks
-      const currentValue = project[fieldName];
-      if (currentValue && currentValue.startsWith("blob:")) {
-        URL.revokeObjectURL(currentValue);
-      }
-
-      // Zobrazí preview okamžitě
-      const previewUrl = URL.createObjectURL(file);
-      onChange({ [fieldName]: previewUrl });
-
-      // Uploaduje soubor na server
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch("/api/uploads", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Upload failed");
-      }
-
-      const data = await response.json();
-
-      // Uvolní preview URL a nahradí serverovou URL
-      URL.revokeObjectURL(previewUrl);
-      onChange({ [fieldName]: data.url });
-
-      if (layoutData?.showToast) {
-        layoutData.showToast({
-          message: "Obrázek byl úspěšně nahrán",
-          type: "success",
-        });
-      }
-    } catch (error) {
-      // V případě chyby zruší preview
-      onChange({ [fieldName]: "" });
-      if (layoutData?.showToast) {
-        layoutData.showToast({
-          message: "Chyba při nahrávání obrázku",
-          type: "error",
-        });
-      }
-    }
-    loader.done();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -270,7 +198,7 @@ export const AdminProjectForm: FC = () => {
         id="bg"
         label="Pozadí*"
         value={project?.background || ""}
-        onChange={(file) => handleChangeImage(file, "background")}
+        onChange={(url) => handleInputChange({ target: { name: "background", value: url } } as ChangeEvent<HTMLInputElement>)}
         required
       />
       <ImageUpload
@@ -278,7 +206,7 @@ export const AdminProjectForm: FC = () => {
         id="photo"
         label="Titulní obrázek*"
         value={project?.photo || ""}
-        onChange={(file) => handleChangeImage(file, "photo")}
+        onChange={(url) => handleInputChange({ target: { name: "photo", value: url } } as ChangeEvent<HTMLInputElement>)}
         required
       />
       <RichText content={project?.body || ""} onChange={handleRichTextChange} />

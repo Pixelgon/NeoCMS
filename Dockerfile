@@ -13,9 +13,9 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY .env.docker ./.env
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 
 RUN pnpm exec prisma generate
 RUN pnpm run build --turbopack
@@ -39,10 +39,10 @@ RUN AUTH_SECRET=$(openssl rand -base64 32) && \
     echo "AUTH_SECRET=\"$AUTH_SECRET\"" >> .env
 
 
-RUN mkdir -p /app/uploads/images
+RUN mkdir -p /app/public/uploads/images
 RUN mkdir -p /app/.next/cache/images
 
-RUN chown -R nextjs:nodejs /app/uploads /app/.next
+RUN chown -R nextjs:nodejs /app/public/uploads /app/.next
 
 USER nextjs
 
@@ -50,4 +50,4 @@ EXPOSE 3000
 
 ENV PORT=3000
 
-CMD ["sh", "-c", " pnpm exec prisma migrate dev --name init && pnpm start"]
+CMD ["sh", "-c", "pnpm exec prisma migrate deploy && pnpm start"]

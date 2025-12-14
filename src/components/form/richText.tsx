@@ -16,9 +16,7 @@ interface RichTextProps {
 
 export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
   const [inputValue, setInputValue] = useState("");
-  const selectedFileRef = useRef<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>("");
-  const loader = useTopLoader();
+  const uploadedImageUrlRef = useRef<string>("");
   const layoutData = useLayout();
 
   const editor = useEditor({
@@ -68,48 +66,17 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
     setInputValue("");
   };
 
-  const insertUploadedImage = async () => {
-    const file = selectedFileRef.current;
-    
-    if (!file || !editor) {
+  const insertUploadedImage = () => {
+    if (!uploadedImageUrlRef.current || !editor) {
       layoutData.showToast?.({
-        message: "Nejprve vyberte obrázek",
+        message: "Nejprve vyberte a nahrajte obrázek",
         type: "error",
       });
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      loader.start();
-      const res = await fetch("/api/uploads", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (data.url) {
-        editor.chain().focus().setImage({ src: data.url }).run();
-        setImagePreview("");
-        selectedFileRef.current = null;
-      } else {
-        layoutData.showToast?.({
-          message: "Obrázek nebyl nahrán",
-          type: "error",
-        });
-      }
-    } catch (err) {
-      console.error("Chyba při nahrávání:", err);
-      layoutData.showToast?.({
-        message: "Chyba při nahrávání obrázku",
-        type: "error",
-      });
-    } finally {
-      loader.done();
-    }
+    editor.chain().focus().setImage({ src: uploadedImageUrlRef.current }).run();
+    uploadedImageUrlRef.current = "";
   };
 
   const OpenLinkDialog = () => {
@@ -140,32 +107,22 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
 
   const OpenImageDialog = () => {
     // Reset state
-    setImagePreview("");
-    selectedFileRef.current = null;
-    
+    uploadedImageUrlRef.current = "";
+
     layoutData.showDialog({
       upperPart: (
         <ImageUpload
           id="rich-image-upload"
           name="rich-image-upload"
           label="Nahrát obrázek"
-          value={imagePreview}
-          onChange={(file) => {
-            if (file) {
-              const preview = URL.createObjectURL(file);
-              setImagePreview(preview);
-              selectedFileRef.current = file;
-            } else {
-              setImagePreview("");
-              selectedFileRef.current = null;
-            }
-          }}
+          value={uploadedImageUrlRef.current}
+          onChange={(url) => { uploadedImageUrlRef.current = url; }}
         />
       ),
       btnR: {
         text: "Vložit obrázek",
-        onClick: async () => {
-          await insertUploadedImage();
+        onClick: () => {
+          insertUploadedImage();
           layoutData.closeDialog();
         },
       },
@@ -173,8 +130,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
         text: "Zrušit",
         onClick: () => {
           layoutData.closeDialog();
-          selectedFileRef.current = null;
-          setImagePreview("");
+          uploadedImageUrlRef.current = "";
         },
       },
     });

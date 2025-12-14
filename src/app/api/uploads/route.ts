@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const filename = Date.now() + "-" + file.name.replace(/\s/g, "_");
-    const uploadDir = path.join(process.cwd(), ".", "uploads", "images");
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "images");
     const filePath = path.join(uploadDir, filename);
 
     // Vytvoří složku, pokud neexistuje

@@ -1,5 +1,7 @@
 import { FC, useState, ChangeEvent, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useTopLoader } from "nextjs-toploader";
+import { useLayout } from "@/context/layoutContext";
 
 interface ImageUploadProps {
    id: string;
@@ -8,13 +10,15 @@ interface ImageUploadProps {
    required?: boolean;
    className?: string;
    value?: string;
-   onChange: (file: File | null) => void;
+   onChange: (url: string) => void;
 }
 
 export const ImageUpload: FC<ImageUploadProps> = ({ id, name, label, required, className, value, onChange }) => {
    const [photoPreview, setPhotoPreview] = useState<string>(value || "");
    const [error, setError] = useState<string>("");
    const inputRef = useRef<HTMLInputElement>(null);
+   const loader = useTopLoader();
+   const layoutData = useLayout();
 
    useEffect(() => {
       setPhotoPreview(value || "");
@@ -24,16 +28,82 @@ export const ImageUpload: FC<ImageUploadProps> = ({ id, name, label, required, c
       }
    }, [value]);
 
-   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+   // Cleanup URL objektů při unmount
+   useEffect(() => {
+      return () => {
+         if (photoPreview && photoPreview.startsWith("blob:")) {
+            URL.revokeObjectURL(photoPreview);
+         }
+      };
+   }, [photoPreview]);
+
+   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
-      if (file) {
-         setPhotoPreview(URL.createObjectURL(file));
-         setError("");
-         onChange(file);
-      } else {
+      
+      if (!file) {
          setPhotoPreview("");
          if (required) setError("Obrázek je povinný.");
-         onChange(null);
+         onChange("");
+         return;
+      }
+
+      loader.start();
+      setError("");
+
+      try {
+         // odstraní předchozí obrázek ze serveru, pokud existuje a není to blob URL
+         if (value && !value.startsWith("blob:")) {
+            await fetch(value, { method: "DELETE" });
+         }
+         // Uvolní předchozí URL objekty pro předcházení memory leaks
+         if (photoPreview && photoPreview.startsWith("blob:")) {
+            URL.revokeObjectURL(photoPreview);
+         }
+
+         // Zobrazí preview okamžitě
+         const previewUrl = URL.createObjectURL(file);
+         setPhotoPreview(previewUrl);
+
+         // Uploaduje soubor na server
+         const formData = new FormData();
+         formData.append("file", file);
+
+         const response = await fetch("/api/uploads", {
+            method: "POST",
+            body: formData,
+         });
+
+         if (!response.ok) {
+            throw new Error("Upload failed");
+         }
+
+         const data = await response.json();
+
+         // Uvolní preview URL a nahradí serverovou URL
+         URL.revokeObjectURL(previewUrl);
+         setPhotoPreview(data.url);
+         onChange(data.url);
+
+         if (layoutData?.showToast) {
+            layoutData.showToast({
+               message: "Obrázek byl úspěšně nahrán",
+               type: "success",
+            });
+         }
+      } catch (error) {
+         // V případě chyby zruší preview
+         setPhotoPreview("");
+         onChange("");
+         setError("Chyba při nahrávání obrázku");
+         
+         if (layoutData?.showToast) {
+            layoutData.showToast({
+               message: "Chyba při nahrávání obrázku",
+               type: "error",
+            });
+         }
+      } finally {
+         loader.done();
       }
    };
 

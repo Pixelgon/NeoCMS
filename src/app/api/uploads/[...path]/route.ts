@@ -9,7 +9,7 @@ interface RouteParams {
 export async function GET(req: NextRequest, { params }: RouteParams) {
   try {
     const { path: pathArray } = await params;
-    const filePath = path.join(process.cwd(), 'uploads', ...pathArray);
+    const filePath = path.join(process.cwd(), 'public', 'uploads', ...pathArray);
     
     const file = await fs.readFile(filePath);
     const ext = path.extname(filePath).slice(1);
@@ -35,3 +35,15 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
   }
 }
 
+export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  try {
+    const { path: pathArray } = await params;
+    const filePath = path.join(process.cwd(), 'public', 'uploads', ...pathArray);
+    
+    await fs.unlink(filePath);
+    return NextResponse.json({ message: 'File deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting upload:', error);
+    return new NextResponse('File not found', { status: 404 });
+  }
+}
