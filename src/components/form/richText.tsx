@@ -1,9 +1,9 @@
-import { FC, useContext, useEffect, useState, useRef } from "react";
+"use client";
+import { FC, useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import ImageExtension from "@tiptap/extension-image";
-import { useTopLoader } from "nextjs-toploader";
 import Input from "./input";
 import RichTextTab from "./richTextTab";
 import { useLayout } from "@/context/layoutContext";
@@ -12,16 +12,22 @@ import ImageUpload from "./imageUpload";
 interface RichTextProps {
   content: string;
   onChange?: (html: string) => void;
+  hideableToolbar?: boolean;
+  label?: string;
 }
 
-export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
-  const [inputValue, setInputValue] = useState("");
+export const RichText: FC<RichTextProps> = ({ content, onChange, label, hideableToolbar }) => {
+  const linkUrlRef = useRef<string>("");
   const uploadedImageUrlRef = useRef<string>("");
   const layoutData = useLayout();
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    extensions: [
+  const onChangeRef = useRef<RichTextProps["onChange"]>(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  const extensions = useMemo(
+    () => [
       StarterKit.configure({
         heading: {
           levels: [2, 3],
@@ -43,49 +49,57 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
         },
       }),
     ],
+    []
+  );
+
+  const editor = useEditor({
+    immediatelyRender: false,
+    extensions,
     content,
+    onUpdate: ({ editor }) => {
+      onChangeRef.current?.(editor.getHTML());
+    },
   });
 
+  const lastPropContentRef = useRef<string>(content);
   useEffect(() => {
     if (!editor) return;
-    const update = () => onChange && onChange(editor.getHTML());
-    editor.on("update", update);
-    return () => {
-      editor.off("update", update);
-    };
-  }, [editor, onChange]);
+    if (content === lastPropContentRef.current) return; // No change
 
-  useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content);
+    const current = editor.getHTML();
+    if (content !== current) {
+      editor.commands.setContent(content, false);
     }
+
+    lastPropContentRef.current = content;
   }, [content, editor]);
 
-  const applyLink = () => {
-    editor?.chain().focus().setLink({ href: inputValue }).run();
-    setInputValue("");
-  };
+  const applyLink = useCallback(() => {
+    if (!editor) return;
+    const href = (linkUrlRef.current || "").trim();
+    if (!href) return;
+    editor.chain().focus().extendMarkRange("link").setLink({ href }).run();
+    linkUrlRef.current = "";
+  }, [editor]);
 
-  const insertUploadedImage = () => {
-    if (!uploadedImageUrlRef.current || !editor) {
-      layoutData.showToast?.({
-        message: "Nejprve vyberte a nahrajte obrázek",
-        type: "error",
-      });
-      return;
-    }
-
+  const insertUploadedImage = useCallback(() => {
+    if (!uploadedImageUrlRef.current || !editor) return;
     editor.chain().focus().setImage({ src: uploadedImageUrlRef.current }).run();
     uploadedImageUrlRef.current = "";
-  };
+  }, [editor]);
 
-  const OpenLinkDialog = () => {
+  const OpenLinkDialog = useCallback(() => {
+    linkUrlRef.current = "";
+
     layoutData.showDialog({
       upperPart: (
         <Input
           type="url"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => {
+            linkUrlRef.current = e.target.value;
+          }}
+          uncontrolled
+          defaultValue="https://"
           placeholder="https://..."
           name="link-url"
           id="link-url"
@@ -101,14 +115,19 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
           layoutData.closeDialog();
         },
       },
-      btnL: { text: "Zrušit", onClick: () => layoutData.closeDialog() },
+      btnL: {
+        text: "Zrušit",
+        onClick: () => {
+          linkUrlRef.current = "";
+          layoutData.closeDialog();
+        },
+      },
     });
-  };
+  }, [applyLink, layoutData]);
 
-  const OpenImageDialog = () => {
+  const OpenImageDialog = useCallback(() => {
     // Reset state
     uploadedImageUrlRef.current = "";
-
     layoutData.showDialog({
       upperPart: (
         <ImageUpload
@@ -116,7 +135,9 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
           name="rich-image-upload"
           label="Nahrát obrázek"
           value={uploadedImageUrlRef.current}
-          onChange={(url) => { uploadedImageUrlRef.current = url; }}
+          onChange={(url) => {
+            uploadedImageUrlRef.current = url;
+          }}
         />
       ),
       btnR: {
@@ -134,63 +155,80 @@ export const RichText: FC<RichTextProps> = ({ content, onChange }) => {
         },
       },
     });
-  };
+  }, [insertUploadedImage, layoutData]);
+
+  const toggleBold = useCallback(
+    () => editor?.chain().focus().toggleBold().run(),
+    [editor]
+  );
+  const toggleItalic = useCallback(
+    () => editor?.chain().focus().toggleItalic().run(),
+    [editor]
+  );
+  const toggleH2 = useCallback(
+    () => editor?.chain().focus().toggleHeading({ level: 2 }).run(),
+    [editor]
+  );
+  const toggleH3 = useCallback(
+    () => editor?.chain().focus().toggleHeading({ level: 3 }).run(),
+    [editor]
+  );
+  const undo = useCallback(
+    () => editor?.chain().focus().undo().run(),
+    [editor]
+  );
+  const redo = useCallback(
+    () => editor?.chain().focus().redo().run(),
+    [editor]
+  );
 
   return (
-    <div className="flex flex-col">
-      <span className="text-wh font-quicksand text-lg pl-3 pb-1">
-        Obsah projektu*
-      </span>
-      <div className="flex px-2 rounded-t-3xl border bg-sec border-prim text-prim font-quicksand overflow-auto">
+    <>
+      {
+        label && <label className="text-wh font-quicksand text-lg pl-3 pb-1">{label}</label>
+      }
+    <div className="flex flex-col group rounded-3xl border border-prim overflow-hidden">
+      <div className={`flex bg-sec text-prim font-quicksand overflow-auto border-prim ${hideableToolbar ? 'max-h-0 group-focus-within:max-h-10 transition-all duration-300 group-focus-within:border-b ' : 'border-b'} `}>
         <RichTextTab
-          onClick={() => editor?.chain().focus().toggleBold().run()}
+          onClick={() => toggleBold()}
           isActive={editor?.isActive("bold")}
-        >
+          className="pl-4"
+          >
           B
         </RichTextTab>
         <RichTextTab
-          onClick={() => editor?.chain().focus().toggleItalic().run()}
+          onClick={() => toggleItalic()}
           isActive={editor?.isActive("italic")}
-        >
+          >
           I
         </RichTextTab>
         <RichTextTab
-          onClick={() =>
-            editor?.chain().focus().toggleHeading({ level: 2 }).run()
-          }
+          onClick={() => toggleH2()}
           isActive={editor?.isActive("heading", { level: 2 })}
-        >
+          >
           H2
         </RichTextTab>
         <RichTextTab
-          onClick={() =>
-            editor?.chain().focus().toggleHeading({ level: 3 }).run()
-          }
+          onClick={() => toggleH3()}
           isActive={editor?.isActive("heading", { level: 3 })}
-        >
+          >
           H3
         </RichTextTab>
         <RichTextTab onClick={() => OpenLinkDialog()}>Link</RichTextTab>
         <RichTextTab onClick={() => OpenImageDialog()}>Obrázek</RichTextTab>
-        <RichTextTab
-          onClick={() => editor?.chain().focus().undo().run()}
-          isActive={false}
-        >
+        <RichTextTab onClick={() => undo()} isActive={false}>
           ↩ Undo
         </RichTextTab>
-        <RichTextTab
-          onClick={() => editor?.chain().focus().redo().run()}
-          isActive={false}
-        >
+        <RichTextTab onClick={() => redo()} isActive={false}>
           ↪ Redo
         </RichTextTab>
       </div>
-
       <EditorContent
         editor={editor}
-        className="g-sec p-3 !outline-none rounded-b-3xl text-wh font-quicksand text-lg relative z-20 w-full border border-t-0 border-prim transition-transform focus-within:bg-modal"
-      />
+        className="g-sec p-3 !outline-none text-wh font-quicksand text-lg relative z-20 w-full transition-transform"
+        />
     </div>
+    </>
   );
 };
 

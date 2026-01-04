@@ -36,7 +36,7 @@ model ProjectTag {
   @@id([projectId, tagId])
 }
 
-model ContentBlock {
+model Block {
   id        String   @id
   html      String
   createdOn DateTime @default(now()) @db.Timestamp(0)

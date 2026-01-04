@@ -32,8 +32,20 @@ export const AdminProjectProvider = ({ children }: { children: ReactNode }) => {
     setProjectState(emptyProject);
   }, []);
 
+  const isProjectEmpty = useCallback(() => {
+    return (
+      !project.name &&
+      !project.slug &&
+      !project.background &&
+      !project.photo &&
+      !project.body &&
+      !project.description &&
+      project.tags.length === 0
+    );
+  }, [project]);
+
   return (
-    <AdminProjectContext.Provider value={{ project, setProject, updateProject, resetProject }}>
+    <AdminProjectContext.Provider value={{ project, setProject, updateProject, resetProject, isProjectEmpty }}>
       {children}
     </AdminProjectContext.Provider>
   );

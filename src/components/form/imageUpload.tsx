@@ -1,3 +1,4 @@
+'use client';
 import { FC, useState, ChangeEvent, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTopLoader } from "nextjs-toploader";

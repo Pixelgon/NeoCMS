@@ -26,7 +26,6 @@ export const HeaderFull: FC<PropsWithChildren> = ({children}) => {
         })
       );
     }
-    // Cleanup effect
     return () => {
       if (vantaEffect) vantaEffect.destroy();
     };

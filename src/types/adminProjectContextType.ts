@@ -5,4 +5,5 @@ export type AdminProjectContextType = {
    setProject: (project: ProjectType) => void;
    updateProject: (patch: Partial<ProjectType>) => void;
    resetProject: () => void;
+   isProjectEmpty: () => boolean;
 };

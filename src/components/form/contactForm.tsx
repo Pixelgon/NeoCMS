@@ -42,7 +42,6 @@ export const ContactForm: FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
       if (response.ok) {
         loader.done();
         layoutData.closeModal();

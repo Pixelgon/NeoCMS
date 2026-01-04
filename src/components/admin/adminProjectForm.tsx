@@ -9,6 +9,7 @@ import RichText from "../form/richText";
 import ProjectType from "@/types/projectType";
 import { useAdminProject } from "@/context/adminProjectContext";
 import AdminProjectList from "./adminProjectList";
+import { AdminProject } from "./adminProject";
 
 const normalizeSlug = (value: string) =>
   value
@@ -35,8 +36,6 @@ export const AdminProjectForm: FC = () => {
     } else if (!project.id) {
       setSavedProject(null);
     }
-    // We only want to capture the initial state when a project is loaded,
-    // not on every field change, so we intentionally depend only on project.id
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project.id]);
 
@@ -57,7 +56,7 @@ export const AdminProjectForm: FC = () => {
       }
       onChange(patch);
     } else if (name === "slug") {
-      onChange({ slug: normalizeSlug(value)});
+      onChange({ slug: normalizeSlug(value) });
     } else {
       onChange({ [name]: value } as Partial<ProjectType>);
     }
@@ -198,7 +197,11 @@ export const AdminProjectForm: FC = () => {
         id="bg"
         label="Pozadí*"
         value={project?.background || ""}
-        onChange={(url) => handleInputChange({ target: { name: "background", value: url } } as ChangeEvent<HTMLInputElement>)}
+        onChange={(url) =>
+          handleInputChange({
+            target: { name: "background", value: url },
+          } as ChangeEvent<HTMLInputElement>)
+        }
         required
       />
       <ImageUpload
@@ -206,10 +209,14 @@ export const AdminProjectForm: FC = () => {
         id="photo"
         label="Titulní obrázek*"
         value={project?.photo || ""}
-        onChange={(url) => handleInputChange({ target: { name: "photo", value: url } } as ChangeEvent<HTMLInputElement>)}
+        onChange={(url) =>
+          handleInputChange({
+            target: { name: "photo", value: url },
+          } as ChangeEvent<HTMLInputElement>)
+        }
         required
       />
-      <RichText content={project?.body || ""} onChange={handleRichTextChange} />
+      <RichText content={project?.body || ""} onChange={handleRichTextChange} label="Obsah projektu*"/>
       <TagInput tags={project?.tags} setTags={(tags) => onChange({ tags })} />
       <div className={"flex mt-5 gap-2"}>
         <Btn prim type="submit" disabled={isSubmitDisabled}>
@@ -256,6 +263,10 @@ export const AdminProjectForm: FC = () => {
                 text: "Ano",
                 onClick: () => {
                   layoutData.closeDialog();
+                  layoutData.showModal({
+                    children: <AdminProjectForm />,
+                    title: "Vytvořit nový projekt",
+                  });
                   resetProject();
                 },
               },
