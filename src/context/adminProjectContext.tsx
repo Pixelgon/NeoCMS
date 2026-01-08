@@ -53,7 +53,6 @@ export const AdminProjectProvider = ({ children }: { children: ReactNode }) => {
   }, [project]);
 
   const isProjectEmpty = useCallback(() => {
-    console.log("Checking if project is empty:", project);
     return (
       !project.name &&
       !project.slug &&

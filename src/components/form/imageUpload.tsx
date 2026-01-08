@@ -68,6 +68,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({ id, name, label, required, c
          // Uploaduje soubor na server
          const formData = new FormData();
          formData.append("file", file);
+         formData.append("path", "images");
 
          const response = await fetch("/api/uploads", {
             method: "POST",

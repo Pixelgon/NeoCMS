@@ -4,10 +4,6 @@ const nextConfig = {
   assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
   trailingSlash: false,
   
-  // Pokud používáte <Image> komponentu
-  images: {
-    unoptimized: true, // Pro development/testing
-  },
 };
 
 export default nextConfig;
