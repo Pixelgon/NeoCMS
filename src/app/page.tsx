@@ -31,7 +31,19 @@ return (
       </HeaderLogo>
       <Section isPrim>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-14 w-full items-center" id="intro">
-          <Block id="intro-home" />
+          <div className={'flex flex-col items-start gap-4'}>
+            <motion.h2
+              initial={{opacity: .1, scale: 0}}
+              whileInView={{opacity: 1, scale: 1}}
+              viewport={{ once: true }}
+            >
+              Váš digitální parťák
+            </motion.h2>
+            <p>
+              Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejen dobře vypadají, ale hlavně dávají smysl. Vytvoříme vám silnou digitální identitu, která zaujme a odliší vás od konkurence – od designu přes vývoj až po nasazení.
+            </p>
+            <Btn href="/projekty" prim className={'text-xl mt-4'}>Přesvědčit se</Btn>
+          </div>
           <motion.div initial={{opacity: .1, scale: 0}}
               whileInView={{opacity: 1, scale: 1,}}
               viewport={{ once: true }} className={'relative h-fit'}>

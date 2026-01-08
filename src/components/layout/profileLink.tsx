@@ -17,11 +17,11 @@ interface ProfileLinkProps {
     link: string;
 }
 
-const ImageClass = '!relative';
+const ImageClass = '!relative w-fill h-fill object-contain group-hover:scale-90 transition-all duration-300';
 
 export const ProfileLink:FC<ProfileLinkProps> = ({type, link}) => {
     return (
-        <Link className={'flex items-center justify-center transition-all duration-300 relative aspect-square p-[25%] hover:p-[20%] hover:backdrop-brightness-75'} href={link} target="_blank" rel="noopener noreferrer">
+        <Link className={'flex items-center justify-center transition-all duration-300 relative aspect-square hover:backdrop-brightness-75 group'} href={link} target="_blank" rel="noopener noreferrer">
             {(() => {
                 switch (type) {
                     case ProfileLinkType.Instagram:
@@ -42,7 +42,7 @@ export const ProfileLink:FC<ProfileLinkProps> = ({type, link}) => {
                         );
                     case ProfileLinkType.Email:
                         return (
-                            <EnvelopeIcon className={`w-fill h-fill text-sec ${ImageClass}`} aria-hidden="true" />
+                            <EnvelopeIcon className={`w-fill h-fill text-sec ${ImageClass}`} aria-hidden="true" width={40} height={40}/>
                         );
                     default:
                         return null;
