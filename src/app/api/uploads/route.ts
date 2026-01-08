@@ -1,35 +1,49 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-import { auth } from '@/lib/auth';
+import { NextRequest, NextResponse } from "next/server";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
+import { auth } from "@/lib/auth";
+
+function sanitizeFilename(name: string) {
+  // keep only safe chars
+  const safe = name.replace(/[^a-zA-Z0-9._-]/g, "_");
+  return safe.length ? safe : "file";
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const formData = await req.formData();
-    const file = formData.get('file') as File;
     const session = await auth();
-    
     if (!session || !session.user) {
-       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    if (!file) return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+    const formData = await req.formData();
+    const file = formData.get("file") as File | null;
+    if (!file)
+      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const filename = Date.now() + "-" + file.name.replace(/\s/g, "_");
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "images");
-    const filePath = path.join(uploadDir, filename);
+    const safeOriginal = sanitizeFilename(file.name);
+    const filename = `${Date.now()}-${safeOriginal}`;
 
-    // Vytvoří složku, pokud neexistuje
+    const uploadDir = path.resolve(
+      process.cwd(),
+      process.env.UPLOAD_IMAGES_DIR || "public/uploads/images"
+    );
     await mkdir(uploadDir, { recursive: true });
-    
+
+    const filePath = path.join(uploadDir, filename);
     await writeFile(filePath, buffer);
 
-    return NextResponse.json({ url: `/api/uploads/images/${filename}` });
+    return NextResponse.json(
+      { url: `/uploads/images/${filename}` },
+      { status: 201 }
+    );
   } catch (error) {
-    console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error("Upload error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

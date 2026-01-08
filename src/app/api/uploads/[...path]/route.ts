@@ -1,49 +1,57 @@
-import fs from 'fs/promises';
-import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
+import fs from "fs/promises";
+import path from "path";
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 
 interface RouteParams {
   params: Promise<{ path: string[] }>;
 }
 
-export async function GET(req: NextRequest, { params }: RouteParams) {
-  try {
-    const { path: pathArray } = await params;
-    const filePath = path.join(process.cwd(), 'public', 'uploads', ...pathArray);
-    
-    const file = await fs.readFile(filePath);
-    const ext = path.extname(filePath).slice(1);
-    
-    const mimeTypes: { [key: string]: string } = {
-      'jpg': 'image/jpeg',
-      'jpeg': 'image/jpeg',
-      'png': 'image/png',
-      'gif': 'image/gif',
-      'webp': 'image/webp',
-      'svg': 'image/svg+xml'
-    };
+const uploadDir = path.resolve(
+  process.cwd(),
+  process.env.UPLOAD_IMAGES_DIR || "public/uploads/images"
+);
 
-    return new Response(new Uint8Array(file), {
-      headers: {
-        'Content-Type': mimeTypes[ext] || 'application/octet-stream',
-        'Cache-Control': 'public, max-age=31536000, immutable',
-      },
-    });
-  } catch (error) {
-    console.error('Error serving upload:', error);
-    return new NextResponse('File not found', { status: 404 });
+function resolveInUploads(parts: string[]) {
+  const cleaned = parts
+    .filter(Boolean)
+    .map((p) => p.replace(/\\/g, "/"))
+    .filter((p) => p !== "." && p !== "..");
+
+  const base = path.resolve(uploadDir);
+  const full = path.resolve(base, ...cleaned);
+
+  if (!full.startsWith(base + path.sep) && full !== base) {
+    throw new Error("Invalid path");
   }
+
+  return full;
 }
+
+const mimeTypes: Record<string, string> = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  gif: "image/gif",
+  webp: "image/webp",
+  svg: "image/svg+xml",
+};
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
   try {
+    const session = await auth();
+    if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { path: pathArray } = await params;
-    const filePath = path.join(process.cwd(), 'public', 'uploads', ...pathArray);
-    
+
+    const filePath = resolveInUploads(pathArray);
     await fs.unlink(filePath);
-    return NextResponse.json({ message: 'File deleted successfully' });
+
+    return NextResponse.json({ message: "File deleted successfully" });
   } catch (error) {
-    console.error('Error deleting upload:', error);
-    return new NextResponse('File not found', { status: 404 });
+    console.error("Error deleting upload:", error);
+    return new NextResponse("File not found", { status: 404 });
   }
 }
