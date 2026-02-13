@@ -3,7 +3,15 @@ import { useLayout } from "@/context/layoutContext";
 import { signOut, useSession } from "next-auth/react";
 import { FC } from "react";
 import { AdminLink } from "./adminPanelLink";
-import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  PlusCircleIcon,
+  TagIcon,
+  FolderOpenIcon,
+  CloudArrowUpIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
+import { AnimatePresence, motion } from "framer-motion";
 import { AdminTagList } from "./adminTagList";
 import { AdminProjectForm } from "./adminProjectForm";
 import AdminProjectList from "./adminProjectList";
@@ -51,46 +59,53 @@ export const AdminPanel: FC = () => {
     <>
       <div
         className={
-          "fixed w-full bottom-0 left-0 p-4 bg-navbar backdrop-blur-md flex gap-3 items-center justify-center flex-wrap z-[1003]"
+          "fixed w-full bottom-0 left-0 p-4 bg-navbar backdrop-blur-md flex gap-4 items-center justify-center flex-wrap z-[1003]"
         }
       >
-        <AdminLink onClick={() => openModal("project")} className={isProjectUnsaved() ? "!text-err" : (layoutData.activeModalKey === "project" ? "!text-prim" : "")} title={isProjectUnsaved() ? `Máš neuložený projekt` : "Vytvořit nový projekt"}/>
-        <AdminLink onClick={() => openModal("tagModal")} className={layoutData.activeModalKey === "tagModal" ? "!text-prim" : ""} title="Správa tagů"/>
-        <AdminLink onClick={() => openModal("projectList")} className={layoutData.activeModalKey === "projectList" ? "!text-prim" : ""} title="Správa projektů"/>
-          {(isProjectUnsaved() || unsavedBlocksCount > 1) && (
-            <>
-            <AdminLink
-            onClick={() => {
-              saveAll();
-              layoutData.closeModal();
-            }}
-            className="text-err"
-            title={`Uložit všechny změny (${unsavedBlocksCount} bloků)`}
-            />
-            <AdminLink
-            onClick={() => {
-              resetAll();
-              layoutData.closeModal();
-            }}
-            className="text-wh"
-            title={`Zrušit všechny změny (${unsavedBlocksCount} bloků)`}
-            />
-            </>
-          )}  
-        <div className="flex items-center gap-3 md:ml-auto font-quicksand">
-          <button
-            onClick={() => signOut({ callbackUrl: "/", redirect: true })}
-            title="Odhlásit se"
-          >
+        <AdminLink onClick={() => openModal("project")} className={isProjectUnsaved() ? "!text-err" : (layoutData.activeModalKey === "project" ? "!text-prim" : "")}><PlusCircleIcon className="w-5 h-5" /><span>{isProjectUnsaved() ? `Máš neuložený projekt` : "Vytvořit nový projekt"}</span></AdminLink>
+        <AdminLink onClick={() => openModal("tagModal")} className={layoutData.activeModalKey === "tagModal" ? "!text-prim" : ""}><TagIcon className="w-5 h-5" /><span>Správa tagů</span></AdminLink>
+        <AdminLink onClick={() => openModal("projectList")} className={layoutData.activeModalKey === "projectList" ? "!text-prim" : ""}><FolderOpenIcon className="w-5 h-5" /><span>Správa projektů</span></AdminLink>
+          <div className={"flex flex-grow justify-end gap-4 items-center"}>
+            <AnimatePresence>
+              {unsavedBlocksCount > 0 && (
+                <>
+                  <motion.span
+                    className={"text-err uppercase"}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                  Bloky: {unsavedBlocksCount}
+                  </motion.span>
+                  <AdminLink
+                    onClick={() => {
+                      saveAll();
+                      layoutData.closeModal();
+                    }}
+                    className="text-err"
+                    >
+                    <CloudArrowUpIcon className="w-5 h-5" />
+                    <span>Uložit vše</span>
+                  </AdminLink>
+                  <AdminLink
+                    onClick={() => {
+                      resetAll();
+                      layoutData.closeModal();
+                    }}>
+                    <ArrowPathIcon className="w-5 h-5" />
+                    <span>Resetovat vše</span>
+                  </AdminLink>
+                </>
+              )}
+            </AnimatePresence>
+          <AdminLink onClick={() => signOut({ callbackUrl: "/", redirect: true })}>
             <ArrowLeftStartOnRectangleIcon className="w-6 h-6 text-prim" />
-          </button>
-          <span className="text-base text-wh">
-            Zdravíčko,{" "}
             <span className={"text-pxlgn font-semibold"}>
-              {session?.user?.name}
+            {`${session?.user?.name}`}
             </span>
-          </span>
-        </div>
+          </AdminLink>
+          </div>
       </div>
     </>
   );

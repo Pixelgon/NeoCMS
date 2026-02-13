@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 // save multiple blocks at once (used for "Save all" button)
 export const POST = async (req: Request) => {
-  const session = await auth(); // Získání uživatelské session
+  const session = await auth();
 
   if (!session || !session.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -12,8 +12,6 @@ export const POST = async (req: Request) => {
 
   try {
     const { blocks } = await req.json();
-
-    // Validate input
     if (
       !Array.isArray(blocks) ||
       blocks.some((b) => typeof b.id !== "string" || typeof b.html !== "string")

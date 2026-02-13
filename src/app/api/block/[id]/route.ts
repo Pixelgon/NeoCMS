@@ -33,7 +33,7 @@ export const PUT = async (
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) => {
-  const session = await auth(); // Získání uživatelské session
+  const session = await auth(); 
 
   if (!session || !session.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
