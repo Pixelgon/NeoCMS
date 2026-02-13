@@ -13,6 +13,8 @@ import { auth } from "@/lib/auth";
 import { GA } from "@/components/layout/googleAnalytics";
 import { NavbarItem } from "@/components/navbar/navbarItem";
 import { AdminProjectProvider } from "@/context/adminProjectContext";
+import { BlockProvider } from "@/context/blockContext";
+import NextTopLoader from "nextjs-toploader";
 
 const OpenSans = Open_Sans({
   variable: "--open-sans",
@@ -103,12 +105,25 @@ export default async function RootLayout({
         className={`${OpenSans.variable} ${QuicksandFont.variable}`}
         data-scroll-behavior="smooth"
       >
-        <body className={`relative ${session && session.user ? "mb-14" : ""}`}>
+        <body className={`relative ${session && session.user ? "mb-14" : ""}`}>¨
+          <NextTopLoader
+            color="linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)"
+            initialPosition={0.08}
+            crawlSpeed={200}
+            height={3}
+            crawl={true}
+            showSpinner={false}
+            easing="ease"
+            speed={300}
+            shadow={false}
+          />
           <SessionProvider>
             <MotionConfig transition={{ duration: 0.3 }}>
               {session && session.user ? (
                 <AdminProjectProvider>
-                  <LayoutProvider>{content}</LayoutProvider>
+                  <BlockProvider>
+                    <LayoutProvider>{content}</LayoutProvider>
+                  </BlockProvider>
                 </AdminProjectProvider>
               ) : (
                 <LayoutProvider>{content}</LayoutProvider>

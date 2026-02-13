@@ -1,19 +1,20 @@
 "use client";
 import { useLayout } from "@/context/layoutContext";
 import { signOut, useSession } from "next-auth/react";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { AdminLink } from "./adminPanelLink";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
-import ProjectType from "@/types/projectType";
 import { AdminTagList } from "./adminTagList";
 import { AdminProjectForm } from "./adminProjectForm";
 import AdminProjectList from "./adminProjectList";
 import { useAdminProject } from "@/context/adminProjectContext";
+import { useBlock } from "@/context/blockContext";
 
 export const AdminPanel: FC = () => {
   const { data: session } = useSession();
   const layoutData = useLayout();
   const {project, isProjectUnsaved} = useAdminProject();
+  const {saveAll, resetAll, unsavedBlocksCount} = useBlock();
 
   type ModalType = "project" | "projectList" | "tagModal";
 
@@ -56,9 +57,30 @@ export const AdminPanel: FC = () => {
         <AdminLink onClick={() => openModal("project")} className={isProjectUnsaved() ? "!text-err" : (layoutData.activeModalKey === "project" ? "!text-prim" : "")} title={isProjectUnsaved() ? `Máš neuložený projekt` : "Vytvořit nový projekt"}/>
         <AdminLink onClick={() => openModal("tagModal")} className={layoutData.activeModalKey === "tagModal" ? "!text-prim" : ""} title="Správa tagů"/>
         <AdminLink onClick={() => openModal("projectList")} className={layoutData.activeModalKey === "projectList" ? "!text-prim" : ""} title="Správa projektů"/>
+          {(isProjectUnsaved() || unsavedBlocksCount > 1) && (
+            <>
+            <AdminLink
+            onClick={() => {
+              saveAll();
+              layoutData.closeModal();
+            }}
+            className="text-err"
+            title={`Uložit všechny změny (${unsavedBlocksCount} bloků)`}
+            />
+            <AdminLink
+            onClick={() => {
+              resetAll();
+              layoutData.closeModal();
+            }}
+            className="text-wh"
+            title={`Zrušit všechny změny (${unsavedBlocksCount} bloků)`}
+            />
+            </>
+          )}  
         <div className="flex items-center gap-3 md:ml-auto font-quicksand">
           <button
             onClick={() => signOut({ callbackUrl: "/", redirect: true })}
+            title="Odhlásit se"
           >
             <ArrowLeftStartOnRectangleIcon className="w-6 h-6 text-prim" />
           </button>

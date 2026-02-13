@@ -43,6 +43,9 @@ return (
               Navrhujeme a vyvíjíme weby, aplikace a digitální řešení, která nejen dobře vypadají, ale hlavně dávají smysl. Vytvoříme vám silnou digitální identitu, která zaujme a odliší vás od konkurence – od designu přes vývoj až po nasazení.
             </p>
             <Btn href="/projekty" prim className={'text-xl mt-4'}>Přesvědčit se</Btn>
+            <Block id="home-intro-block" className="w-full mt-6" />
+            <Block id="home-intro-block-2" className="w-full mt-6" />
+            <Block id="home-intro-block-3" className="w-full mt-6" />
           </div>
           <motion.div initial={{opacity: .1, scale: 0}}
               whileInView={{opacity: 1, scale: 1,}}

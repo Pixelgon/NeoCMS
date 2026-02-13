@@ -1,5 +1,5 @@
 "use client";
-import { FC, useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { FC, useEffect, useRef, useCallback, useMemo } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -8,15 +8,38 @@ import Input from "./input";
 import RichTextTab from "./richTextTab";
 import { useLayout } from "@/context/layoutContext";
 import ImageUpload from "./imageUpload";
+import {
+  ArrowUturnLeftIcon,
+  ArrowUturnRightIcon,
+  DocumentCheckIcon,
+  LinkIcon,
+  PhotoIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 
 interface RichTextProps {
   content: string;
   onChange?: (html: string) => void;
   hideableToolbar?: boolean;
   label?: string;
+  headingLevels?: (1 | 2 | 3)[];
+  autoFocus?: boolean;
+  isChanged?: boolean;
+  saveBlock?: () => Promise<{ ok: boolean }>;
+  resetBlock?: () => void;
 }
 
-export const RichText: FC<RichTextProps> = ({ content, onChange, label, hideableToolbar }) => {
+export const RichText: FC<RichTextProps> = ({
+  content,
+  onChange,
+  label,
+  hideableToolbar,
+  headingLevels = [2, 3],
+  autoFocus = false,
+  isChanged,
+  saveBlock,
+  resetBlock,
+}) => {
   const linkUrlRef = useRef<string>("");
   const uploadedImageUrlRef = useRef<string>("");
   const layoutData = useLayout();
@@ -30,7 +53,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange, label, hideable
     () => [
       StarterKit.configure({
         heading: {
-          levels: [2, 3],
+          levels: headingLevels,
         },
       }),
       Link.configure({
@@ -49,7 +72,7 @@ export const RichText: FC<RichTextProps> = ({ content, onChange, label, hideable
         },
       }),
     ],
-    []
+    [],
   );
 
   const editor = useEditor({
@@ -61,10 +84,17 @@ export const RichText: FC<RichTextProps> = ({ content, onChange, label, hideable
     },
   });
 
+  useEffect(() => {
+    if (!editor || !autoFocus) return;
+    requestAnimationFrame(() => {
+      editor.commands.focus("end");
+    });
+  }, [editor, autoFocus]);
+
   const lastPropContentRef = useRef<string>(content);
   useEffect(() => {
     if (!editor) return;
-    if (content === lastPropContentRef.current) return; // No change
+    if (content === lastPropContentRef.current) return;
 
     const current = editor.getHTML();
     if (content !== current) {
@@ -126,7 +156,6 @@ export const RichText: FC<RichTextProps> = ({ content, onChange, label, hideable
   }, [applyLink, layoutData]);
 
   const OpenImageDialog = useCallback(() => {
-    // Reset state
     uploadedImageUrlRef.current = "";
     layoutData.showDialog({
       upperPart: (
@@ -159,75 +188,98 @@ export const RichText: FC<RichTextProps> = ({ content, onChange, label, hideable
 
   const toggleBold = useCallback(
     () => editor?.chain().focus().toggleBold().run(),
-    [editor]
+    [editor],
   );
   const toggleItalic = useCallback(
     () => editor?.chain().focus().toggleItalic().run(),
-    [editor]
+    [editor],
   );
-  const toggleH2 = useCallback(
-    () => editor?.chain().focus().toggleHeading({ level: 2 }).run(),
-    [editor]
-  );
-  const toggleH3 = useCallback(
-    () => editor?.chain().focus().toggleHeading({ level: 3 }).run(),
-    [editor]
+  const toggleHeading = useCallback(
+    (level: 1 | 2 | 3) =>
+      editor?.chain().focus().toggleHeading({ level }).run(),
+    [editor],
   );
   const undo = useCallback(
     () => editor?.chain().focus().undo().run(),
-    [editor]
+    [editor],
   );
   const redo = useCallback(
     () => editor?.chain().focus().redo().run(),
-    [editor]
+    [editor],
   );
 
   return (
     <>
-      {
-        label && <label className="text-wh font-quicksand text-lg pl-3 pb-1">{label}</label>
-      }
-    <div className="flex flex-col group rounded-3xl border border-prim overflow-hidden">
-      <div className={`flex bg-sec text-prim font-quicksand overflow-auto border-prim ${hideableToolbar ? 'max-h-0 group-focus-within:max-h-10 transition-all duration-300 group-focus-within:border-b ' : 'border-b'} `}>
-        <RichTextTab
-          onClick={() => toggleBold()}
-          isActive={editor?.isActive("bold")}
-          className="pl-4"
+      {label && (
+        <label className="text-wh font-quicksand text-lg pl-3 pb-1">
+          {label}
+        </label>
+      )}
+      <div className="flex flex-col group rounded-3xl border border-prim overflow-hidden">
+        <div
+          className={`flex bg-sec text-prim font-quicksand overflow-auto border-prim ${hideableToolbar ? "max-h-0 group-focus-within:max-h-10 transition-all duration-300 group-focus-within:border-b " : "border-b"} `}
+        >
+          <RichTextTab
+            onClick={() => toggleBold()}
+            isActive={editor?.isActive("bold")}
+            className="pl-4 font-bold"
           >
-          B
-        </RichTextTab>
-        <RichTextTab
-          onClick={() => toggleItalic()}
-          isActive={editor?.isActive("italic")}
+            B
+          </RichTextTab>
+          <RichTextTab
+            onClick={() => toggleItalic()}
+            isActive={editor?.isActive("italic")}
+            className="italic"
           >
-          I
-        </RichTextTab>
-        <RichTextTab
-          onClick={() => toggleH2()}
-          isActive={editor?.isActive("heading", { level: 2 })}
-          >
-          H2
-        </RichTextTab>
-        <RichTextTab
-          onClick={() => toggleH3()}
-          isActive={editor?.isActive("heading", { level: 3 })}
-          >
-          H3
-        </RichTextTab>
-        <RichTextTab onClick={() => OpenLinkDialog()}>Link</RichTextTab>
-        <RichTextTab onClick={() => OpenImageDialog()}>Obrázek</RichTextTab>
-        <RichTextTab onClick={() => undo()} isActive={false}>
-          ↩ Undo
-        </RichTextTab>
-        <RichTextTab onClick={() => redo()} isActive={false}>
-          ↪ Redo
-        </RichTextTab>
-      </div>
-      <EditorContent
-        editor={editor}
-        className="g-sec p-3 !outline-none text-wh font-quicksand text-lg relative z-20 w-full transition-transform"
+            I
+          </RichTextTab>
+          {headingLevels.map((level) => (
+            <RichTextTab
+              key={level}
+              onClick={() => toggleHeading(level)}
+              isActive={editor?.isActive("heading", { level })}
+            >
+              H{level}
+            </RichTextTab>
+          ))}
+          <RichTextTab onClick={() => OpenLinkDialog()}>
+            <LinkIcon className="w-5 h-5" />
+          </RichTextTab>
+          <RichTextTab onClick={() => OpenImageDialog()}>
+            <PhotoIcon className="w-5 h-5" />
+          </RichTextTab>
+          {editor?.can().undo() && (
+            <RichTextTab onClick={() => undo()} isActive={false}>
+              <ArrowUturnLeftIcon className="w-5 h-5" />
+            </RichTextTab>
+          )}
+          {editor?.can().redo() && (
+            <RichTextTab onClick={() => redo()} isActive={false}>
+              <ArrowUturnRightIcon className="w-5 h-5" />
+            </RichTextTab>
+          )}
+          {isChanged && saveBlock && resetBlock && (
+            <div className="flex-1 flex justify-end pr-2">
+              <RichTextTab
+                onClick={resetBlock}
+                isActive={false}
+                className="text-err"
+              >
+                <TrashIcon className="w-5 h-5" />
+              </RichTextTab>
+              {!editor?.isEmpty && (
+                <RichTextTab onClick={saveBlock} isActive={false}>
+                  <DocumentCheckIcon className="w-5 h-5" />
+                </RichTextTab>
+              )}
+            </div>
+          )}
+        </div>
+        <EditorContent
+          editor={editor}
+          className="g-sec p-3 !outline-none text-wh font-quicksand text-lg relative z-20 w-full transition-transform"
         />
-    </div>
+      </div>
     </>
   );
 };
