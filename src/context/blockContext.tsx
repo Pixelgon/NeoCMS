@@ -4,13 +4,11 @@ import {
   createContext,
   FC,
   PropsWithChildren,
-  use,
   useCallback,
   useContext,
   useMemo,
   useState,
 } from "react";
-import { useLayout } from "./layoutContext";
 
 export type BlockEdit = {
   id: string;
@@ -196,17 +194,9 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
       const edit = prev[id];
       if (!edit) return prev;
 
-      // If saved, removing from editsById reverts to server prop;
-      // if unsaved, also just remove (discard the draft).
-      if (edit.saved) {
-        const { [id]: _, ...rest } = prev;
-        return rest;
-      }
-
-      return {
-        ...prev,
-        [id]: { ...edit, modifiedHtml: edit.originalHtml },
-      };
+      // Remove from editsById — reverts to original server content
+      const { [id]: _, ...rest } = prev;
+      return rest;
     });
   }, []);
 

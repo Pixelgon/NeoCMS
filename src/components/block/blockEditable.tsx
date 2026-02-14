@@ -4,7 +4,7 @@ import { FC, useMemo } from "react";
 import { BlockEditType } from "@/types/blockType";
 import { useBlock } from "@/context/blockContext";
 import RichText from "@/components/form/richText";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 
 
 export const BlockEditable: FC<BlockEditType> = ({ id, html, className }) => {
