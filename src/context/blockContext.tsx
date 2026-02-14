@@ -1,6 +1,16 @@
 "use client";
 import { useTopLoader } from "nextjs-toploader";
-import { createContext, FC, PropsWithChildren, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  use,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+import { useLayout } from "./layoutContext";
 
 export type BlockEdit = {
   id: string;
@@ -16,7 +26,9 @@ export type BlockContextType = {
   closeEdit: () => void;
   modifyBlock: (id: string, html: string, originalHtml: string) => void;
   getEffectiveHtml: (id: string, fallbackOriginal: string) => string;
-  saveBlock: (id: string) => Promise<{ ok: true } | { ok: false; error: string }>;
+  saveBlock: (
+    id: string,
+  ) => Promise<{ ok: true } | { ok: false; error: string }>;
   saveAll: () => Promise<{ ok: boolean }>;
   resetBlock: (id: string) => void;
   resetAll: () => void;
@@ -33,7 +45,7 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const unsavedBlocksCount = useMemo(
     () => Object.values(editsById).filter((e) => !e.saved).length,
-    [editsById]
+    [editsById],
   );
 
   const openEdit = useCallback((id: string) => {
@@ -44,55 +56,65 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
     setSelectedBlockId(null);
   }, []);
 
-  const modifyBlock = useCallback((id: string, html: string, originalHtml: string) => {
-    setEditsById((prev) => {
-      const edit = prev[id];
+  const modifyBlock = useCallback(
+    (id: string, html: string, originalHtml: string) => {
+      setEditsById((prev) => {
+        const edit = prev[id];
 
-      // First change — create the edit record
-      if (!edit) {
-        if (html === originalHtml) return prev; // no actual change
+        // First change — create the edit record
+        if (!edit) {
+          if (html === originalHtml) return prev; // no actual change
+          return {
+            ...prev,
+            [id]: { id, originalHtml, modifiedHtml: html, saved: false },
+          };
+        }
+
+        // Editing an already-saved block — new originalHtml is the saved value
+        if (edit.saved) {
+          if (html === edit.modifiedHtml) return prev; // no actual change
+          return {
+            ...prev,
+            [id]: {
+              ...edit,
+              originalHtml: edit.modifiedHtml,
+              modifiedHtml: html,
+              saved: false,
+            },
+          };
+        }
+
+        // Reverted back to original — remove from edits
+        if (html === edit.originalHtml) {
+          const { [id]: _, ...rest } = prev;
+          return rest;
+        }
+
         return {
           ...prev,
-          [id]: { id, originalHtml, modifiedHtml: html, saved: false },
+          [id]: { ...edit, modifiedHtml: html },
         };
-      }
-
-      // Editing an already-saved block — new originalHtml is the saved value
-      if (edit.saved) {
-        if (html === edit.modifiedHtml) return prev; // no actual change
-        return {
-          ...prev,
-          [id]: { ...edit, originalHtml: edit.modifiedHtml, modifiedHtml: html, saved: false },
-        };
-      }
-
-      // Reverted back to original — remove from edits
-      if (html === edit.originalHtml) {
-        const { [id]: _, ...rest } = prev;
-        return rest;
-      }
-
-      return {
-        ...prev,
-        [id]: { ...edit, modifiedHtml: html },
-      };
-    });
-  }, []);
+      });
+    },
+    [],
+  );
 
   const getEffectiveHtml = useCallback(
     (id: string, fallbackOriginal: string) => {
       return editsById[id]?.modifiedHtml ?? fallbackOriginal;
     },
-    [editsById]
+    [editsById],
   );
 
   const saveBlock = useCallback(
-    async (id: string): Promise<{ ok: true } | { ok: false; error: string }> => {
+    async (
+      id: string,
+    ): Promise<{ ok: true } | { ok: false; error: string }> => {
       const edit = editsById[id];
       if (!edit) {
         return { ok: false, error: "No changes to save" };
       }
-      
+
       try {
         loader.start();
         const response = await fetch(`/api/block/${id}`, {
@@ -117,12 +139,15 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
 
         return { ok: true };
       } catch (error) {
-        return { ok: false, error: (error as Error).message || "Network error" };
+        return {
+          ok: false,
+          error: (error as Error).message || "Network error",
+        };
       } finally {
         loader.done();
       }
     },
-    [editsById, loader]
+    [editsById, loader],
   );
 
   const saveAll = useCallback(async () => {
@@ -202,7 +227,7 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!edit) return false;
       return !edit.saved && edit.modifiedHtml !== edit.originalHtml;
     },
-    [editsById]
+    [editsById],
   );
 
   const value = useMemo<BlockContextType>(
@@ -220,10 +245,25 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
       isDirty,
       unsavedBlocksCount,
     }),
-    [selectedBlockId, editsById, openEdit, closeEdit, modifyBlock, getEffectiveHtml, saveBlock, saveAll, resetBlock, resetAll, isDirty, unsavedBlocksCount]
+    [
+      selectedBlockId,
+      editsById,
+      openEdit,
+      closeEdit,
+      modifyBlock,
+      getEffectiveHtml,
+      saveBlock,
+      saveAll,
+      resetBlock,
+      resetAll,
+      isDirty,
+      unsavedBlocksCount,
+    ],
   );
 
-  return <BlockContext.Provider value={value}>{children}</BlockContext.Provider>;
+  return (
+    <BlockContext.Provider value={value}>{children}</BlockContext.Provider>
+  );
 };
 
 export const useBlock = () => {

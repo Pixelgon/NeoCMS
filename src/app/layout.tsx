@@ -105,7 +105,7 @@ export default async function RootLayout({
         className={`${OpenSans.variable} ${QuicksandFont.variable}`}
         data-scroll-behavior="smooth"
       >
-        <body className={`relative ${session && session.user ? "mb-14" : ""}`}>¨
+        <body className={`relative ${session && session.user ? "mb-14" : ""}`}>
           <NextTopLoader
             color="linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%)"
             initialPosition={0.08}

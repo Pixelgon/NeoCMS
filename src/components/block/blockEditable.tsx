@@ -18,7 +18,6 @@ export const BlockEditable: FC<BlockEditType> = ({ id, html, className }) => {
     return block.isDirty(id);
   }, [block, id]);
 
-  // efektivní obsah = draft (pokud existuje) nebo original props
   const effectiveHtml = useMemo(
     () => getEffectiveHtml(id, html || ""),
     [getEffectiveHtml, id, html],

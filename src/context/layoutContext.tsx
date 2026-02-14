@@ -1,7 +1,6 @@
 'use client';
 import { AnimatePresence } from "motion/react";
 import { FC, PropsWithChildren, useState, useEffect, useCallback, useMemo, createContext, useContext } from "react";
-import NextTopLoader from "nextjs-toploader";
 import { Toast } from "@/components/layout/toast";
 import { Dialog } from "@/components/layout/dialog";
 import { Modal } from "@/components/layout/modal";

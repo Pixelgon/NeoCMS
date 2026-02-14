@@ -55,6 +55,46 @@ export const AdminPanel: FC = () => {
     }
   };
 
+  const onSaveAll = async () => {
+    layoutData.showDialog({
+      message: "Opravdu chcete uložit všechny změny bloků? Tato akce nelze vrátit zpět.",
+      btnR: {
+        text: "Ano",
+        onClick: async () => {
+          layoutData.closeDialog();
+          const result = await saveAll();
+          if(result.ok) {
+            layoutData.showToast({ message: "Všechny bloky byly úspěšně uloženy.", type: "success" });
+          } else {
+            layoutData.showToast({ message: "Některé bloky se nepodařilo uložit. Zkuste to znovu.", type: "error" });
+          }
+        },
+      },
+      btnL: {
+        text: "Ne",
+        onClick: () => layoutData.closeDialog(),
+      },
+    });
+  };
+
+   const onResetAll = () => {
+     layoutData.showDialog({
+       message: "Opravdu chcete zahodit všechny změny bloků? Tato akce nelze vrátit zpět.",
+       btnR: {
+         text: "Ano",
+         onClick: () => {
+           layoutData.closeDialog();
+           resetAll();
+           layoutData.showToast({ message: "Všechny změny bloků byly zahozeny.", type: "success" });
+         },
+       },
+       btnL: {
+         text: "Ne",
+         onClick: () => layoutData.closeDialog(),
+       },
+     });
+   };
+
   return (
     <>
       <div
@@ -80,8 +120,7 @@ export const AdminPanel: FC = () => {
                   </motion.span>
                   <AdminLink
                     onClick={() => {
-                      saveAll();
-                      layoutData.closeModal();
+                      onSaveAll();
                     }}
                     className="text-err"
                     >
@@ -90,8 +129,7 @@ export const AdminPanel: FC = () => {
                   </AdminLink>
                   <AdminLink
                     onClick={() => {
-                      resetAll();
-                      layoutData.closeModal();
+                      onResetAll();
                     }}>
                     <ArrowPathIcon className="w-5 h-5" />
                     <span>Resetovat vše</span>
