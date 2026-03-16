@@ -5,6 +5,7 @@ import { BlockEditType } from "@/types/blockType";
 import { useBlock } from "@/context/blockContext";
 import RichText from "@/components/form/richText";
 import { AnimatePresence, motion } from "motion/react";
+import { stripTrailingEmptyParagraphs } from "@/lib/blockHtml";
 
 
 export const BlockEditable: FC<BlockEditType> = ({ id, html, className }) => {
@@ -23,13 +24,18 @@ export const BlockEditable: FC<BlockEditType> = ({ id, html, className }) => {
     [getEffectiveHtml, id, html],
   );
 
+  const renderedHtml = useMemo(
+    () => stripTrailingEmptyParagraphs(effectiveHtml),
+    [effectiveHtml],
+  );
+
   return (
     <AnimatePresence mode="wait" initial={false}>
       {isSelected ? (
         <motion.div
           key={`edit-${id}`}
           onClick={(e) => e.stopPropagation()}
-          className={`w-full h-full ${className ?? ""}`}
+          className={`w-full max-w-full min-w-0 ${className ?? ""}`}
           style={{ originY: 0 }}
           initial={{ opacity: 0, filter: "blur(2px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
@@ -51,8 +57,8 @@ export const BlockEditable: FC<BlockEditType> = ({ id, html, className }) => {
       ) : (
         <motion.div
           key={`read-${id}`}
-          className={`flex flex-col gap-4 cursor-text border ${isDirty ? "border-err" : "border-prim"} p-3 rounded-3xl ${className ?? ""}`}
-          dangerouslySetInnerHTML={{ __html: effectiveHtml }}
+          className={`flex w-full max-w-full min-w-0 flex-col gap-4 cursor-text overflow-hidden border ${isDirty ? "border-err" : "border-prim"} p-3 rounded-3xl ${className ?? ""} break-words [&_*]:max-w-full [&_*]:break-words [&_img]:h-auto [&_img]:max-w-full`}
+          dangerouslySetInnerHTML={{ __html: renderedHtml }}
           onClick={() => openEdit(id)}
           style={{ originY: 0 }}
           initial={{ opacity: 0, scaleY: 0.98, filter: "blur(2px)" }}

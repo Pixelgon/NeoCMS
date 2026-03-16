@@ -159,12 +159,12 @@ export const AdminPanel: FC = () => {
           <span>Projekty</span>
         </AdminLink>
         <div className="flex-grow" key="spacer" />
-        {unsavedBlocksCount > 0 && (
+        {unsavedBlocksCount > 1 && (
           <AdminLink className={"text-err uppercase"} key="unsavedBlocks">
             Bloky: {unsavedBlocksCount}
           </AdminLink>
         )}
-        {unsavedBlocksCount > 0 && (
+        {unsavedBlocksCount > 1 && (
           <AdminLink
             onClick={() => {
               onSaveAll();
@@ -176,7 +176,7 @@ export const AdminPanel: FC = () => {
             <span>Uložit vše</span>
           </AdminLink>
         )}
-        {unsavedBlocksCount > 0 && (
+        {unsavedBlocksCount > 1 && (
           <AdminLink
             onClick={() => {
               onResetAll();

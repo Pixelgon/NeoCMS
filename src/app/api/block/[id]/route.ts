@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { stripTrailingEmptyParagraphs } from "@/lib/blockHtml";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -41,11 +42,12 @@ export const PUT = async (
   try {
     const { id } = await params;
     const { html } = await req.json();
+    const sanitizedHtml = stripTrailingEmptyParagraphs(html);
 
     const updatedBlock = await prisma.block.upsert({
       where: { id },
-      update: { html },
-      create: { id, html },
+      update: { html: sanitizedHtml },
+      create: { id, html: sanitizedHtml },
     });
 
     return NextResponse.json(updatedBlock);

@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import Image from 'next/image';
 import * as motion from "motion/react-client";
+import Block from "@/components/block/block";
 import { Header } from "@/components/header";
+import BlockCard from "@/components/layout/blockCard";
 import { Section } from "@/components/layout/section";
 import { Card } from "@/components/layout/card";
 import { ProfileLink, ProfileLinkType } from "@/components/layout/profileLink";
@@ -34,40 +36,16 @@ export default function ONas() {
       <Header bg="/images/headers/about-header.webp" title="O nás"/>
           <main>
               <Section isPrim>
-               <motion.h2
+               <motion.div
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                 >
-                  Naše vize
-                </motion.h2>
+                  <Block id="about_vision_title" />
+                </motion.div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-10 w-full mt-5">
-                  <Card sec>
-                    <div className={'flex gap-2 relative items-center flex-wrap justify-center'}>
-                      <Image alt="" src={'/images/icons/gear.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
-                      <h3>Purpose</h3>
-                    </div>
-                    <p>
-                      Tvoříme digitální řešení, která nejsou jen vizuálně atraktivní, ale hlavně plní svůj účel. Design, vývoj i obsah přizpůsobujeme tomu, co má ve výsledku opravdu fungovat – ne tomu, co jen dobře vypadá v prezentaci.
-                    </p>
-                  </Card>
-                  <Card sec delay={.3}>
-                    <div className={'flex gap-2 relative items-center flex-wrap justify-center'}>
-                      <Image alt="" src={'/images/icons/sun.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
-                      <h3>Clarity</h3>
-                    </div>
-                    <p>
-                      Projekty stavíme tak, aby měly dlouhodobou hodnotu. Dáváme důraz na přehlednost, snadné používání a rozšiřitelnost – pro všechny, kdo s nimi pracují každý den, bez ohledu na technické znalosti.
-                    </p>
-                  </Card>
-                  <Card sec delay={.6}>
-                    <div className={'flex gap-2 relative items-center flex-wrap justify-center'}>
-                      <Image alt="" src={'/images/icons/magn.svg'} width={0} height={0} className={'!relative max-h-full w-auto flex-shrink'}/>
-                      <h3>Reason</h3>
-                    </div>
-                    <p>
-                      Sledujeme moderní trendy, ale používáme je uvážlivě. Nehoníme buzzwordy – raději volíme technologie a přístupy, které řeší reálné problémy a šetří čas i prostředky.
-                    </p>
-                  </Card>
+                  <BlockCard id="purpose" iconPath="/images/icons/gear.svg" sec />
+                  <BlockCard id="clarity" iconPath="/images/icons/sun.svg" sec delay={.3} />
+                  <BlockCard id="reason" iconPath="/images/icons/magn.svg" sec delay={.6} />
                   <motion.div
                     transition={{ delay: 0.9 }}
                     initial={{opacity: 0, x: -200, filter: 'blur(5px)'}}
@@ -82,14 +60,7 @@ export default function ONas() {
                       </div>
                   </motion.div>
                   <Card sec delay={1.2} className={'sm:col-span-2 justify-center !items-start'}>
-                    <h3>Matěj Matějka</h3>
-                    <p>
-                      Zdravím! Jmenuji se Matěj Matějka – jsem full-stack vývojář a grafik, známý online pod přezdívkou <strong>Pixelgon</strong>.
-                      <br />
-                      Baví mě propojovat techniku s estetikou a tvořit digitální řešení, která dávají smysl a fungují v praxi. Momentálně stojím za celým projektem sám – od návrhu přes vývoj až po nasazení, takže mám pod kontrolou celý proces od začátku do konce.
-                      <br />
-                      Ve volném čase brázdím traily na kole, chodím po horách, učím se novým věcem v IT, kutím vlastní projekty – a když je čas, rád si i něco zahraju.
-                    </p>
+                    <Block id="matej" />
                   </Card>
                 </div>
               </Section>

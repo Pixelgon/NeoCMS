@@ -9,6 +9,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { stripTrailingEmptyParagraphs } from "@/lib/blockHtml";
 
 export type BlockEdit = {
   id: string;
@@ -56,21 +57,33 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const modifyBlock = useCallback(
     (id: string, html: string, originalHtml: string) => {
+      const sanitizedHtml = stripTrailingEmptyParagraphs(html);
+      const sanitizedOriginalHtml = stripTrailingEmptyParagraphs(originalHtml);
+
       setEditsById((prev) => {
         const edit = prev[id];
 
         // First change — create the edit record
         if (!edit) {
-          if (html === originalHtml) return prev; // no actual change
+          if (sanitizedHtml === sanitizedOriginalHtml) return prev; // no actual change
           return {
             ...prev,
-            [id]: { id, originalHtml, modifiedHtml: html, saved: false },
+            [id]: {
+              id,
+              originalHtml,
+              modifiedHtml: html,
+              saved: false,
+            },
           };
         }
 
         // Editing an already-saved block — new originalHtml is the saved value
         if (edit.saved) {
-          if (html === edit.modifiedHtml) return prev; // no actual change
+          if (
+            sanitizedHtml === stripTrailingEmptyParagraphs(edit.modifiedHtml)
+          ) {
+            return prev; // no actual change
+          }
           return {
             ...prev,
             [id]: {
@@ -83,7 +96,7 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
         }
 
         // Reverted back to original — remove from edits
-        if (html === edit.originalHtml) {
+        if (sanitizedHtml === stripTrailingEmptyParagraphs(edit.originalHtml)) {
           const { [id]: _, ...rest } = prev;
           return rest;
         }
@@ -99,7 +112,7 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const getEffectiveHtml = useCallback(
     (id: string, fallbackOriginal: string) => {
-      return editsById[id]?.modifiedHtml ?? fallbackOriginal;
+      return editsById[id]?.modifiedHtml ?? stripTrailingEmptyParagraphs(fallbackOriginal);
     },
     [editsById],
   );
@@ -114,11 +127,13 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
       }
 
       try {
+        const sanitizedHtml = stripTrailingEmptyParagraphs(edit.modifiedHtml);
+
         loader.start();
         const response = await fetch(`/api/block/${id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ html: edit.modifiedHtml }),
+          body: JSON.stringify({ html: sanitizedHtml }),
         });
 
         if (!response.ok) {
@@ -131,7 +146,10 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
         setEditsById((prev) => {
           const existing = prev[id];
           if (!existing) return prev;
-          return { ...prev, [id]: { ...existing, saved: true } };
+          return {
+            ...prev,
+            [id]: { ...existing, modifiedHtml: sanitizedHtml, saved: true },
+          };
         });
         setSelectedBlockId((cur) => (cur === id ? null : cur));
 
@@ -155,15 +173,17 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     try {
+      const sanitizedBlocks = blocksToSave.map(({ id, modifiedHtml }) => ({
+        id,
+        html: stripTrailingEmptyParagraphs(modifiedHtml),
+      }));
+
       loader.start();
       const response = await fetch(`/api/block`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          blocks: blocksToSave.map(({ id, modifiedHtml }) => ({
-            id,
-            html: modifiedHtml,
-          })),
+          blocks: sanitizedBlocks,
         }),
       });
 
@@ -175,8 +195,10 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
       // Mark all as saved
       setEditsById((prev) => {
         const next = { ...prev };
-        for (const { id } of blocksToSave) {
-          if (next[id]) next[id] = { ...next[id], saved: true };
+        for (const { id, html } of sanitizedBlocks) {
+          if (next[id]) {
+            next[id] = { ...next[id], modifiedHtml: html, saved: true };
+          }
         }
         return next;
       });
@@ -215,7 +237,11 @@ export const BlockProvider: FC<PropsWithChildren> = ({ children }) => {
     (id: string) => {
       const edit = editsById[id];
       if (!edit) return false;
-      return !edit.saved && edit.modifiedHtml !== edit.originalHtml;
+      return (
+        !edit.saved &&
+        stripTrailingEmptyParagraphs(edit.modifiedHtml) !==
+          stripTrailingEmptyParagraphs(edit.originalHtml)
+      );
     },
     [editsById],
   );

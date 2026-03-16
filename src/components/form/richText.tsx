@@ -3,7 +3,7 @@ import { FC, useEffect, useRef, useCallback, useMemo } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
-import ImageExtension from "@tiptap/extension-image";
+import Image from "@tiptap/extension-image";
 import Input from "./input";
 import RichTextTab from "./richTextTab";
 import { useLayout } from "@/context/layoutContext";
@@ -69,13 +69,13 @@ export const RichText: FC<RichTextProps> = ({
           target: "_blank",
         },
       }),
-      ImageExtension.configure({
+      Image.configure({
         HTMLAttributes: {
-          class: "rounded-3xl w-full h-auto object-contain mt-4",
+          class: "w-full h-auto object-contain rounded-3xl mt-4",
         },
       }),
     ],
-    [],
+    [headingLevels],
   );
 
   const editor = useEditor({
@@ -101,7 +101,7 @@ export const RichText: FC<RichTextProps> = ({
 
     const current = editor.getHTML();
     if (content !== current) {
-      editor.commands.setContent(content, false);
+      editor.commands.setContent(content);
     }
 
     lastPropContentRef.current = content;
@@ -117,7 +117,16 @@ export const RichText: FC<RichTextProps> = ({
 
   const insertUploadedImage = useCallback(() => {
     if (!uploadedImageUrlRef.current || !editor) return;
-    editor.chain().focus().setImage({ src: uploadedImageUrlRef.current }).run();
+    editor
+      .chain()
+      .focus()
+      .insertContent({
+        type: "image",
+        attrs: {
+          src: uploadedImageUrlRef.current,
+        },
+      })
+      .run();
     uploadedImageUrlRef.current = "";
   }, [editor]);
 
@@ -210,6 +219,9 @@ export const RichText: FC<RichTextProps> = ({
     () => editor?.chain().focus().redo().run(),
     [editor],
   );
+  const canUndo = editor?.can().undo() ?? false;
+  const canRedo = editor?.can().redo() ?? false;
+  const showBottomBar = canUndo || canRedo || (isChanged && !!saveBlock);
 
   return (
     <>
@@ -219,7 +231,7 @@ export const RichText: FC<RichTextProps> = ({
         </label>
       )}
       <motion.div
-        className="flex flex-col group rounded-3xl border border-prim overflow-hidden"
+        className="group flex h-auto w-full max-w-full min-w-0 flex-col rounded-3xl border border-prim overflow-visible"
         {...(animateToolbar ? {
           initial: { height: 0, opacity: 0 },
           animate: { height: "auto", opacity: 1 },
@@ -228,12 +240,12 @@ export const RichText: FC<RichTextProps> = ({
         } : {})}
       >
         <div
-          className={`flex bg-sec text-prim font-quicksand overflow-auto border-prim ${hideableToolbar ? "max-h-0 group-focus-within:max-h-10 transition-all duration-300 group-focus-within:border-b " : "border-b"} `}
-        >
+          className={`px-1 flex w-full max-w-full min-w-0 overflow-x-auto overflow-y-hidden bg-sec rounded-t-3xl text-prim font-quicksan border-prim ${hideableToolbar ? "max-h-0 group-focus-within:max-h-full transition-all duration-300 group-focus-within:border-b" : "border-b"} `}
+          >
           <RichTextTab
             onClick={() => toggleBold()}
             isActive={editor?.isActive("bold")}
-            className="pl-4 font-bold"
+            className="font-bold"
           >
             B
           </RichTextTab>
@@ -259,37 +271,43 @@ export const RichText: FC<RichTextProps> = ({
           <RichTextTab onClick={() => OpenImageDialog()}>
             <PhotoIcon className="w-5 h-5" />
           </RichTextTab>
-          {editor?.can().undo() && (
-            <RichTextTab onClick={() => undo()} isActive={false}>
-              <ArrowUturnLeftIcon className="w-5 h-5" />
-            </RichTextTab>
-          )}
-          {editor?.can().redo() && (
-            <RichTextTab onClick={() => redo()} isActive={false}>
-              <ArrowUturnRightIcon className="w-5 h-5" />
-            </RichTextTab>
-          )}
-          {isChanged && saveBlock && resetBlock && (
-            <div className="flex-1 flex justify-end pr-2">
-              <RichTextTab
-                onClick={resetBlock}
-                isActive={false}
-                className="text-err"
-              >
-                <TrashIcon className="w-5 h-5" />
-              </RichTextTab>
-              {!editor?.isEmpty && (
+        </div>
+        <EditorContent
+          editor={editor}
+          className={`g-sec relative z-20 w-full max-w-full min-w-0 overflow-hidden p-3 !outline-none text-lg text-wh font-quicksand transition-transform ${showBottomBar ? "" : "rounded-b-3xl"} [&_.ProseMirror]:w-full [&_.ProseMirror]:max-w-full [&_.ProseMirror]:min-w-0 [&_.ProseMirror]:break-words [&_.ProseMirror_*]:max-w-full [&_.ProseMirror_*]:break-words [&_.ProseMirror_img]:h-auto [&_.ProseMirror_img]:max-w-full`}
+        />
+        {showBottomBar && (
+          <div className="flex w-full max-w-full min-w-0 items-center justify-between overflow-x-auto rounded-b-3xl border-t border-prim bg-sec text-prim font-quicksand px-2">
+            <div className="flex items-center">
+              {canUndo && (
+                <RichTextTab onClick={() => undo()} isActive={false}>
+                  <ArrowUturnLeftIcon className="w-5 h-5" />
+                </RichTextTab>
+              )}
+              {canRedo && (
+                <RichTextTab onClick={() => redo()} isActive={false}>
+                  <ArrowUturnRightIcon className="w-5 h-5" />
+                </RichTextTab>
+              )}
+            </div>
+            <div className="flex items-center">
+              {isChanged && saveBlock && resetBlock && (
+                <RichTextTab
+                  onClick={resetBlock}
+                  isActive={false}
+                  className="text-err"
+                >
+                  <TrashIcon className="w-5 h-5" />
+                </RichTextTab>
+              )}
+              {isChanged && saveBlock && (
                 <RichTextTab onClick={saveBlock} isActive={false}>
                   <DocumentCheckIcon className="w-5 h-5" />
                 </RichTextTab>
               )}
             </div>
-          )}
-        </div>
-        <EditorContent
-          editor={editor}
-          className="g-sec p-3 !outline-none text-wh font-quicksand text-lg relative z-20 w-full transition-transform"
-        />
+          </div>
+        )}
       </motion.div>
     </>
   );

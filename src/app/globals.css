@@ -325,10 +325,23 @@
   @apply focus-visible:outline-none 
 }
 
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  caret-color: #ffffff;
+}
+
 #cc-main .pm--flip .pm__btn+.pm__btn, #cc-main .pm--flip .pm__btn-group+.pm__btn-group {
     margin-right: .75rem;
 }
 
 #cc-main .pm__table-td:before {
   @apply text-wh;
+}
+
+p:empty {
+  display: none;
 }

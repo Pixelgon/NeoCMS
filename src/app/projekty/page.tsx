@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import Block from "@/components/block/block";
 import { Section } from "@/components/layout/section";
 import ProjectsList from "@/components/project/projectList";
 import getAllProjects from "@/utils/project/getAllProjects";
@@ -70,8 +71,7 @@ const Projekty: FC<PageProps> = async ({ searchParams }) => {
             <Header bg="/images/headers/projects-header.webp" title="Projekty"/>
             <main>
                 <Section isPrim>
-                    <h2>Naše práce</h2>
-                    <p>Tvoříme věci, co nám dávají smysl. Navrhujeme, vyvíjíme, ladíme do detailu. Když něco stavíme, chceme, aby to bylo chytrý, praktický a mělo svou tvář.<br/> Tohle je naše práce na kterou jsme patřičně hrdí.</p>
+                    <Block id="projects" />
                     <ProjectsList 
                         projects={allProjects} 
                         availableTags={availableTags}
