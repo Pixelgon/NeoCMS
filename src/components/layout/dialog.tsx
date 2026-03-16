@@ -21,7 +21,7 @@ export const Dialog: FC<DialogProps> = ({ dialog }) => {
     >
       {dialog.upperPart && <>{dialog.upperPart}</>}
       {dialog.message && (
-        <p className="text-lg pxl">{dialog.message}</p>
+        <p className="text-lg text-pxlgn">{dialog.message}</p>
       )}
       <div className="flex flex-wrap gap-4 w-full">
         <Btn

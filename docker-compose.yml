@@ -8,19 +8,28 @@ services:
     env_file:
       - .env.docker
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - uploads:/app/public/uploads
 
   db:
-    image: postgres:15
+    image: postgres:18
     restart: always
     container_name: NeoCMS-db
+    ports:
+      - "5432:5432"
     env_file:
       - .env.docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata_v18:/var/lib/postgresql
 
 volumes:
-  pgdata:
+  pgdata_v18:
   uploads:

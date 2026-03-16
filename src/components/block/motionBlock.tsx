@@ -1,14 +1,20 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { BlockContent } from "./blockContent";
 import { stripTrailingEmptyParagraphs } from "@/lib/blockHtml";
+import { BlockContent } from "./blockContent";
+import type { BlockMotionProps } from "@/types/blockType";
 
-interface BlockProps {
+interface MotionBlockProps {
   id: string;
   className?: string;
+  motionProps?: BlockMotionProps;
 }
 
-export default async function Block({ id, className }: BlockProps) {
+export default async function MotionBlock({
+  id,
+  className,
+  motionProps,
+}: MotionBlockProps) {
   const session = await auth();
 
   const block = await prisma.block.findUnique({
@@ -27,6 +33,7 @@ export default async function Block({ id, className }: BlockProps) {
       html={html}
       isEditable={Boolean(session?.user)}
       lastModified={block?.updatedOn ?? block?.createdOn ?? undefined}
+      motionProps={motionProps}
     />
   );
 }

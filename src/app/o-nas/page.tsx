@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Image from 'next/image';
-import * as motion from "motion/react-client";
+import * as motion from "@/lib/motion";
 import Block from "@/components/block/block";
 import { Header } from "@/components/header";
 import BlockCard from "@/components/layout/blockCard";
@@ -36,12 +36,14 @@ export default function ONas() {
       <Header bg="/images/headers/about-header.webp" title="O nás"/>
           <main>
               <Section isPrim>
-               <motion.div
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                >
-                  <Block id="about_vision_title" />
-                </motion.div>
+               <motion.Block
+                  id='intro_title'
+                  motionProps={{
+                    initial: {opacity: .1, scale: 0},
+                    whileInView: {opacity: 1, scale: 1},
+                    viewport: { once: true },
+                  }}
+                  />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-10 w-full mt-5">
                   <BlockCard id="purpose" iconPath="/images/icons/gear.svg" sec />
                   <BlockCard id="clarity" iconPath="/images/icons/sun.svg" sec delay={.3} />

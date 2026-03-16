@@ -4,7 +4,7 @@ import BlockCard from '@/components/layout/blockCard';
 import { Section } from '@/components/layout/section';
 import { Metadata } from 'next';
 import HeaderLogo from '@/components/header/headerLogo';
-import * as motion from "motion/react-client";
+import * as motion from "@/lib/motion";
 import GetLastTwoProjects from '@/utils/project/getLastTwoProjects';
 import ProjectHM from '@/components/project/projectHM';
 import Block from '@/components/block/block';
@@ -32,13 +32,14 @@ return (
       <Section isPrim>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-14 w-full items-center" id="intro">
           <div className={'flex flex-col items-start gap-4'}>
-            <motion.div
-              initial={{opacity: .1, scale: 0}}
-              whileInView={{opacity: 1, scale: 1}}
-              viewport={{ once: true }}
-            >
-              <Block id='intro_title'/>
-            </motion.div>
+            <motion.Block
+              id='intro_title'
+              motionProps={{
+                initial: {opacity: .1, scale: 0},
+                whileInView: {opacity: 1, scale: 1},
+                viewport: { once: true },
+              }}
+            />
             <Block id='intro_desc'/>
             <Btn href="/projekty" prim className={'text-xl mt-4'}>Přesvědčit se</Btn>
           </div>

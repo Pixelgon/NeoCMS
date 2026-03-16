@@ -50,4 +50,4 @@ EXPOSE 3000
 
 ENV PORT=3000
 
-CMD ["sh", "-c", "pnpm exec prisma migrate deploy && pnpm start"]
+CMD ["sh", "-c", "until pnpm exec prisma migrate deploy; do echo 'Waiting for database...'; sleep 2; done; pnpm start"]

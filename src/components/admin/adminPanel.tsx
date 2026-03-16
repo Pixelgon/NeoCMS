@@ -1,7 +1,7 @@
 "use client";
 import { useLayout } from "@/context/layoutContext";
 import { signOut, useSession } from "next-auth/react";
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import { AdminLink } from "./adminPanelLink";
 import {
   ArrowLeftStartOnRectangleIcon,
@@ -23,8 +23,23 @@ export const AdminPanel: FC = () => {
   const layoutData = useLayout();
   const { project, isProjectUnsaved } = useAdminProject();
   const { saveAll, resetAll, unsavedBlocksCount } = useBlock();
+  const hasUnsavedProject = isProjectUnsaved();
+  const hasUnsavedBlocks = unsavedBlocksCount > 0;
+  const hasUnsavedChanges = hasUnsavedBlocks || hasUnsavedProject;
+  const bypassBeforeUnloadRef = useRef(false);
 
   type ModalType = "project" | "projectList" | "tagModal";
+
+  const triggerSignOut = async () => {
+    bypassBeforeUnloadRef.current = true;
+
+    try {
+      await signOut({ callbackUrl: "/", redirect: true });
+    } catch (error) {
+      bypassBeforeUnloadRef.current = false;
+      throw error;
+    }
+  };
 
   const openModal = (m: ModalType) => {
     if (layoutData.activeModalKey === m) {
@@ -115,6 +130,50 @@ export const AdminPanel: FC = () => {
     });
   };
 
+  const onSignOut = () => {
+    if (!hasUnsavedChanges) {
+      void triggerSignOut();
+      return;
+    }
+
+    const unsavedItems = [];
+    if (hasUnsavedProject) unsavedItems.push("projekt");
+    if (hasUnsavedBlocks) {
+      unsavedItems.push(
+        unsavedBlocksCount === 1 ? "1 block" : `${unsavedBlocksCount} blocků`,
+      );
+    }
+
+    layoutData.showDialog({
+      message:
+        `Máte neuložené změny: ${unsavedItems.join(" a ")}. Opravdu se chcete odhlásit?`,
+      btnR: {
+        text: "Ano",
+        onClick: () => {
+          layoutData.closeDialog();
+          void triggerSignOut();
+        },
+      },
+      btnL: {
+        text: "Ne",
+        onClick: () => layoutData.closeDialog(),
+      },
+    });
+  };
+
+  useEffect(() => {
+    const onBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (bypassBeforeUnloadRef.current) return;
+      if (!hasUnsavedChanges) return;
+
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [hasUnsavedChanges]);
+
   return (
     <div
       className={
@@ -159,12 +218,12 @@ export const AdminPanel: FC = () => {
           <span>Projekty</span>
         </AdminLink>
         <div className="flex-grow" key="spacer" />
-        {unsavedBlocksCount > 1 && (
+        {hasUnsavedBlocks && (
           <AdminLink className={"text-err uppercase"} key="unsavedBlocks">
             Bloky: {unsavedBlocksCount}
           </AdminLink>
         )}
-        {unsavedBlocksCount > 1 && (
+        {hasUnsavedBlocks && (
           <AdminLink
             onClick={() => {
               onSaveAll();
@@ -176,7 +235,7 @@ export const AdminPanel: FC = () => {
             <span>Uložit vše</span>
           </AdminLink>
         )}
-        {unsavedBlocksCount > 1 && (
+        {hasUnsavedBlocks && (
           <AdminLink
             onClick={() => {
               onResetAll();
@@ -188,10 +247,7 @@ export const AdminPanel: FC = () => {
           </AdminLink>
         )}
         {session?.user && (
-          <AdminLink
-            onClick={() => signOut({ callbackUrl: "/", redirect: true })}
-            key="signOut"
-          >
+          <AdminLink onClick={onSignOut} key="signOut">
             <ArrowLeftStartOnRectangleIcon className="w-6 h-6 text-prim" />
             <span className={"text-pxlgn font-semibold"}>
               {`${session.user.name}`}
