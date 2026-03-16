@@ -238,7 +238,7 @@
 }
 
 #cc-main .pm__close-btn {
-  @apply !w-auto;
+  @apply !w-10 !h-10;
 }
 
 .cm__btn--secondary:hover span, .pm__close-btn:hover span, #cc-main .pm__btn--secondary:hover span {
