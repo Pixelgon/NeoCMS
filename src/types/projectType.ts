@@ -1,5 +1,3 @@
-import { Tag } from "@prisma/client";
-
 export type ProjectType = {
       id: string;
       name: string;

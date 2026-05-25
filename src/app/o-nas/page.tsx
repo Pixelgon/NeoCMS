@@ -37,7 +37,7 @@ export default function ONas() {
           <main>
               <Section isPrim>
                <motion.Block
-                  id='intro_title'
+                  id='values_title'
                   motionProps={{
                     initial: {opacity: .1, scale: 0},
                     whileInView: {opacity: 1, scale: 1},

@@ -19,14 +19,14 @@ const HeaderLogo: FC<HeaderLogoProps> = ({children, href = "/"}) => {
          initial={{opacity: .1, x: -200, filter: 'blur(5px)'}}
          animate={{opacity: 1, x: 0, filter: 'blur(0px)'}}
          >
-            <Image draggable="false" src="/images/logo/LogoText.svg" alt="Logo Pixelgon" fill className={'!relative w-auto'} priority/>
+            <Image draggable="false" src="/images/logo/LogoText.svg" alt="Logo Pixelgon" fill className={'!relative w-auto'} loading="eager" priority/>
          </motion.div>
          <motion.div 
          className="w-[65.25%] relative"
          initial={{opacity: .1, x: 200, filter: 'blur(5px)'}}
          animate={{opacity: 1, x: 0, filter: 'blur(0px)'}}
          >
-            <Image draggable="false" src="/images/logo/Slogan.svg" alt="Logo Pixelgon" fill className={'!relative mt-[1vw]'} priority/>
+            <Image draggable="false" src="/images/logo/Slogan.svg" alt="Logo Pixelgon" fill className={'!relative mt-[1vw]'} loading="eager" priority/>
          </motion.div>
          </Link>
       </HeaderFull>
