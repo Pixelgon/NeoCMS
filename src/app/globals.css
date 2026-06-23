@@ -9,6 +9,7 @@
   }
 
   html {
+    position: relative;
     scroll-behavior: smooth;
     line-height: 1.15;
   }
@@ -58,6 +59,32 @@
   }
   .text-pxlgn {
     @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal;
+  }
+
+  .header-full__video {
+    transform: translateY(0);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .header-full__video {
+      animation: headerFullParallax linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100svh;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header-full__video {
+      animation: none;
+      display: none;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes headerFullParallax {
+    to {
+      transform: translateY(15svh);
+    }
   }
 
   p a:not(.rounded-full) {

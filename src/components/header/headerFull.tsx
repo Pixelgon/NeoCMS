@@ -1,41 +1,55 @@
-'use client';
-import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
-import WAVES from 'vanta/dist/vanta.waves.min.js';
-import * as THREE from 'three';
+"use client";
 
-export const HeaderFull: FC<PropsWithChildren> = ({children}) => {
-  const [vantaEffect, setVantaEffect] = useState<any>(0);
-  const vantaRef = useRef(null);
+import { forwardRef, PropsWithChildren, useEffect, useRef } from "react";
 
-  useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(
-        WAVES({
-          el: vantaRef.current,
-          THREE: THREE,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: true,
-          minHeight: 200.0,
-          minWidth: 200.0,
-          scale: 1.0,
-          scaleMobile: 1.0,
-          color: 0x151c24,
-          waveHeight: 40.0,
-          zoom: 0.8,
-        })
-      );
-    }
-    return () => {
-      if (vantaEffect) vantaEffect.destroy();
-    };
-  }, [vantaEffect]);
+const HEADER_VIDEO_PLAYBACK_RATE = 0.75;
 
-  return (
-    <>
-      <header ref={vantaRef} className={'h-svh flex justify-center items-center before:bg-header-gradient before:absolute before:top-0 before:left-0 before:w-full before:h-full before:z-[1]'}>
-            {children}
+export const HeaderFull = forwardRef<HTMLElement, PropsWithChildren>(
+  ({ children }, ref) => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+      const video = videoRef.current;
+
+      if (!video) return;
+
+      video.defaultPlaybackRate = HEADER_VIDEO_PLAYBACK_RATE;
+      video.playbackRate = HEADER_VIDEO_PLAYBACK_RATE;
+    }, []);
+
+    return (
+      <header
+        ref={ref}
+        className={
+          "header-full relative h-svh flex justify-center items-center overflow-hidden bg-[url('/images/hero/header-poster.jpg')] bg-cover bg-center before:bg-header-gradient before:absolute before:top-0 before:left-0 before:w-full before:h-full before:z-[1]"
+        }
+      >
+        <video
+          ref={videoRef}
+          className="header-full__video absolute inset-x-0 -top-[15svh] h-[130svh] w-full object-cover will-change-transform"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/images/hero/header-poster.jpg"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          aria-hidden="true"
+        >
+          <source
+            src="/images/hero/header.webm"
+            type='video/webm; codecs="av01.0.08M.10"'
+          />
+
+          <source src="/images/hero/header.mp4" type="video/mp4" />
+        </video>
+        <div className="relative z-[2] flex justify-center items-center w-full">
+          {children}
+        </div>
       </header>
-    </>
-  );
-};
+    );
+  },
+);
+
+HeaderFull.displayName = "HeaderFull";

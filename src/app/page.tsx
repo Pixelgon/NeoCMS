@@ -46,7 +46,7 @@ return (
           <motion.div initial={{opacity: .1, scale: 0}}
               whileInView={{opacity: 1, scale: 1,}}
               viewport={{ once: true }} className={'relative h-fit'}>
-            <Image src={'/images/icons/laptop.webp'} fill sizes="50vw" alt="" className={'!relative object-contain w-full drop-shadow-2xl z-10'}/>
+            <Image src={'/images/icons/laptop.webp'} fill sizes="50vw" alt="" className={'!relative object-contain w-full drop-shadow-2xl z-10'} loading="lazy"/>
             <div className={'absolute top-[2%] left-[10%] w-[80%] h-[86%] z-0 screen'}>
               <motion.div initial={{animationPlayState: 'paused'}} whileInView={{animationPlayState: 'running'}} viewport={{once: true}} className={'screen__foto screen__foto--hruba'}></motion.div>
               <motion.div initial={{animationPlayState: 'paused'}} whileInView={{animationPlayState: 'running'}} viewport={{once: true}} className={'screen__foto screen__foto--chalupa'}></motion.div>

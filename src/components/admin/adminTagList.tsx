@@ -40,7 +40,7 @@ export const AdminTagList: FC = () => {
   // Načtení tagů při otevření editoru
   useEffect(() => {
     loadTags();
-  }, []);
+  }, [loadTags]);
 
   const createTag = async () => {
     if (!newTagName.trim()) return;
