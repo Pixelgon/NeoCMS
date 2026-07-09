@@ -18,10 +18,7 @@ const ALLOWED_IMAGE_TYPES = new Set([
 
 const ALLOWED_EXTENSIONS = new Set(["jpg", "jpeg", "png", "gif", "webp", "svg"]);
 
-const UPLOAD_BASE_DIR = path.resolve(
-  process.cwd(),
-  process.env.UPLOAD_BASE_DIR || "public/uploads"
-);
+const UPLOAD_BASE_DIR = path.resolve(process.cwd(), "public", "uploads");
 
 function sanitizePathSegment(segment: string) {
   const cleaned = segment.replace(/\\/g, "/").trim();

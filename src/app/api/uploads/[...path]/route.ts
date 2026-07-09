@@ -9,10 +9,7 @@ interface RouteParams {
   params: Promise<{ path: string[] }>;
 }
 
-const uploadDir = path.resolve(
-  process.cwd(),
-  process.env.UPLOAD_BASE_DIR || "public/uploads"
-);
+const uploadDir = path.resolve(process.cwd(), "public", "uploads");
 
 function resolveInUploads(parts: string[]) {
   const cleaned = parts
@@ -71,6 +68,7 @@ async function serveFile(req: NextRequest, filePath: string) {
     ETag: etag,
     "Last-Modified": lastModified,
     "Cache-Control": "public, max-age=31536000, immutable",
+    "X-Content-Type-Options": "nosniff",
   };
 
   if (isNotModified(req, etag, lastModified)) {

@@ -6,7 +6,7 @@
   "author": "Pixelgon",
   "email": "mm@pixelgon.cz",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=20.9.0"
   },
   "scripts": {
     "dev": "next dev --turbopack",

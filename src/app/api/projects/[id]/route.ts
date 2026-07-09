@@ -1,6 +1,48 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
+import { unlink } from "fs/promises";
+import path from "path";
+
+const UPLOAD_BASE_DIR = path.resolve(process.cwd(), "public", "uploads");
+
+function resolveStoredUploadPath(url: string) {
+   const normalized = url.replace(/\\/g, "/");
+   const relativeUploadPath = normalized.startsWith("/api/uploads/")
+      ? normalized.slice("/api/uploads/".length)
+      : normalized.startsWith("/uploads/")
+         ? normalized.slice("/uploads/".length)
+         : null;
+
+   if (!relativeUploadPath) return null;
+
+   const parts = relativeUploadPath.split("/").filter(Boolean);
+   if (
+      parts.length === 0 ||
+      parts.some((part) => part === "." || part === ".." || !/^[a-zA-Z0-9._-]+$/.test(part))
+   ) {
+      return null;
+   }
+
+   const filePath = path.resolve(UPLOAD_BASE_DIR, ...parts);
+   if (!filePath.startsWith(UPLOAD_BASE_DIR + path.sep)) return null;
+
+   return filePath;
+}
+
+async function deleteStoredUpload(url: string) {
+   const filePath = resolveStoredUploadPath(url);
+   if (!filePath) return;
+
+   try {
+      await unlink(filePath);
+   } catch (error) {
+      const err = error as NodeJS.ErrnoException;
+      if (err.code !== "ENOENT") {
+         throw error;
+      }
+   }
+}
 
 export const GET = async ( 
    req: NextRequest, 
@@ -123,25 +165,13 @@ export const PUT = async (
 
       // Smaže staré obrázky, pokud byly změněny
       if (currentProject) {
-         const fs = require('fs');
-         const path = require('path');
-         
-          const cleanPhoto = currentProject.photo.replace(/^\/api/, '');
-          const cleanBackground = currentProject.background.replace(/^\/api/, '');
-
-          if (currentProject.photo !== photo && cleanPhoto.startsWith('/uploads/images/')) {
-            const oldPhotoPath = path.join(process.cwd(), cleanPhoto);
-            if (fs.existsSync(oldPhotoPath)) {
-               fs.unlinkSync(oldPhotoPath);
-            }
-          }
+         if (currentProject.photo !== photo) {
+            await deleteStoredUpload(currentProject.photo);
+         }
           
-          if (currentProject.background !== background && cleanBackground.startsWith('/uploads/images/')) {
-            const oldBackgroundPath = path.join(process.cwd(), cleanBackground);
-            if (fs.existsSync(oldBackgroundPath)) {
-               fs.unlinkSync(oldBackgroundPath);
-            }
-          }
+         if (currentProject.background !== background) {
+            await deleteStoredUpload(currentProject.background);
+         }
       }
 
       return NextResponse.json({
@@ -180,20 +210,8 @@ export const DELETE = async (
       });
       // Smaže soubory z public/uploads/images
       if (projectImgs) {
-         const fs = require('fs');
-         const path = require('path');
-
-         const cleanPhoto = projectImgs.photo.replace(/^\/api/, '');
-         const cleanBackground = projectImgs.background.replace(/^\/api/, '');
-
-         const photoPath = path.join(process.cwd(), cleanPhoto);
-         const backgroundPath = path.join(process.cwd(), cleanBackground);
-         if (fs.existsSync(photoPath)) {
-            fs.unlinkSync(photoPath);
-         }
-         if (fs.existsSync(backgroundPath)) {
-            fs.unlinkSync(backgroundPath);
-         }
+         await deleteStoredUpload(projectImgs.photo);
+         await deleteStoredUpload(projectImgs.background);
       }
       return NextResponse.json({ message: "Project deleted successfully" }, { status: 200 });
    } catch (error) {
