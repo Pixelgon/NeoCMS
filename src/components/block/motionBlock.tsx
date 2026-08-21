@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { stripTrailingEmptyParagraphs } from "@/lib/blockHtml";
+import { sanitizeRichHtml } from "@/lib/richHtml";
 import { BlockContent } from "./blockContent";
 import type { BlockMotionProps } from "@/types/blockType";
 
@@ -22,7 +22,7 @@ export default async function MotionBlock({
     select: { id: true, html: true, createdOn: true, updatedOn: true },
   });
 
-  const html = stripTrailingEmptyParagraphs(
+  const html = sanitizeRichHtml(
     block?.html ?? `<p>Block ${id} nebyl ještě vyplněn obsahem.</p>`,
   );
 

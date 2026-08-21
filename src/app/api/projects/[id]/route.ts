@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { sanitizeRichHtml } from "@/lib/richHtml";
 import { NextResponse, NextRequest } from "next/server";
 import { unlink } from "fs/promises";
 import path from "path";
@@ -79,6 +80,7 @@ export const GET = async (
       
       return NextResponse.json({
          ...project,
+         body: sanitizeRichHtml(project.body),
          tags: tagIds,
       });   
    } catch (error) {
@@ -100,9 +102,10 @@ export const PUT = async (
 
    try {
       const { name, body, description, background, photo, slug, tags } = await req.json();
+      const sanitizedBody = sanitizeRichHtml(body);
 
 
-      if (!name || !body || !description || !background || !photo || !slug) {
+      if (!name || !sanitizedBody || !description || !background || !photo || !slug) {
          return NextResponse.json({ error: "Všechna pole jsou povinná." }, { status: 400 });
       }
 
@@ -134,7 +137,7 @@ export const PUT = async (
          where: { id },
          data: {
             name,
-            body,
+            body: sanitizedBody,
             description,
             background,
             photo,

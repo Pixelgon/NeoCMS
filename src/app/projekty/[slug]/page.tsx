@@ -5,6 +5,8 @@ import { Metadata } from "next";
 import { Header } from "@/components/header";
 import { Section } from "@/components/layout/section";
 import { Btn } from "@/components/layout/btn";
+import { sanitizeRichHtml } from "@/lib/richHtml";
+import { serializeJsonLd } from "@/lib/safeJsonLd";
 
 const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 
@@ -105,12 +107,12 @@ export default async function ProjectDetail(props: { params: tParams }) {
         <>
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
             />
             <Header bg={project.background} title={project.name} />
             <main>
                 <Section isPrim>
-                        <div dangerouslySetInnerHTML={{ __html: project.body }} className={'flex gap-4 flex-col'}></div>
+                        <div dangerouslySetInnerHTML={{ __html: sanitizeRichHtml(project.body) }} className={'flex gap-4 flex-col'}></div>
                         <div className={'flex flex-wrap gap-4'}>
                             <Btn href={`/projekty`} prim>Zpět na projekty</Btn>
                             {project.tags.map((tag) => (

@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { BlockContent } from "./blockContent";
-import { stripTrailingEmptyParagraphs } from "@/lib/blockHtml";
+import { sanitizeRichHtml } from "@/lib/richHtml";
 
 interface BlockProps {
   id: string;
@@ -16,7 +16,7 @@ export default async function Block({ id, className }: BlockProps) {
     select: { id: true, html: true, createdOn: true, updatedOn: true },
   });
 
-  const html = stripTrailingEmptyParagraphs(
+  const html = sanitizeRichHtml(
     block?.html ?? `<p>Block ${id} nebyl ještě vyplněn obsahem.</p>`,
   );
 

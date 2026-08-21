@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { stripTrailingEmptyParagraphs } from "@/lib/blockHtml";
+import { sanitizeRichHtml } from "@/lib/richHtml";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -27,8 +27,8 @@ export const POST = async (req: Request) => {
     const updatePromises = blocks.map(({ id, html }) =>
       prisma.block.upsert({
         where: { id },
-        update: { html: stripTrailingEmptyParagraphs(html) },
-        create: { id, html: stripTrailingEmptyParagraphs(html) },
+        update: { html: sanitizeRichHtml(html) },
+        create: { id, html: sanitizeRichHtml(html) },
       }),
     );
 

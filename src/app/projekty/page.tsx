@@ -6,6 +6,7 @@ import getAllProjects from "@/utils/project/getAllProjects";
 import getAllTags from "@/utils/project/getAllTags";
 import { Metadata } from "next";
 import { FC } from "react";
+import { serializeJsonLd } from "@/lib/safeJsonLd";
 
 const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 
@@ -66,7 +67,7 @@ const Projekty: FC<PageProps> = async ({ searchParams }) => {
         <>
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
             />
             <Header bg="/images/headers/projects-header.webp" title="Projekty"/>
             <main>

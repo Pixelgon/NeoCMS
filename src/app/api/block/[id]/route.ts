@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { stripTrailingEmptyParagraphs } from "@/lib/blockHtml";
+import { sanitizeRichHtml } from "@/lib/richHtml";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,7 +21,7 @@ export const GET = async (
       );
     }
 
-    return NextResponse.json(block);
+    return NextResponse.json({ ...block, html: sanitizeRichHtml(block.html) });
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },
@@ -42,7 +42,7 @@ export const PUT = async (
   try {
     const { id } = await params;
     const { html } = await req.json();
-    const sanitizedHtml = stripTrailingEmptyParagraphs(html);
+    const sanitizedHtml = sanitizeRichHtml(html);
 
     const updatedBlock = await prisma.block.upsert({
       where: { id },
