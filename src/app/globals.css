@@ -126,12 +126,17 @@
     background-image: url('/images/pages/chalupanahorach.webp');
   }
 
-  ::-webkit-resizer {
+  textarea::-webkit-resizer {
     width: 0;
     height: 0;
     border-style: solid;
     border-width: 0 0 200px 200px;
     border-color: transparent transparent #00CCFF transparent;
+    transition: border-color 300ms ease-in-out;
+  }
+
+  textarea[aria-invalid="true"]::-webkit-resizer {
+    border-color: transparent transparent #FF4D4D transparent;
   }
 
   @keyframes scrollChalupa {
