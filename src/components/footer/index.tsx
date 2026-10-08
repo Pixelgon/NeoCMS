@@ -17,7 +17,7 @@ const removeAnalyticsCookies = () => {
 
 export const Footer: FC<PropsWithChildren> = ({children}) => {
     const date = new Date();
-    const ctaText = "Půjdete do toho s námi?".split(" ");
+    const ctaText = "Máte projekt v hlavě?".split(" ");
     const { openContactForm } = useLayout();
 
     useEffect(() => {
@@ -40,20 +40,32 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
                 <div className={'bg-sec-gradient'}>
                     <Section className="">
                         <p className={'text-[min(10vw,5rem)] font-quicksand leading-[1.15]'}>
-                            {ctaText.map((el, i) => (
-                            <motion.span className={'text-pxlgn font-semibold uppercase'}
-                            initial={{ y: 10, opacity: 0}}
-                            whileInView={{ y: 0, opacity: 1}}
-                            viewport={{ once: true, amount: 1}}
-                            transition={{
-                                duration: .3,
-                                delay: i / 12
-                            }}
-                            key={i}
-                            >
-                            {el}{" "}
-                            </motion.span>
-                        ))}
+                            {ctaText.map((word, wordIndex) => {
+                                const characterOffset = ctaText
+                                    .slice(0, wordIndex)
+                                    .reduce((total, word) => total + Array.from(word).length + 1, 0);
+
+                                return (
+                                    <span key={wordIndex} className="inline-block whitespace-nowrap text-pxlgn font-semibold uppercase">
+                                        {Array.from(word).map((character, characterIndex) => (
+                                            <motion.span
+                                                key={characterIndex}
+                                                className="inline-block"
+                                                initial={{ y: 10, opacity: 0 }}
+                                                whileInView={{ y: 0, opacity: 1 }}
+                                                viewport={{ once: true, amount: 1 }}
+                                                transition={{
+                                                    duration: .3,
+                                                    delay: (characterOffset + characterIndex) / 12,
+                                                }}
+                                            >
+                                                {character}
+                                            </motion.span>
+                                        ))}
+                                        {wordIndex < ctaText.length - 1 && "\u00a0"}
+                                    </span>
+                                );
+                            })}
                         </p>
                         <div className={'flex gap-6 items-center flex-wrap'}>
                             <Btn onClick={() => openContactForm()} className={'text-xl'} prim>Poptat projekt</Btn>
