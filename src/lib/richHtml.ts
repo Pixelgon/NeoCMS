@@ -41,7 +41,10 @@ const RICH_TEXT_OPTIONS: sanitizeHtml.IOptions = {
       "transition-all",
       "duration-300",
     ],
-    img: ["w-full", "h-auto", "object-contain", "rounded-3xl", "mt-4"],
+    img: [
+      "w-full", "h-auto", "object-contain", "rounded-3xl", "mt-4",
+      "border", "border-white/10", "shadow-lg",
+    ],
     code: ["language-*"],
   },
   allowedSchemes: ["http", "https", "mailto", "tel"],

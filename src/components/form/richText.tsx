@@ -55,6 +55,7 @@ export const RichText: FC<RichTextProps> = ({
   const extensions = useMemo(
     () => [
       StarterKit.configure({
+        link: false,
         heading: {
           levels: headingLevels,
         },
@@ -71,7 +72,7 @@ export const RichText: FC<RichTextProps> = ({
       }),
       Image.configure({
         HTMLAttributes: {
-          class: "w-full h-auto object-contain rounded-3xl mt-4",
+          class: "w-full h-auto object-contain rounded-3xl mt-4 border border-white/10 shadow-lg",
         },
       }),
     ],
