@@ -11,13 +11,14 @@ import { ProfileLink, ProfileLinkType } from "@/components/layout/profileLink";
 const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 
 export const metadata: Metadata = {
-  title: 'O nás | Pixelgon',
-  description: 'Zjistěte více o nás, naší vizi a hodnotách, které nás vedou k tomu, co děláme.',
+  title: 'O mně | Pixelgon',
+  description: 'Poznejte mě a můj přístup k vývoji webových aplikací od návrhu po dokončení.',
+  alternates: { canonical: `${baseUrl}/o-mne` },
   openGraph: {
-    title: 'O nás | Pixelgon',
-    description: 'Zjistěte více o nás, naší vizi a hodnotách, které nás vedou k tomu, co děláme.',
+    title: 'O mně | Pixelgon',
+    description: 'Poznejte mě a můj přístup k vývoji webových aplikací od návrhu po dokončení.',
     type: 'website',
-    url: `${baseUrl}/o-nas`,
+    url: `${baseUrl}/o-mne`,
     images: [
       {
         url: '/images/og.webp',
@@ -27,13 +28,13 @@ export const metadata: Metadata = {
       },
     ],
   },
-  keywords: ['O nás', 'Pixelgon', 'tým', 'vize', 'hodnoty', 'digitální řešení', 'web development'],
+  keywords: ['O mně', 'Pixelgon', 'Matěj Matějka', 'webové aplikace', 'full stack vývoj', 'web development'],
 };
 
-export default function ONas() {
+export default function OMne() {
   return (
       <>
-      <Header bg="/images/headers/about-header.webp" title="O nás"/>
+      <Header bg="/images/headers/about-header.webp" title="O mně"/>
           <main>
               <Section isPrim>
                <motion.Block

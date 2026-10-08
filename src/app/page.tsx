@@ -64,7 +64,7 @@ return (
             <BlockCard id='design' iconPath='/images/icons/design.svg' delay={.3} />
             <BlockCard id='code' iconPath='/images/icons/code.svg' delay={.6} />
         </div>
-        <Btn href="/o-nas" className={'text-xl'}>Naše vize</Btn>
+        <Btn href="/o-mne" className={'text-xl'}>Můj přistup</Btn>
       </Section>
       <ProjectHM projects={lastProjects} />
     </main>

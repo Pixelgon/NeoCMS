@@ -62,7 +62,7 @@ export const metadata: Metadata = {
 };
 const pages = [
   { name: "Domů", href: "/" },
-  { name: "O nás", href: "/o-nas" },
+  { name: "O mně", href: "/o-mne" },
   { name: "Projekty", href: "/projekty" },
 ];
 
