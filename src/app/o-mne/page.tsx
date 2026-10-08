@@ -52,7 +52,7 @@ export default function OMne() {
                   <motion.div
                     transition={{ delay: 0.9 }}
                     initial={{opacity: 0, x: -200, filter: 'blur(5px)'}}
-                    animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'rounded-3xl overflow-hidden relative flex flex-col'}>
+                    animate={{opacity: 1, x: 0, filter: 'blur(0px)'}} className={'rounded-3xl overflow-hidden relative flex flex-col border border-white/10 shadow-lg'}>
                       <Image src={'/images/sections/profilovka.webp'} alt={'Matěj Matějka'} fill sizes="40vw" className={'!relative !h-auto flex-1 object-cover'}/>
                       <div className={'grid grid-cols-5 bg-pxlgn-gradient'}>
                         <ProfileLink type={ProfileLinkType.Email} link={'mailto:pixelgon@pixelgon.cz'}/>

@@ -32,7 +32,7 @@ export const ProjectHM: FC<ProjectHMProps> = ({ projects }) => {
                >
                   <Link 
                      href={`/projekty/${slug}`} 
-                     className={`group relative w-full h-auto before:bg-project-gradient before:absolute before: flex flex-col justify-center items-center before:bottom-0 before:duration-300 before:left-0 before:w-full before:transition-all hover:before:bottom-[-100%] before:h-full before:z-10 overflow-hidden rounded-3xl ${isEven ? 'lg:col-start-2' : ''}`}
+                     className={`group relative w-full h-auto before:bg-project-gradient before:absolute before: flex flex-col justify-center items-center before:bottom-0 before:duration-300 before:left-0 before:w-full before:transition-all hover:before:bottom-[-100%] before:h-full before:z-10 overflow-hidden rounded-3xl border border-white/10 shadow-lg ${isEven ? 'lg:col-start-2' : ''}`}
                   >
                      <Image src={photo} alt={name} fill sizes="40vw" className={'aspect-[3/2] object-cover h-auto !relative transition-transform duration-300 group-hover:scale-110'}/>
                   </Link>

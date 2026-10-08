@@ -177,7 +177,7 @@ export const AdminPanel: FC = () => {
   return (
     <div
       className={
-        "fixed w-full bottom-0 left-0 p-4 bg-navbar backdrop-blur-md flex gap-4 items-center justify-center flex-wrap z-[1003]"
+        "fixed w-full bottom-0 left-0 p-4 bg-navbar backdrop-blur-md flex gap-4 items-center justify-center flex-wrap z-[1003] border border-white/10 shadow-lg"
       }
     >
       <AnimatePresence mode="popLayout">
