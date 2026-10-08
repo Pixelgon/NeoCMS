@@ -6,6 +6,7 @@ import { Dialog } from "@/components/layout/dialog";
 import { Modal } from "@/components/layout/modal";
 import { LayoutContextType } from "@/types/layoutContextType";
 import { DialogType } from "@/types/dialogType";
+import ContactForm from "@/components/form/contactForm";
 
 
 export const LayoutContext = createContext<LayoutContextType | null>(null);
@@ -52,6 +53,14 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [modal]);
 
+  const openContactForm = useCallback((title = "Poptat projekt") => {
+    showModal({
+      children: <ContactForm />,
+      title,
+      asking: true,
+    });
+  }, [showModal]);
+
   const closeModal = useCallback(() => {
     setModal(null);
     setActiveModalKey(null);
@@ -64,9 +73,10 @@ export const LayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     showDialog,
     closeDialog,
     showModal,
+    openContactForm,
     closeModal,
     activeModalKey
-  }), [scroll, handleSetScroll, showToast, showDialog, closeDialog, showModal, closeModal, activeModalKey]);
+  }), [scroll, handleSetScroll, showToast, showDialog, closeDialog, showModal, openContactForm, closeModal, activeModalKey]);
 
   return (
     <LayoutContext.Provider value={contextValue}>

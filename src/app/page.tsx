@@ -41,7 +41,10 @@ return (
               }}
             />
             <Block id='intro_desc'/>
-            <Btn href="/projekty" prim className={'text-xl mt-4'}>Přesvědčit se</Btn>
+            <div className="flex w-full flex-wrap items-center gap-4 mt-4">
+              <Btn className="text-xl" prim action="contact">Poptat projekt</Btn>
+              <Btn href="/projekty" className="text-xl">Prohlednout realizace</Btn>
+            </div>
           </div>
           <motion.div initial={{opacity: .1, scale: 0}}
               whileInView={{opacity: 1, scale: 1,}}

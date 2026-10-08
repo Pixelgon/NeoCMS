@@ -2,11 +2,10 @@
 import * as CookieConsent from "vanilla-cookieconsent";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useState, useEffect, PropsWithChildren, FC, useContext } from "react";
+import { useEffect, PropsWithChildren, FC } from "react";
 import { Btn } from "../layout/btn";
 import { Section } from "../layout/section";
 import Image from "next/image";
-import ContactForm from "../form/contactForm";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import CookieConsentConfig from "@/config/cookieConsentConfig";
 import { useLayout } from "@/context/layoutContext";
@@ -19,7 +18,7 @@ const removeAnalyticsCookies = () => {
 export const Footer: FC<PropsWithChildren> = ({children}) => {
     const date = new Date();
     const ctaText = "Půjdete do toho s námi?".split(" ");
-    const layoutData = useLayout();
+    const { openContactForm } = useLayout();
 
     useEffect(() => {
         CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, 
@@ -34,14 +33,6 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
             }
         );
     }, []);
-
-    const openContactForm = () => {
-        layoutData.showModal({
-            children: <ContactForm />,
-            title: "Kontaktujte nás",
-            asking: true
-        });
-    }
 
     return (
         <>
@@ -65,7 +56,7 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
                         ))}
                         </p>
                         <div className={'flex gap-6 items-center flex-wrap'}>
-                            <Btn onClick={() => openContactForm()} className={'text-xl'} prim>Kontaktovat</Btn>
+                            <Btn onClick={() => openContactForm()} className={'text-xl'} prim>Poptat projekt</Btn>
                             <a href="mailto:pixelgon@pixelgon.cz" className={'w-full sm:w-auto flex gap-2 relative hover:brightness-50 transition-all duration-300'}><Image height={30} width={30} src={'/images/icons/envelope.svg'} alt={""}/><p className={'text-pxlgn'}>pixelgon@pixelgon.cz</p></a>
                         </div>
                     </Section>    

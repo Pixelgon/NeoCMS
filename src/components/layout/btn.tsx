@@ -1,5 +1,8 @@
+'use client';
+
 import Link from "next/link";
 import { FC, ReactNode } from "react";
+import { useLayout } from "@/context/layoutContext";
 
 export interface btnProps {
     children: ReactNode;
@@ -10,6 +13,7 @@ export interface btnProps {
     target?: string;
     type?: "button" | "submit" | "reset";
     disabled?: boolean;
+    action?: "contact";
 }
 
 interface btnStyles { 
@@ -26,7 +30,9 @@ const stylesPrim: btnStyles = {
     innerStyles: 'w-full sm:w-auto text-center bg-pxlgn-gradient rounded-full relative transition-all duration-300 hover:brightness-50 text-sec px-6 py-3 md:px-8 md:py-4 text-base',
     outerStyles: ''
 };
-export const Btn: FC<btnProps> = ({children, prim, onClick, href, className, target, type, disabled}) => {
+export const Btn: FC<btnProps> = ({children, prim, onClick, href, className, target, type, disabled, action, }) => {
+    const { openContactForm } = useLayout();
+    const handleClick = action === "contact" ? () => openContactForm() : onClick;
 
     if(href) {
         return (
@@ -35,10 +41,10 @@ export const Btn: FC<btnProps> = ({children, prim, onClick, href, className, tar
             </Link>
         );
     }
-    else if(onClick || type)
+    else if(handleClick || type)
     {
         return (
-            <button onClick={onClick} type={type || "button"} className={`${className ? className : ''} ${prim ? stylesPrim.innerStyles : styles.innerStyles} ${disabled ? 'brightness-50' : ''}`} disabled={disabled}>
+            <button onClick={handleClick} type={type || "button"} className={`${className ? className : ''} ${prim ? stylesPrim.innerStyles : styles.innerStyles} ${disabled ? 'brightness-50' : ''}`} disabled={disabled}>
                 {prim ? <>{children}</> : <div className={styles.outerStyles}>{children}</div>}
             </button>
         );
