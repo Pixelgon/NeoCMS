@@ -6,12 +6,11 @@ interface HeaderProps {
     bg: string;
     title: string;
 }
-
 export const Header: FC<HeaderProps> = ({bg,title}) => {
   return (
     <header className={'min-h-[33svh] select-none bg-cover md:bg-fixed before:bg-header-gradient before:absolute flex flex-col justify-center items-center before:top-0 before:left-0 before:w-full before:h-full before:z-[0] relative py-16 text-center'} style={{backgroundImage: `url(${bg})`}}>
         <motion.h1 
-          className={'relative z-10'}
+          className={'relative z-10 header__title'}
           initial={{opacity: .1, scale: 0}}
           animate={{opacity: 1, scale: 1}
         }

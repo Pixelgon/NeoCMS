@@ -26,20 +26,32 @@
   main {
     flex-grow: 1;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold uppercase;
-    line-height: 1.15;
+    line-height: 1.1;
   }
   h1 {
-    font-size: min(12vw, 7.5rem);
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
   }
   h2 {
-    font-size: min(10vw, 5rem);
+    font-size: clamp(2rem, 3vw, 3rem);
   }
   h3 {
-    font-size: min(8vw, 3rem)
+    font-size: clamp(1.75rem, 2.5vw, 2.5rem);
   }
-  p, ul, ol {
+
+  .header__title {
+    font-size: clamp(4rem, 5vw, 5rem);
+  }
+
+  p,
+  ul,
+  ol {
     @apply text-xl text-wh leading-snug opacity-90;
   }
   .menu--close > li {
@@ -98,13 +110,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/images/pages/chalupanahorach.webp');
+    background-image: url("/images/pages/chalupanahorach.webp");
     background-size: cover;
     background-position: top;
     animation: scrollChalupa 20s ease-in-out infinite;
-    animation-delay: .5s;
+    animation-delay: 0.5s;
   }
-  
+
   .screen__foto {
     content: "";
     position: absolute;
@@ -114,16 +126,16 @@
     height: 100%;
     background-size: cover;
     background-position: top;
-    animation-delay: .5s;
+    animation-delay: 0.5s;
   }
 
   .screen__foto--hruba {
     animation: scrollFoto 20s ease-in-out infinite;
-    background-image: url('/images/pages/fotohruba.webp');
+    background-image: url("/images/pages/fotohruba.webp");
   }
   .screen__foto--chalupa {
     animation: scrollChalupa 20s ease-in-out infinite;
-    background-image: url('/images/pages/chalupanahorach.webp');
+    background-image: url("/images/pages/chalupanahorach.webp");
   }
 
   textarea::-webkit-resizer {
@@ -131,12 +143,12 @@
     height: 0;
     border-style: solid;
     border-width: 0 0 200px 200px;
-    border-color: transparent transparent #00CCFF transparent;
+    border-color: transparent transparent #00ccff transparent;
     transition: border-color 300ms ease-in-out;
   }
 
   textarea[aria-invalid="true"]::-webkit-resizer {
-    border-color: transparent transparent #FF4D4D transparent;
+    border-color: transparent transparent #ff4d4d transparent;
   }
 
   @keyframes scrollChalupa {
@@ -162,7 +174,7 @@
       opacity: 1;
     }
   }
-  
+
   @keyframes scrollFoto {
     50% {
       background-position: top;
@@ -207,22 +219,52 @@
 #cc-main {
   color-scheme: dark;
   --cc-font-family: var(--open-sans);
-  --cc-bg: linear-gradient(180deg, rgba(21, 28, 36, 40%) 0%, rgba(21, 28, 36, 80%) 100%);
+  --cc-bg: linear-gradient(
+    180deg,
+    rgba(21, 28, 36, 40%) 0%,
+    rgba(21, 28, 36, 80%) 100%
+  );
   --cc-modal-border-radius: 1.5rem;
   --cc-btn-border-radius: 1.5rem;
   --cc-secondary-color: white;
   --cc-cookie-category-block-bg: #151c24;
-  --cc-btn-secondary-bg: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
-  --cc-toggle-readonly-bg: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
+  --cc-btn-secondary-bg: linear-gradient(
+    90deg,
+    #00ccff 0%,
+    #1cd2e6 57%,
+    #58deb1 80%,
+    #91e97e 100%
+  );
+  --cc-toggle-readonly-bg: linear-gradient(
+    90deg,
+    #00ccff 0%,
+    #1cd2e6 57%,
+    #58deb1 80%,
+    #91e97e 100%
+  );
   --cc-btn-secondary-color: #151c24;
   --cc-btn-primary-color: #151c24;
-  --cc-btn-primary-bg: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
-  --cc-toggle-on-bg: linear-gradient(90deg, #00CCFF 0%, #1CD2E6 57%, #58DEB1 80%, #91E97E 100%);
+  --cc-btn-primary-bg: linear-gradient(
+    90deg,
+    #00ccff 0%,
+    #1cd2e6 57%,
+    #58deb1 80%,
+    #91e97e 100%
+  );
+  --cc-toggle-on-bg: linear-gradient(
+    90deg,
+    #00ccff 0%,
+    #1cd2e6 57%,
+    #58deb1 80%,
+    #91e97e 100%
+  );
 }
 
 #cc-main .pm__section--toggle.is-expanded {
-  --cc-cookie-category-block-bg: #151c24!important;
-  --cc-cookie-category-block-border: var(--cc-cookie-category-expanded-block-hover-bg);
+  --cc-cookie-category-block-bg: #151c24 !important;
+  --cc-cookie-category-block-border: var(
+    --cc-cookie-category-expanded-block-hover-bg
+  );
 }
 
 #cc-main .pm--box {
@@ -235,28 +277,30 @@
 }
 
 #cc-main .pm__header {
-  border-bottom: none!important;
+  border-bottom: none !important;
 }
 
 #cc-main .pm__footer {
-  border-top: none!important;
+  border-top: none !important;
 }
 
-#cc-main .pm__body, #cc-main .pm__footer, #cc-main .pm__header {
-  padding: 1.5rem!important;
+#cc-main .pm__body,
+#cc-main .pm__footer,
+#cc-main .pm__header {
+  padding: 1.5rem !important;
 }
 
 #cc-main .cm__btns {
-  border-top: none!important;
+  border-top: none !important;
 }
 
 #cc-main .pm__section {
-  border: none!important;
+  border: none !important;
 }
 
 #cc-main .pm__section--toggle .pm__section-title {
-  border: none!important;
-} 
+  border: none !important;
+}
 
 #cc-main .cm {
   backdrop-filter: blur(20px);
@@ -267,7 +311,9 @@
   @apply w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative transition-all duration-300 hover:brightness-50 text-sec px-8 py-4 !important;
 }
 
-.cm__btn--secondary, .pm__close-btn, #cc-main .pm__btn--secondary {
+.cm__btn--secondary,
+.pm__close-btn,
+#cc-main .pm__btn--secondary {
   @apply w-full sm:w-auto text-center bg-pxlgn-gradient rounded-3xl relative before:transition-all before:duration-300 before:bg-sec before:absolute before:h-[calc(100%-2px)] before:w-[calc(100%-2px)] before:top-[1px] before:rounded-3xl before:left-[1px] hover:before:bg-transparent border-none p-0 !important;
 }
 
@@ -275,11 +321,14 @@
   @apply !w-10 !h-10;
 }
 
-.cm__btn--secondary:hover span, .pm__close-btn:hover span, #cc-main .pm__btn--secondary:hover span {
-  @apply  bg-none text-sec bg-clip-border !important;
+.cm__btn--secondary:hover span,
+.pm__close-btn:hover span,
+#cc-main .pm__btn--secondary:hover span {
+  @apply bg-none text-sec bg-clip-border !important;
 }
 
-.cm__btn--secondary span, #cc-main .pm__btn--secondary span {
+.cm__btn--secondary span,
+#cc-main .pm__btn--secondary span {
   @apply bg-pxlgn-gradient transition-all duration-300 text-transparent bg-clip-text px-8 py-4 z-10 relative block !important;
 }
 
@@ -291,58 +340,63 @@
   @apply !border-t-0;
 }
 
-.cm__title, .pm__title, .pm__section-title {
+.cm__title,
+.pm__title,
+.pm__section-title {
   @apply font-quicksand bg-pxlgn-gradient text-transparent bg-clip-text font-semibold uppercase !important;
 }
 
 #cc-main .pm__section:not(:first-child):hover {
-  background: none!important;
+  background: none !important;
 }
 
 #cc-main .pm__section--toggle .pm__section-desc-wrapper {
-  border: none!important;
+  border: none !important;
 }
 
-#cc-main .cc__link, #cc-main a {
-  background-repeat: unset!important;
-  background-size: unset!important;
+#cc-main .cc__link,
+#cc-main a {
+  background-repeat: unset !important;
+  background-size: unset !important;
   @apply bg-pxlgn-gradient text-transparent bg-clip-text font-normal hover:opacity-60 !important;
 }
 
-#cc-main .pm__btn--secondary, #cc-main .pm__btn, #cc-main .pm__btn--secondary {
-  border: none!important;
-  transition: all .3s ease-in-out;
+#cc-main .pm__btn--secondary,
+#cc-main .pm__btn,
+#cc-main .pm__btn--secondary {
+  border: none !important;
+  transition: all 0.3s ease-in-out;
 }
 
 #cc-main .pm__btn:hover:not(.pm__btn--secondary) {
-  background: var(--cc-btn-secondary-bg)!important;
-  opacity: .75;
-  color: var(--cc-btn-secondary-color)!important;
+  background: var(--cc-btn-secondary-bg) !important;
+  opacity: 0.75;
+  color: var(--cc-btn-secondary-color) !important;
 }
 
 .pm__close-btn svg {
-  stroke: #00CCFF!important;
+  stroke: #00ccff !important;
 }
 
 .pm__close-btn:hover svg {
-  stroke: var(--cc-cookie-category-block-bg)!important;
+  stroke: var(--cc-cookie-category-block-bg) !important;
 }
 
 #cc-main .pm__badge {
-  color: #151c24!important;
+  color: #151c24 !important;
 }
 
 #cc-main .toggle__icon-on svg {
-  stroke: #00ccff!important;
+  stroke: #00ccff !important;
 }
 
 #cc-main .pm-overlay {
   backdrop-filter: blur(4px);
 }
 
-#cc-main .pm__table-head>tr {
-  border: none!important;
-  color: var(--cc-secondary-colo)!important;
+#cc-main .pm__table-head > tr {
+  border: none !important;
+  color: var(--cc-secondary-colo) !important;
 }
 
 #cc-main .pm__table-tr:hover {
@@ -350,13 +404,13 @@
 }
 
 #cc-main .cm__btn--secondary:focus-visible {
-  border: none  !important;
+  border: none !important;
 }
 
 /* tiptap */
 
 .tiptap {
-  @apply focus-visible:outline-none 
+  @apply focus-visible:outline-none;
 }
 
 .tiptap h1,
@@ -368,8 +422,9 @@
   caret-color: #ffffff;
 }
 
-#cc-main .pm--flip .pm__btn+.pm__btn, #cc-main .pm--flip .pm__btn-group+.pm__btn-group {
-    margin-right: .75rem;
+#cc-main .pm--flip .pm__btn + .pm__btn,
+#cc-main .pm--flip .pm__btn-group + .pm__btn-group {
+  margin-right: 0.75rem;
 }
 
 #cc-main .pm__table-td:before {
