@@ -25,9 +25,8 @@ const HeaderLogo: FC<HeaderLogoProps> = ({children, href = "/"}) => {
   const scrollBlur = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(5px)"]);
 
   return (
-      <HeaderFull ref={headerRef}>
-         <MotionLink href={href} className={'flex flex-col justify-center w-[75vw] max-w-[1000px] items-end select-none'} style={shouldReduceMotion ? undefined : {opacity: scrollOpacity, filter: scrollBlur}}>
-         {children}
+      <HeaderFull ref={headerRef} bottomContent={children}>
+         <MotionLink href={href} className={'flex flex-col justify-center w-[75vw] max-w-[750px] items-end select-none'} style={shouldReduceMotion ? undefined : {opacity: scrollOpacity, filter: scrollBlur}}>
          <motion.div className={'relative w-full h-auto'} style={{x: shouldReduceMotion ? 0 : logoTextX}}>
             <motion.div
             className={'relative w-full h-auto'}
