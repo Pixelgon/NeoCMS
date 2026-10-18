@@ -6,7 +6,6 @@ interface BlockCardProps {
   id: string;
   iconPath?: string;
   delay?: number;
-  sec?: boolean;
   className?: string;
 }
 
@@ -14,11 +13,10 @@ export default function BlockCard({
   id,
   iconPath,
   delay,
-  sec,
   className,
 }: BlockCardProps) {
   return (
-    <Card delay={delay} sec={sec} className={className}>
+    <Card delay={delay} className={className}>
       <div className="relative flex w-full items-center justify-center gap-2">
         {iconPath ? (
           <Image

@@ -30,33 +30,21 @@ export default async function Home() {
     <>
       <main>
         <HeaderLogo href={"#intro"}>
-          <div className={"absolute left-[-10000px]"}>Pixelgon</div>
-          <div className={"absolute left-[-10000px]"}>
-            Your vision, our code
-          </div>
-          <div
-            className={
-              " w-full"
-            }
-          ></div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-reg lg:gap-8 w-full">
             <BlockCard
               id="web"
               iconPath="/images/icons/web.svg"
-              sec
               className="sm:col-span-2 sm:justify-self-center sm:w-[calc((100%_-_max(1.5rem,2svw))_/_2)] lg:col-span-1 lg:w-full"
             />
             <BlockCard
               id="design"
               iconPath="/images/icons/design.svg"
               delay={0.3}
-              sec
             />
             <BlockCard
               id="code"
               iconPath="/images/icons/code.svg"
               delay={0.6}
-              sec
             />
           </div>
         </HeaderLogo>

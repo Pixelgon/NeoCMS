@@ -10,14 +10,14 @@ interface CardProps {
 }
 
 
-export const Card: FC<CardProps> = ({children, delay, sec, className}) => {
+export const Card: FC<CardProps> = ({children, delay, className}) => {
     return(
         <motion.article 
             initial={{opacity: .1, scale: 0}}
             whileInView={{opacity: 1, scale: 1}}
             transition={{delay: delay ? delay : 0}}
             viewport={{ once: true, amount: .01 }}
-            className={'flex flex-col gap-3 items-center rounded-3xl p-reg xl:p-14 relative h-full backdrop-blur-xl border border-white/10 shadow-lg '+ (sec ? 'bg-sec/50' : 'bg-bg/50') + (className ? ' ' + className : '')}>
+            className={'flex flex-col gap-3 items-center rounded-3xl p-reg xl:p-14 relative h-full backdrop-blur-xl border border-white/10 shadow-lg bg-navbar ' + (className ? className : '')}>
             {children}
         </motion.article>
     );

@@ -21,10 +21,10 @@ export const HeaderFull = forwardRef<HTMLElement, PropsWithChildren<{ bottomCont
       <header
         ref={ref}
         className={
-          `header-full relative ${bottomContent ? "grid grid-cols-1 grid-rows-[minmax(65svh,auto)_1fr_1fr]" : "h-svh flex justify-center items-center"}`
+          `header-full relative h-svh ${bottomContent ? "grid grid-cols-1 grid-rows-[minmax(0,1fr)_auto_auto] pb-reg lg:pb-8" : "flex justify-center items-center"}`
         }
       >
-        <div className={`absolute inset-0 isolate overflow-hidden bg-[url('/images/hero/header-poster.jpg')] bg-cover bg-center ${bottomContent ? "col-start-1 col-end-2 row-start-1 row-end-3" : ""}`}>
+        <div className={`absolute inset-0 isolate overflow-hidden bg-[url('/images/hero/header-poster.jpg')] bg-cover bg-center ${bottomContent ? "col-start-1 row-start-1 row-end-3" : ""}`}>
           <video
           ref={videoRef}
           className="header-full__video absolute z-0 inset-x-0 -top-[15svh] h-[calc(100%+30svh)] w-full object-cover will-change-transform"
@@ -50,7 +50,7 @@ export const HeaderFull = forwardRef<HTMLElement, PropsWithChildren<{ bottomCont
             className="pointer-events-none absolute inset-0 z-[1] bg-header-gradient"
           />
         </div>
-        <div className={`relative z-[2] flex justify-center items-center w-full ${bottomContent ? "col-start-1 row-start-1 py-20" : ""}`}>
+        <div className={`relative z-[2] flex justify-center items-center w-full ${bottomContent ? "col-start-1 row-start-1 min-h-0" : ""}`}>
           {children}
         </div>
         {bottomContent && (
