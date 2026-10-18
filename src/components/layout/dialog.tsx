@@ -16,7 +16,7 @@ export const Dialog: FC<DialogProps> = ({ dialog }) => {
       transition={{ ease: "easeInOut", duration: 0.3 }}
       key="dialog"
       className={
-        "fixed top-1/2 left-1/2 flex flex-1 p-6 flex-col items-center justify-center gap-4 text-center text-wh bg-modal backdrop-blur-md rounded-[3rem] w-fit z-[1001] drop-shadow-xl max-w-sm"
+        "fixed top-1/2 left-1/2 flex p-6 flex-col items-center gap-4 text-center text-wh bg-modal backdrop-blur-xl border border-white/10 shadow-lg rounded-[3rem] w-fit z-[1001] max-w-sm"
       }
     >
       {dialog.upperPart && <>{dialog.upperPart}</>}

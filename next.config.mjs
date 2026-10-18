@@ -4,6 +4,7 @@ import { generateSitemapRoutes } from './scripts/generate-sitemap-routes.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  allowedDevOrigins: ['192.168.1.81'],
   // Explicitně povolit servírování statických souborů
   assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
   trailingSlash: false,
