@@ -76,7 +76,7 @@ export default async function Home() {
               initial={{ opacity: 0.1, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className={"relative h-fit"}
+              className={"relative h-fit order-first lg:order-none"}
             >
               <Image
                 src={"/images/icons/laptop.webp"}

@@ -46,9 +46,9 @@ export default function OMne() {
                   }}
                   />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-10 w-full mt-5">
-                  <BlockCard id="purpose" iconPath="/images/icons/gear.svg" sec />
-                  <BlockCard id="clarity" iconPath="/images/icons/sun.svg" sec delay={.3} />
-                  <BlockCard id="reason" iconPath="/images/icons/magn.svg" sec delay={.6} />
+                  <BlockCard id="purpose" iconPath="/images/icons/gear.svg" />
+                  <BlockCard id="clarity" iconPath="/images/icons/sun.svg" delay={.3} />
+                  <BlockCard id="reason" iconPath="/images/icons/magn.svg" delay={.6} />
                   <motion.div
                     transition={{ delay: 0.9 }}
                     initial={{opacity: 0, x: -200, filter: 'blur(5px)'}}
