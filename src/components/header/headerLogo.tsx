@@ -1,7 +1,8 @@
 'use client'
 import Link from "next/link";
 import Image from 'next/image';
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { FC, useRef } from "react";
 import { HeaderFull } from "./headerFull";
 

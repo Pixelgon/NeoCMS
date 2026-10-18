@@ -1,6 +1,7 @@
 'use client';
 import * as CookieConsent from "vanilla-cookieconsent";
 import { motion } from "motion/react";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import Link from "next/link";
 import { useEffect, PropsWithChildren, FC } from "react";
 import { Btn } from "../layout/btn";
@@ -19,6 +20,7 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
     const date = new Date();
     const ctaText = "Máte projekt v hlavě?".split(" ");
     const { openContactForm } = useLayout();
+    const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
         CookieConsent.run({...CookieConsentConfig as CookieConsent.CookieConsentConfig, 
@@ -51,12 +53,12 @@ export const Footer: FC<PropsWithChildren> = ({children}) => {
                                             <motion.span
                                                 key={characterIndex}
                                                 className="inline-block"
-                                                initial={{ y: 10, opacity: 0 }}
+                                                initial={shouldReduceMotion ? false : { y: 10, opacity: 0 }}
                                                 whileInView={{ y: 0, opacity: 1 }}
                                                 viewport={{ once: true, amount: 1 }}
                                                 transition={{
-                                                    duration: .3,
-                                                    delay: (characterOffset + characterIndex) / 12,
+                                                    duration: shouldReduceMotion ? 0 : .3,
+                                                    delay: shouldReduceMotion ? 0 : (characterOffset + characterIndex) / 12,
                                                 }}
                                             >
                                                 {character}

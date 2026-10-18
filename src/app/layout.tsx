@@ -118,7 +118,7 @@ export default async function RootLayout({
             shadow={false}
           />
           <SessionProvider>
-            <MotionConfig transition={{ duration: 0.3 }}>
+            <MotionConfig reducedMotion="user" transition={{ duration: 0.3 }}>
               {session && session.user ? (
                 <AdminProjectProvider>
                   <BlockProvider>

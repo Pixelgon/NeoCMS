@@ -1,12 +1,14 @@
 "use client";
 
 import { forwardRef, PropsWithChildren, ReactNode, useEffect, useRef } from "react";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const HEADER_VIDEO_PLAYBACK_RATE = 0.75;
 
 export const HeaderFull = forwardRef<HTMLElement, PropsWithChildren<{ bottomContent?: ReactNode }>>(
   ({ children, bottomContent }, ref) => {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const shouldReduceMotion = useReducedMotion();
 
     useEffect(() => {
       const video = videoRef.current;
@@ -15,7 +17,15 @@ export const HeaderFull = forwardRef<HTMLElement, PropsWithChildren<{ bottomCont
 
       video.defaultPlaybackRate = HEADER_VIDEO_PLAYBACK_RATE;
       video.playbackRate = HEADER_VIDEO_PLAYBACK_RATE;
-    }, []);
+
+      if (shouldReduceMotion) {
+        video.pause();
+      } else {
+        void video.play().catch(() => {
+          // The poster remains visible if autoplay is unavailable.
+        });
+      }
+    }, [shouldReduceMotion]);
 
     return (
       <header
