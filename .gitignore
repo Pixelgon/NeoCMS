@@ -9,3 +9,6 @@
 .env.local
 .env.docker
 /public/uploads
+
+# Generated sitemap routes
+/src/generated/sitemap-routes.json

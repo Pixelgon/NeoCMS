@@ -1,33 +1,23 @@
 import getAllProjects from "@/utils/project/getAllProjects";
 import { MetadataRoute } from "next";
+import staticRoutes from "@/generated/sitemap-routes.json";
 
 // Revalidace každou hodinu
 export const revalidate = 3600;
 export const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+   const staticPages: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
+      url: route === "/" ? baseUrl : `${baseUrl}${route}`,
+      changeFrequency: route === "/o-mne" ? "yearly" : "monthly",
+      priority: route === "/" ? 1.0 : route === "/o-mne" ? 0.9 : 0.8,
+   }));
+
    try {
       const projects = await getAllProjects();
 
       return [
-         {
-            url: baseUrl,
-            lastModified: new Date(),
-            changeFrequency: "monthly" as const,
-            priority: 1.0,
-         },
-         {
-            url: `${baseUrl}/o-nas`,
-            lastModified: new Date(),
-            changeFrequency: "yearly" as const,
-            priority: 0.9,
-         },
-         {
-            url: `${baseUrl}/projekty`,
-            lastModified: new Date(),
-            changeFrequency: "monthly" as const,
-            priority: 0.8,
-         },
+         ...staticPages,
          ...projects.map((project) => ({
             url: `${baseUrl}/projekty/${project.slug}`,
             lastModified: project.lastModified,
@@ -40,26 +30,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ];
    } catch (error) {
       console.error('Database is not available, during docker build, returning fallback sitemap:', error);
-      // Fallback bez projektů
-      return [
-         {
-            url: baseUrl,
-            lastModified: new Date(),
-            changeFrequency: "monthly" as const,
-            priority: 1.0,
-         },
-         {
-            url: `${baseUrl}/o-nas`,
-            lastModified: new Date(),
-            changeFrequency: "yearly" as const,
-            priority: 0.9,
-         },
-         {
-            url: `${baseUrl}/projekty`,
-            lastModified: new Date(),
-            changeFrequency: "monthly" as const,
-            priority: 0.8,
-         },
-      ];
+      return staticPages;
    }
 }
