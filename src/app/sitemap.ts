@@ -2,8 +2,8 @@ import getAllProjects from "@/utils/project/getAllProjects";
 import { MetadataRoute } from "next";
 import staticRoutes from "@/generated/sitemap-routes.json";
 
-// Revalidace každou hodinu
-export const revalidate = 3600;
+// Databáze je dostupná až za běhu aplikace, nikoli při Docker buildu.
+export const dynamic = "force-dynamic";
 export const baseUrl = process.env.BASE_URL || "https://pixelgon.cz";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -13,23 +13,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: route === "/" ? 1.0 : route === "/o-mne" ? 0.9 : 0.8,
    }));
 
-   try {
-      const projects = await getAllProjects();
+   const projects = await getAllProjects();
 
-      return [
-         ...staticPages,
-         ...projects.map((project) => ({
-            url: `${baseUrl}/projekty/${project.slug}`,
-            lastModified: project.lastModified,
-            changeFrequency: "monthly" as const,
-            images: [
-               `${baseUrl}${project.photo}`,
-            ],
-            priority: 0.7,
-         })),
-      ];
-   } catch (error) {
-      console.error('Database is not available, during docker build, returning fallback sitemap:', error);
-      return staticPages;
-   }
+   return [
+      ...staticPages,
+      ...projects.map((project) => ({
+         url: `${baseUrl}/projekty/${project.slug}`,
+         lastModified: project.lastModified,
+         changeFrequency: "monthly" as const,
+         images: [
+            `${baseUrl}${project.photo}`,
+         ],
+         priority: 0.7,
+      })),
+   ];
 }
