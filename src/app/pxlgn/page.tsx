@@ -1,15 +1,7 @@
 'use client';
-import { Metadata } from "next";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-
-const metadata: Metadata = {
-    title: 'Login | Pixelgon',
-    robots: {
-        index: false,
-    },
-};
 
 const LoginPage = () => {
   const { data: session, status } = useSession();
